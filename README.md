@@ -1,4 +1,4 @@
-# :clown_face: Pennywise
+# 🤡 Pennywise
 
 > A terrifyingly simple budgeting app
 
