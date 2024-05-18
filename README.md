@@ -8,7 +8,7 @@ Github: [https://github.com/mowglixx/pennywise](https://github.com/mowglixx/penn
 ## Specification
 - The client app must allow users to install to their device as a [﻿PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)﻿
 - The stack will allow the user to host the server for the application
-- The database server will be optional and SQLite will be an option for the API
+- <strike>The database server will be optional and SQLite will be an option for the API</strike>
 ### Models
 Click the link below to view the data models for the app.
 
