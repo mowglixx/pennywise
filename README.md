@@ -3,7 +3,7 @@
 > A terrifyingly simple budgeting app
 
 ## Repo
-Github: [﻿github.com/mowglixx/fluffy-lamp](https://github.com/mowglixx/fluffy-lamp) 
+Github: [https://github.com/mowglixx/pennywise](https://github.com/mowglixx/pennywise)
 
 ## Specification
 - The client app must allow users to install to their device as a [﻿PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)﻿
