@@ -17,16 +17,16 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <Grid container>
-            <Grid as={'header'} bgcolor={'red'} xs={12} md={12} lg={12} padding={2}>
+            <Grid as={'header'} xs={12} md={12} lg={12} padding={2}>
               <Typography variant='h2' align='center' >
                 Budget-app
               </Typography>
             </Grid>
-            <Grid as={'main'} bgcolor={'green'} xs={12} md={8} lg={8} padding={2}>
+            <Grid as={'main'} xs={12} md={10} lg={10} padding={2}>
               {children}
             </Grid>
-            <Grid as={'footer'} bgcolor={'blue'} xs={12} md={4} lg={4} padding={2}>
-              Budget-app
+            <Grid as={'footer'} bgcolor={'blue'} xs={12} md={2} lg={2} padding={2}>
+              Budget-app &copy;
               <Link href="/dashboard">
                 Dashboard
               </Link>

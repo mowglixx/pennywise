@@ -8,13 +8,14 @@ import theme from '@/theme';
 
 
 export default function Providers({ children }) {
+
   return (
     <>
       <SessionProvider>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            {/* Kickstart an elegant, consistent, and simple baseline to build upon. */}
+            {/* Kickstart an elegant, consistent, and simple baseline to build upon for MUI. */}
             {children}
           </ThemeProvider>
             {/* This component makes the theme available down the React tree.  */}
