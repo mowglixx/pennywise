@@ -1,8 +1,4 @@
 import mongoose, { Schema, SchemaTypes } from "mongoose";
-import {loadType} from 'mongoose-currency'
-loadType(mongoose)
-
-const Currency = mongoose.Types.Currency
 
 const IncomeSchema = new Schema({
   name: {
@@ -13,9 +9,9 @@ const IncomeSchema = new Schema({
     default: "Mysterious Income"
   },
   amount: {
-    type: Currency,
-    set: (v) => (Math.round(v * 100) / 100),
-    get: (v) => v.toFixed(2),
+    type: Number,
+    set: (v) => Math.round(v * 100),
+    get: (v) => (v/100).toFixed(2),
     default: 0.00,
     required: true
   },
@@ -42,15 +38,10 @@ const IncomeSchema = new Schema({
       }
     },
   },
-  type: { type: String },
+  type: { type: String, default: '' },
   user: { type: SchemaTypes.ObjectId, ref: "user", index: true },
 }, {
-  timestamps: true,
-  query:{
-    byUserId({userId}){
-      return this.find({}).where('user').equals(userId).lean().exec()
-    },
-  }, 
+  timestamps: true
 });
 
 const Income =
