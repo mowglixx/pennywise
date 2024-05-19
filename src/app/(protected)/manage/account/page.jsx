@@ -7,7 +7,7 @@ const ManageAccountPage = () => {
     const { data, status } = useSession()
     
   return (
-    <div>Account Page</div>
+    <div>Account</div>
   )
 }
 export default ManageAccountPage

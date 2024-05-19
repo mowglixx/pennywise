@@ -20,11 +20,15 @@ const IncomeSchema = new Schema({
     required: true
   },
   paymentFrequency: {
-    startDate: Date,
+    startDate: {
+      type: Date,
+      default: new Date()
+    },
     interval: {
       type: String,
       trim: true,
       lowercase: true,
+      default: "monthly",
       enum: {
         values: [
           "weekly",
@@ -43,13 +47,13 @@ const IncomeSchema = new Schema({
 }, {
   timestamps: true,
   query:{
-    byUserId({_id}){
-      return this.where('user').equals(_id).lean().exec()
+    byUserId({userId}){
+      return this.find({}).where('user').equals(userId).lean().exec()
     },
   }, 
 });
 
 const Income =
-  mongoose.models?.Income || mongoose.model("income", IncomeSchema, "incomes");
+  mongoose.models?.Income ?? mongoose.model("income", IncomeSchema, "incomes");
 
 export default Income;

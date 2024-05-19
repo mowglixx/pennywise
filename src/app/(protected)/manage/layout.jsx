@@ -3,7 +3,7 @@
 export default function RootLayout({ children }) {
   return (
     <>
-    Manage/{children}
+    {children}
     </>
   )
 }

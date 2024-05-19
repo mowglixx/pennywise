@@ -1,14 +1,18 @@
-import { ArrowDownward, ArrowDownwardOutlined, ArrowUpward, ArrowUpwardOutlined, DashboardOutlined, DashboardRounded, Google, Menu, PaidOutlined, PaidSharp } from "@mui/icons-material";
+import { ArrowDownward, ArrowDownwardOutlined, ArrowUpward, ArrowUpwardOutlined, BabyChangingStation, DashboardOutlined, DashboardRounded, Google, Menu, PaidOutlined, PaidSharp, Shop, Shop2 } from "@mui/icons-material";
 import { AppBar, Avatar, Box, Button, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Skeleton, SwipeableDrawer, Toolbar, Typography, useMediaQuery } from "@mui/material"
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AccountButton from "@/components/elements/AccountButton";
+import LocalDiningTwoToneIcon from '@mui/icons-material/LocalDiningTwoTone';
+import CurrencyPoundTwoToneIcon from '@mui/icons-material/CurrencyPoundTwoTone';
+import ReceiptLongTwoToneIcon from '@mui/icons-material/ReceiptLongTwoTone';
+import AutoAwesomeTwoToneIcon from '@mui/icons-material/AutoAwesomeTwoTone';
 
 const Header = () => {
 
     const appRouter = useRouter()
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const session = useSession()
     const [loading, setLoading] = useState(true)
     useEffect(() => {
@@ -40,43 +44,40 @@ const Header = () => {
         {
             label: 'Incomes',
             href: '/manage/incomes',
-            icon: (<PaidOutlined />)
+            icon: (<CurrencyPoundTwoToneIcon />)
 
         },
     ]
     const EXPENSE_NAV_ITEMS = [
         {
-            label: 'Expenses',
-            href: '/manage/expenses',
-            icon: (<ArrowDownwardOutlined />)
-
-        },
-        {
             label: 'Bills',
             href: '/manage/expenses/bills',
-            icon: (<PaidOutlined />)
+            icon: (<ReceiptLongTwoToneIcon />)
 
         },
         {
             label: 'Purchases',
             href: '/manage/expenses/purchases',
-            icon: (<PaidOutlined />)
+            icon: (<AutoAwesomeTwoToneIcon />)
 
         },
         {
             label: 'Food Budgets',
             href: '/manage/expenses/food',
-            icon: (<PaidOutlined />)
+            icon: (<LocalDiningTwoToneIcon />)
 
         },
     ]
 
 
-
+    
     const DrawerList = (
         <Grid role="presentation" onClick={toggleDrawer(false)}>
             <List>
-                <ListItem disablePadding>
+                <ListItem>
+            <AccountButton />
+                </ListItem>
+                <ListItem>
                     <ListItemButton onClick={() => appRouter.push('/dashboard')}>
                         <ListItemIcon>
                             <DashboardOutlined />
@@ -88,7 +89,7 @@ const Header = () => {
             <Divider />
             <List>
                 {PRIMARY_NAV_ITEMS.map((item) => (
-                    <ListItem key={item.label} disablePadding>
+                    <ListItem key={item.label}>
                         <ListItemButton onClick={() => appRouter.push(`${item?.href ? item.href : '#'}`)}>
                             <ListItemIcon>
                                 {item?.icon ?? item.icon}
@@ -102,38 +103,11 @@ const Header = () => {
             <List
                 subheader={
                     <ListSubheader>
-                        Income
-                    </ListSubheader>
-                }
-            >
-                {INCOME_NAV_ITEMS.map((item) => (
-                    <ListItem key={item.label} disablePadding>
-                        <ListItemButton onClick={() => appRouter.push(`${item?.href ? item.href : '#'}`)}>
-                            <ListItemIcon>
-                                {item?.icon ?? item.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={item?.label} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <List
-                subheader={
-                    <ListSubheader>
-                        Expense
+                        Expenses
                     </ListSubheader>
                 }>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={() => appRouter.push('/manage/expenses')}>
-                        <ListItemIcon>
-                            <ArrowDownwardOutlined />
-                        </ListItemIcon>
-                        <ListItemText primary={'Expenses'} />
-                    </ListItemButton>
-                </ListItem>
                 {EXPENSE_NAV_ITEMS.map((item) => (
-                    <ListItem key={item.label} disablePadding>
+                    <ListItem key={item.label}>
                         <ListItemButton onClick={() => appRouter.push(`${item?.href ? item.href : '#'}`)}>
                             <ListItemIcon>
                                 {item?.icon ?? item.icon}
@@ -142,18 +116,13 @@ const Header = () => {
                         </ListItemButton>
                     </ListItem>
                 ))}
-            </List>
-            <Divider />
-            <List>
-                <ListItem>
-                </ListItem>
             </List>
         </Grid>
     );
 
 
     return (
-        <Grid container>
+        <Box>
             <AppBar>
                 <Toolbar>
                     <IconButton size="large" color="inherit" title='Open Navigation' onClick={toggleDrawer(true)}>
@@ -167,11 +136,11 @@ const Header = () => {
             </AppBar>
             <SwipeableDrawer anchor="left" open={open} onClose={toggleDrawer(false)}>
                 <Grid>
-                    <AccountButton />
                     {DrawerList}
                 </Grid>
             </SwipeableDrawer>
-        </Grid>
+        </Box>
+
     )
 }
 export default Header

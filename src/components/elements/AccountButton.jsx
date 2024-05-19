@@ -59,7 +59,8 @@ const AccountButton = () => {
                 startIcon={session.status === "authenticated"
                     ? (<Avatar src={session.data.user.image} width={32} height={32} />)
                     : (<Google />)}
-                onClick={(e) => session.status !== "authenticated" ? signIn('google') : handleClick(e) }
+                onClick={async (e) => {
+                    return session.status !== "authenticated" ? signIn('google') : handleClick(e)} }
                 size="large"
                 p={6}
                 id="basic-button"
@@ -102,7 +103,7 @@ const AccountButton = () => {
                     return router.push('/help')
                     }}>Help</MenuItem>
                 <Divider />
-                <MenuItem onClick={(e)=>{
+                <MenuItem onClick={async (e)=>{
                     handleClose(e) 
                     return signOut()
                     }}>Logout</MenuItem>

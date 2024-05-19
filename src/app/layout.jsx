@@ -8,12 +8,10 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {
   Grid,
-  Stack,
   Card,
+  CardContent,
 } from '@mui/material';
 
-import { Link, Typography } from '@mui/material';
-import { useState } from 'react';
 
 export default function RootLayout({ children }) {
 
@@ -27,11 +25,17 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <Grid container>
-            <Header />
-            <Grid as={'main'} xs={8} md={8} lg={8} padding={2}>
-              {children}
+            <Grid item as={'header'} xs={12}>
+              <Header />
             </Grid>
-            <Grid as={'footer'} xs={12} padding={2}>
+            <Grid item as={'main'} xs={12} mt={12}>
+              <Card>
+                <CardContent>
+                  {children}
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item as={'footer'} xs={12} padding={2}>
               Budget-app &copy;
             </Grid>
           </Grid>
