@@ -3,11 +3,11 @@
 import { useSession } from "next-auth/react"
 
 
-const ManageIncomesPage = () => {
+const ManageExpensesPage = () => {
     const { data, status } = useSession()
     
   return (
-    <div>ManageIncomesPage</div>
+    <div>ExpensesPage</div>
   )
 }
-export default ManageIncomesPage
+export default ManageExpensesPage
