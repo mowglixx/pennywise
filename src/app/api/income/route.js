@@ -58,10 +58,6 @@ export const GET = auth(async function(request){
     
     await dbConnect();
     let Incomes = await Income.find().where('user').equals(userId) ?? [];
-    return Response.json(
-        {
-            incomes: Incomes
-        }
-    )
+    return Response.json(Incomes)
 })
 

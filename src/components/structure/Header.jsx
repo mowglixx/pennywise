@@ -75,9 +75,6 @@ const Header = () => {
         <Grid role="presentation" onClick={toggleDrawer(false)}>
             <List>
                 <ListItem>
-            <AccountButton />
-                </ListItem>
-                <ListItem>
                     <ListItemButton onClick={() => appRouter.push('/dashboard')}>
                         <ListItemIcon>
                             <DashboardOutlined />
@@ -123,13 +120,13 @@ const Header = () => {
 
     return (
         <Box>
-            <AppBar>
+            <AppBar enableColorOnDark={true} >
                 <Toolbar>
                     <IconButton size="large" color="inherit" title='Open Navigation' onClick={toggleDrawer(true)}>
                         <Menu />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        {process.env.BRAND_NAME || 'Pennywise'}
+                        {process.env.NEXT_PUBLIC_BRAND_NAME || 'Pennywise'}
                     </Typography>
                     <AccountButton />
                 </Toolbar>

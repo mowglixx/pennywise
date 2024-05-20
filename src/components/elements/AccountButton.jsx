@@ -1,4 +1,5 @@
 "use client"
+import theme from "@/theme"
 import { Google } from "@mui/icons-material"
 import { Avatar, Button, Divider, Grid, ListItemText, Menu, MenuItem, Skeleton, Typography } from "@mui/material"
 import { signIn, signOut, useSession } from "next-auth/react"
@@ -34,19 +35,19 @@ const AccountButton = () => {
     if (loading) return (
         <>
             <Button
-                variant="outlined"
-                startIcon={<Skeleton animation="wave" variant="circular" width={'50%'} height={'50%'}>
+                variant="inherit"
+                startIcon={<Skeleton animation="wave" variant="circular" width={34} height={34}>
                     <Google />
                 </Skeleton>}
                 onClick={() => {
                     console.log(
                         loading ? 'please wait... loading login session' : 'how is this possible???'
                     )
-                }}>
+                }}
+                width={150}
+                disabled>
                 {
-                    <Skeleton animation="wave" variant="text" disablePadding>
-                        <ListItemText primary={'Login'} secondary={'with Google'} />
-                    </Skeleton>
+                    <Skeleton animation="wave" variant="text" width={150} />
                 }
             </Button>
         </>
@@ -54,10 +55,9 @@ const AccountButton = () => {
     return (
         <>
             <Button
-                variant={session.status === "authenticated" ?"inherit":"outlined"}
-                color={session.status === "authenticated" ? "blue":"inherit"}
+                variant={"inherit"}
                 startIcon={session.status === "authenticated"
-                    ? (<Avatar src={session.data.user.image} width={32} height={32} />)
+                    ? (<Avatar src={session.data.user.image} width={34} height={34} />)
                     : (<Google />)}
                 onClick={async (e) => {
                     return session.status !== "authenticated" ? signIn('google') : handleClick(e)} }
@@ -67,6 +67,7 @@ const AccountButton = () => {
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
+                width={150}
             >
                 {session.status === "authenticated" ? session.data.user.name : 'Login With Google'}
             </Button>
