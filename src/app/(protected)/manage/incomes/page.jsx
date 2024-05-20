@@ -20,7 +20,7 @@ const ManageIncomesPage = () => {
         }
     }, [loading])
   return (
-    <div>{JSON.stringify(incomes)}</div>
+    <pre>{JSON.stringify(incomes, null, 2)}</pre>
   )
 }
 export default ManageIncomesPage
