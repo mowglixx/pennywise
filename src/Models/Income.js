@@ -38,7 +38,7 @@ const IncomeSchema = new Schema({
       }
     },
   },
-  type: { type: String, default: '' },
+  type: { type: [String], default: [] },
   user: { type: SchemaTypes.ObjectId, ref: "user", index: true },
 }, {
   timestamps: true

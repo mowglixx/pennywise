@@ -1,6 +1,7 @@
 "use client"
 
-import { Card, CardContent, CardHeader, Stack } from "@mui/material"
+import { calculateNextPayday } from "@/lib/tools/compare-dates"
+import { Card, CardContent, CardHeader, Chip, Stack } from "@mui/material"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 
@@ -20,18 +21,31 @@ const ManageIncomesPage = () => {
   }, [status])
   return (
     <>
-      <pre>
-        {console.log(incomes, null, 2)}
-      </pre>
-      <Stack>
+      {/* <pre>
+        {JSON.stringify({
+          incomes,
+          session: { data, status },
+          loading,
+        },null, 3)}
+      </pre> */}
+      <Stack direction={'row'} spacing={2} py={2} px={0}>
+        {incomes.map((income) =>{
+          return income.type.map(type => (<Chip label={type} />))
+        })}
+      </Stack>
+      <Stack spacing={4}>
         {!!incomes.length && incomes.map((income) => {
           return (
             <Card key={income?._id} variant="outlined">
               <CardHeader
-                title={income?.name || 'Mysterious Income'}
-                subheader={`£ ${(income?.amount / 100).toFixed(2)}`} />
+                title={`£ ${(income?.amount / 100).toFixed(2)}`}
+                subheader={`${income?.name || 'Mysterious Income'}${income?.type?.length&&' - '+income.type.join(', ')}`}
+                />
               <CardContent>
-                Next payday: { }
+                <Stack direction={'row'} spacing={2}>
+                  <Chip title={'Payday'} label={`${new Date(income.paymentFrequency.startDate).toLocaleString('en-gb', { month: "short", day: "numeric" })}`} />
+                  <Chip variant="outlined" title={'Next Payday'} label={`${calculateNextPayday(new Date(), income.paymentFrequency).toLocaleString('en-gb', { year: "2-digit", month: "short", day: "numeric" })}`} />
+                </Stack>
               </CardContent>
             </Card>)
         })}
