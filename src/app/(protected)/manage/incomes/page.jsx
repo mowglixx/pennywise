@@ -29,8 +29,8 @@ const ManageIncomesPage = () => {
         },null, 3)}
       </pre> */}
       <Stack direction={'row'} spacing={2} py={2} px={0}>
-        {incomes.map((income) =>{
-          return income.type.map(type => (<Chip label={type} />))
+        {incomes.map((income, li) =>{
+          return income.type.map((type,ti) => (<Chip key={`${type}-${ti}`} label={type} />))
         })}
       </Stack>
       <Stack spacing={4}>
