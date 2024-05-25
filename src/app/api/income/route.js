@@ -5,28 +5,19 @@ import dbConnect from "@/lib/dbConnect";
 
 // Create a new Income
 export const PUT = auth(async function (request) {
-  if (!request.auth)
-    return Response.json(
-      {
-        message: "Unauthorised, please login.",
-      },
-      {
-        status: 401,
-      }
-    );
-
+  if (!request.auth) return Response.json("Unauthorised, please login.", {status: 401});
   const userId = request.auth.user.id;
-  
+
+  const body = await request.json();
+  console.log({ API: body });
 
   let newIncome = [];
 
   try {
     await dbConnect();
     newIncome = await Income.create({
-    ...request.body,
-      user: {
-        $oid: userId,
-      },
+      ...body,
+      user: userId,
     }).save();
   } catch (e) {
     console.error(e);
@@ -37,15 +28,7 @@ export const PUT = auth(async function (request) {
 
 // Read all incomes from auth user
 export const GET = auth(async function (request) {
-  if (!request.auth)
-    return Response.json(
-      {
-        message: "Unauthorised, please login.",
-      },
-      {
-        status: 401,
-      }
-    );
+  if (!request.auth) return Response.json("Unauthorised.", { status: 401 });
 
   const userId = request.auth.user.id;
 

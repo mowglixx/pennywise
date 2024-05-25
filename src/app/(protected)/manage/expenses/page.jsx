@@ -10,12 +10,7 @@ const ManageExpensesPage = () => {
     const [loading, setLoading] = useState(true)
     const [incomes, setIncomes] = useState([])
     const { setToolbarState } = useContext(ToolbarContext)
-    const { setPageData } = useContext(BreadcrumbsContext)
-  
-  
-    useEffect(() => {
-      setPageData('Expenses')
-    }, [])
+
     useEffect(() => {
       setLoading(status === 'loading')
       if (status === "authenticated") {

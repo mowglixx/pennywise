@@ -10,8 +10,7 @@ const IncomeSchema = new Schema({
   },
   amount: {
     type: Number,
-    set: (v) => Math.round(v * 100),
-    get: (v) => (v/100).toFixed(2),
+    set: (v) => Math.round(Number.parseFloat(v).toFixed(2) * 100),
     default: 0.00,
     required: true
   },
