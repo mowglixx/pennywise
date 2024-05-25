@@ -1,11 +1,13 @@
 "use client"
-import { PageDataContext } from '@/components/structure/PageDataContext'
-import React, { useContext, useEffect } from 'react'
+
+import { BreadcrumbsContext } from '@/components/Contexts'
+
+import { useContext, useEffect } from 'react'
 
 const HomePage = () => {
-  const [_, setPageName] = useContext(PageDataContext)
+  const {_, setPageData} = useContext(BreadcrumbsContext)
   useEffect(() => {
-    setPageName("Home")
+    setPageData("Home")
   }, [])
   return (
     <div>Home</div>

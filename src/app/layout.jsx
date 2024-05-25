@@ -1,24 +1,19 @@
 "use client"
 
-import Header from '@/components/structure/Header';
-import Providers from './Providers'
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-} from '@mui/material';
-import { useContext } from 'react';
-import { PageDataContext } from '@/components/structure/PageDataContext';
+import { Providers } from './Providers';
+import { Card, CardContent, CardHeader, Grid, Paper } from '@mui/material';
+import Header from '@/components/structure/Header';
+import { useContext, useState } from 'react';
+import { BreadcrumbsContext } from '@/components/Contexts';
 
 
-export default function RootLayout({ children }) {
+export default function MainStructureLayout({ children }) {
 
-  const [pageData, _] = useContext(PageDataContext)
+  const [pageData, setPageData] = useState('Home')
 
   return (
     <html lang="en">
@@ -32,17 +27,21 @@ export default function RootLayout({ children }) {
               <Header />
             </Grid>
             <Grid item xs={12} my={12} mx={2}>
-              <Card>
-              <Typography variant='h3'>
-                {pageData}
-              </Typography>
-                <CardContent>
-                  {children}
-                </CardContent>
-              </Card>
-            </Grid>
+                <Card>
+              <BreadcrumbsContext.Provider value={{pageData, setPageData}}>
+                  <CardHeader title={pageData} />
+                  <CardContent>
+                    {children}
+                  </CardContent>
+              </BreadcrumbsContext.Provider>
+                </Card>
+              </Grid>
             <Grid item xs={12} padding={2}>
-              {process.env.NEXT_PUBLIC_BRAND_NAME ? `${process.env.NEXT_PUBLIC_BRAND_NAME} - Powered by Pennywise` : 'Pennywise'} &copy;
+              {process.env.NEXT_PUBLIC_BRAND_NAME ? 
+              <>
+              {process.env.NEXT_PUBLIC_BRAND_NAME} <sub>Powered by Pennywise Budget Tracker</sub> 
+              </>
+              : 'Pennywise Budget Tracker'};
             </Grid>
           </Grid>
         </Providers>

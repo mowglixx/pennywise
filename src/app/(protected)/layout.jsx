@@ -4,17 +4,17 @@ import { Skeleton } from "@mui/material"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
-const RootLayout = ({children}) => {
+const SessionProtectionLayout = ({ children }) => {
     const session = useSession()
     const router = useRouter()
-
+    // protects the manage route with session requirements
     switch (session.status) {
         case "authenticated":
-            return (<>{children}</>)    
+            return (<>{children}</>)
         case "unauthenticated":
-            return router.push('/')    
+            return router.push('/')
         default:
             return (<Skeleton />)
     }
 }
-export default RootLayout
+export default SessionProtectionLayout
