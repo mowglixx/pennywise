@@ -23,7 +23,7 @@ const ManageIncomesPage = () => {
       })
         .then(res => res.json())
         .then(json => {
-          incomes !== json && setIncomes(json)
+          incomes?.length !== json?.length && setIncomes(json)
           return json
         })
         // .then(json => console.log({incomes: json}))
@@ -38,7 +38,7 @@ const ManageIncomesPage = () => {
           })
         })
     }
-  }, [status, incomes, setToolbarState])
+  }, [status, incomes])
 
   return (
     <Grid container spacing={2}>

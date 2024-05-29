@@ -60,7 +60,7 @@ const AccountButton = () => {
                     ? (<Avatar src={session.data.user.image} width={34} height={34} />)
                     : (<Google />)}
                 onClick={async (e) => {
-                    return session.status !== "authenticated" ? signIn() : handleClick(e)} }
+                    return session.status !== "authenticated" ? signIn('google', {callbackUrl: '/dashboard'}) : handleClick(e)} }
                 size="large"
                 p={6}
                 id="basic-button"
@@ -69,7 +69,7 @@ const AccountButton = () => {
                 aria-expanded={open ? 'true' : undefined}
                 width={150}
             >
-                {session.status === "authenticated" ? session.data.user.name : 'Login'}
+                {session.status === "authenticated" ? session.data.user.name : 'Signin with Google'}
             </Button>
             <Menu
                 id="basic-menu"
@@ -107,7 +107,7 @@ const AccountButton = () => {
                 <MenuItem onClick={async (e)=>{
                     handleClose(e) 
                     return signOut()
-                    }}>Logout</MenuItem>
+                    }}>Signout</MenuItem>
             </Menu>
         </>
 
