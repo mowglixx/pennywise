@@ -38,7 +38,7 @@ const ManageIncomesPage = () => {
           })
         })
     }
-  }, [status])
+  }, [status, incomes, setToolbarState])
 
   return (
     <Grid container spacing={2}>
@@ -50,7 +50,7 @@ const ManageIncomesPage = () => {
           Here you can add incomes, this can be Wages from work, Benefits, Odd Jobs, Dividends... anything that gives you an income.
         </Typography>
         <Typography>
-          List it here with the frequency and date you're usually paid, this will allow you to check your next payday straight away!
+          List it here with the frequency and date you&apos;re usually paid, this will allow you to check your next payday straight away!
         </Typography>
       </Grid>
         <Grid xs={12} md={6}>

@@ -18,7 +18,7 @@ const ManageExpensesPage = () => {
           setIncomes(json)
         }).then(() => {setToolbarState('expenses')})
       }
-    }, [status])
+    }, [status, setToolbarState])
     
   return (
     <div>ExpensesPage</div>
