@@ -8,7 +8,7 @@ const HomePage = () => {
   const {_, setPageData} = useContext(BreadcrumbsContext)
   useEffect(() => {
     setPageData("Home")
-  }, [])
+  }, [setPageData])
   return (
     <div>Home</div>
   )
