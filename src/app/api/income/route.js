@@ -18,12 +18,14 @@ export const PUT = auth(async function (request) {
     newIncome = await Income.create({
       ...body,
       user: userId,
-    }).save();
+    });
   } catch (e) {
-    console.error(e);
-    return Response.json({ newIncome });
+    return Response.json(e, {status: 500});
   }
-  return Response.json([...newIncome]);
+  return Response.json({
+    message: 'ok',
+    result: newIncome
+  }, {status: 200});
 });
 
 // Read all incomes from auth user

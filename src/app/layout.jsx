@@ -19,7 +19,7 @@ export default function MainStructureLayout({ children }) {
   const pathname = usePathname()
 
   useEffect(() => {
-    setPageData([...pathname.split('/')])
+    if (pathname.split('/').length > 1) setPageData(pathname.split('/'))
   }, [pathname])
 
   return (
@@ -29,44 +29,45 @@ export default function MainStructureLayout({ children }) {
       </head>
       <body>
         <Providers>
-          <Grid container>
-            <Grid item xs={12}>
-              <Header />
-            </Grid>
-            <Grid item xs={12} mt={10} mx={2}>
-              <Card>
-                <BreadcrumbsContext.Provider value={{ pageData, setPageData }}>
-                  <CardHeader title={<Breadcrumbs>
+          <BreadcrumbsContext.Provider value={{ pageData, setPageData }}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Header />
+              </Grid>
+              <Grid item xs={12} mt={12} mx={2}>
+                <Grid item>
+
+                  <Breadcrumbs>
                     <Link
                       href={`/`}
                     >
                       <Home />
                     </Link>
-                    {!!pageData?.length && pageData?.filter(item => !!item?.trim())
-                    .map((page, oi, arr) => (
-                      <Link
-                        key={oi}
-                        variant='inherit'
-                        href={`/${arr?.filter((pp, ii) => oi >= ii && pp !== '').join('/')}`}
-                      >
-                        {page}
-                      </Link>
-                    ))}
-                  </Breadcrumbs>} />
-                  <CardContent>
-                    {children}
-                  </CardContent>
-                </BreadcrumbsContext.Provider>
-              </Card>
+                    {!!pageData.length && pageData?.filter(item => !!item?.trim())
+                      .map((page, oi, arr) => (
+                        <Link
+                          key={oi}
+                          variant='inherit'
+                          href={`/${arr?.filter((pp, ii) => oi >= ii && pp !== '').join('/')}`}
+                        >
+                          {page}
+                        </Link>
+                      ))}
+                  </Breadcrumbs>
+                </Grid>
+                <Grid item xs={12} mt={4} mx={2}>
+                  {children}
+                </Grid>
+                <Grid item xs={12} padding={2}>
+                  {process.env.NEXT_PUBLIC_BRAND_NAME ?
+                    <>
+                      {process.env.NEXT_PUBLIC_BRAND_NAME} <sub>Powered by Pennywise Budget Tracker</sub>
+                    </>
+                    : 'Pennywise Budget Tracker'}
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={12} padding={2}>
-              {process.env.NEXT_PUBLIC_BRAND_NAME ?
-                <>
-                  {process.env.NEXT_PUBLIC_BRAND_NAME} <sub>Powered by Pennywise Budget Tracker</sub>
-                </>
-                : 'Pennywise Budget Tracker'}
-            </Grid>
-          </Grid>
+          </BreadcrumbsContext.Provider>
         </Providers>
       </body>
     </html>

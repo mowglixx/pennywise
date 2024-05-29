@@ -1,8 +1,9 @@
 "use client"
 
 import { ToolbarContext } from "@/components/Contexts";
-import PageToolbar from "@/components/structure/PageToolbar";
-import { createContext, useState } from "react"
+import {PageToolbar} from "@/components/structure/PageToolbar";
+import { Stack } from "@mui/material";
+import { useState } from "react"
 
 export default function ManageRouteLayout({ children }) {
   const defaultToolbar = {
@@ -10,13 +11,15 @@ export default function ManageRouteLayout({ children }) {
     selectedItem: null,
     forms: null
   }
-  const [toolbarState, setToolbarState] = useState(defaultToolbar);
+  const [toolbarState, setToolbarState] = useState({...defaultToolbar});
 
   return (
     <>
       <ToolbarContext.Provider value={{ toolbarState, setToolbarState }}>
-        <PageToolbar debugging={true} />
+        <Stack spacing={1}>
+        <PageToolbar debugging={false} />
         {children}
+        </Stack>
       </ToolbarContext.Provider>
     </>
   )

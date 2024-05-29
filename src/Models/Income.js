@@ -30,6 +30,7 @@ const IncomeSchema = new Schema({
           "fortnightly",
           "fourweekly",
           "monthly",
+          "quarterly",
           "annually",
         ],
         message:

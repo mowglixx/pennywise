@@ -1,4 +1,4 @@
-import { ArrowDownward, ArrowDownwardOutlined, ArrowUpward, ArrowUpwardOutlined, BabyChangingStation, DashboardOutlined, DashboardRounded, Google, Menu, PaidOutlined, PaidSharp, Shop, Shop2 } from "@mui/icons-material";
+import { ArrowDownward, ArrowDownwardOutlined, ArrowUpward, ArrowUpwardOutlined, BabyChangingStation, DashboardOutlined, DashboardRounded, Google, Menu, PaidOutlined, PaidSharp, QuestionMark, Shop, Shop2 } from "@mui/icons-material";
 import { AppBar, Avatar, Box, Button, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Skeleton, SwipeableDrawer, Toolbar, Typography, useMediaQuery } from "@mui/material"
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -68,6 +68,14 @@ const Header = () => {
 
         },
     ]
+    const MISC_NAV_ITEMS = [
+        {
+            label: 'Help',
+            href: '/help',
+            icon: (<QuestionMark />)
+
+        },
+    ]
 
 
     
@@ -101,9 +109,22 @@ const Header = () => {
                 subheader={
                     <ListSubheader>
                         Expenses
-                    </ListSubheader>
-                }>
+                    </ListSubheader>}
+            >
                 {EXPENSE_NAV_ITEMS.map((item) => (
+                    <ListItem key={item.label}>
+                        <ListItemButton onClick={() => appRouter.push(`${item?.href ? item.href : '#'}`)}>
+                            <ListItemIcon>
+                                {item?.icon ?? item.icon}
+                            </ListItemIcon>
+                            <ListItemText primary={item?.label} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Divider />
+            <List>
+                {MISC_NAV_ITEMS.map((item) => (
                     <ListItem key={item.label}>
                         <ListItemButton onClick={() => appRouter.push(`${item?.href ? item.href : '#'}`)}>
                             <ListItemIcon>
