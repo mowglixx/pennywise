@@ -60,7 +60,7 @@ const AccountButton = () => {
                     ? (<Avatar src={session.data.user.image} width={34} height={34} />)
                     : (<Google />)}
                 onClick={async (e) => {
-                    return session.status !== "authenticated" ? signIn('google') : handleClick(e)} }
+                    return session.status !== "authenticated" ? signIn() : handleClick(e)} }
                 size="large"
                 p={6}
                 id="basic-button"
@@ -69,7 +69,7 @@ const AccountButton = () => {
                 aria-expanded={open ? 'true' : undefined}
                 width={150}
             >
-                {session.status === "authenticated" ? session.data.user.name : 'Login With Google'}
+                {session.status === "authenticated" ? session.data.user.name : 'Login'}
             </Button>
             <Menu
                 id="basic-menu"
