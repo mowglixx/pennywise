@@ -1,0 +1,71 @@
+import Income from "@/Models/Income";
+import dbConnect from "@/lib/dbConnect";
+
+import { auth } from "@/lib/auth";
+import { ObjectId } from "mongodb";
+
+// get an income by id
+// export const GET = auth(async function( request, params){
+//     // check the user is logged in
+//     if(!request.auth) return Response.json("Not Authorised", {status: 401});   
+    
+//     // get the document
+//     await dbConnect();
+//     const {incomeId} = params;
+//     const foundIncome = await Income.findOne({_id: ObjectId(incomeId), user: request.auth.user.id}).lean()
+
+//     // make sure the user is allowed to perform said action
+//     if (foundIncome.user !== request.auth.user.id) return Response.json({
+//         message: "Not Authorised"
+//     }, {status: 401});
+    
+//     // if the user is allowed, return a status of the request and the result
+//     return Response.json({
+//         status: 'ok',
+//         message: "Found Income",
+//         result: foundIncome
+//     })
+
+
+// })
+
+// Update an Income
+export const PUT = auth(async function( request, {params}){
+    if (!request.auth) return Response.json("Not Authorised", {status: 401});
+    
+    const content = await request.json();
+    const {incomeId} = params;
+    
+    await dbConnect();
+    const updatedIncome = await Income.findOneAndUpdate({ 
+        _id: new ObjectId(incomeId), 
+        user: request.auth.user.id 
+    }, content, { new: true })
+    console.log({updatedIncome, content, incomeId})
+    return Response.json({
+        status: 'ok',
+        message: "Income Updated",
+        result: updatedIncome
+    })  
+})
+
+
+// Delete an income
+export const DELETE = auth(async function( request, {params}){
+    if (!request.auth) return Response.json("Not Authorised", {
+        status: 401
+    });
+    
+    const {incomeId} = params;
+    
+    await dbConnect();
+    const deletedIncome = await Income.findOneAndDelete({ 
+        _id: new ObjectId(incomeId), 
+        user: request.auth.user.id 
+    }, { new: false })
+    return Response.json({
+        status: 'ok',
+        message: "Income Deleted",
+        result: deletedIncome
+    })  
+})

@@ -13,12 +13,14 @@ import { Suspense, useContext, useEffect, useState } from "react"
 const ManageIncomesPage = () => {
   const { data, status } = useSession()
   const [incomes, setIncomes] = useState([])
+  const [loading, setLoading] = useState(true)
   const { toolbarState, setToolbarState } = useContext(ToolbarContext)
 
 
+  // useEffect()
   useEffect(() => {
     if (status === "authenticated") {
-      fetch('/api/income', {
+      fetch('/api/incomes', {
         method: 'GET'
       })
         .then(res => res.json())
@@ -37,6 +39,7 @@ const ManageIncomesPage = () => {
             }
           })
         })
+
     }
   }, [status, incomes])
 
@@ -71,7 +74,9 @@ const ManageIncomesPage = () => {
         }}>
           {!!incomes.length ? incomes.map((income) => {
             return (
-              <Card key={income?._id} variant='elevation' elevation={toolbarState.selectedItem === income ? 4 : 2} onClick={() => {
+              <Card key={income?._id} sx={{
+                cursor: 'pointer'
+              }} variant='elevation' elevation={toolbarState.selectedItem === income ? 4 : 2} onClick={() => {
                 setToolbarState({
                   ...toolbarState,
                   selectedItem: toolbarState.selectedItem === income ? null : income,
@@ -95,7 +100,7 @@ const ManageIncomesPage = () => {
                   </Stack>
                 </CardContent>
               </Card>)
-          }) : <>😑 Oops, best add some incomes...</>}
+          }) : <>No incomes found...</>}
         </Stack>
       </Grid>
 

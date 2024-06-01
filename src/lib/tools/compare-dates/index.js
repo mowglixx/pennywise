@@ -29,12 +29,15 @@ export const calculateNextPayday = (inputDate = new Date(), intervalObj) => {
       case "monthly":
         nextDate.setMonth(nextDate.getMonth() + 1);
         break;
+      case "quarterly":
+        nextDate.setMonth(nextDate.getMonth() + 3);
+        break;
       case "annually":
         nextDate.setFullYear(nextDate.getFullYear() + 1);
         break;
       default:
         throw new Error(
-          'Invalid interval. Use "weekly", "fortnightly", "fourweekly", "monthly", or "annually".'
+          'Invalid interval. Use "weekly", "fortnightly", "fourweekly", "monthly", "quarterly" or "annually".'
         );
     }
     return nextDate;
