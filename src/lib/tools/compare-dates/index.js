@@ -63,4 +63,4 @@ const userPaydayConfig = {
 //     interval: 'monthly' // Payday interval
 //   };
 
-console.log(calculateNextPayday(new Date(), userPaydayConfig)); // Outputs the next payday date based on today's date
+// console.log(calculateNextPayday(new Date(), userPaydayConfig)); // Outputs the next payday date based on today's date

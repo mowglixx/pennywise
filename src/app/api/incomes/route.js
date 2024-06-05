@@ -14,7 +14,7 @@ export const GET = auth(async function (request) {
   const userId = request.auth.user.id;
 
   await dbConnect();
-  let Incomes = (await Income.find().where("user").equals(userId)) ?? [];
+  let Incomes = (await Income.find().where("owner").equals(userId)) ?? [];
   return Response.json(Incomes);
 });
 
@@ -27,7 +27,7 @@ export const POST = auth(async function (request) {
   const userId = request.auth.user.id;
 
   const body = await request.json();
-  console.log({ API: body });
+  // console.log({ API: body });
 
   let newIncome = [];
 
@@ -35,7 +35,7 @@ export const POST = auth(async function (request) {
     await dbConnect();
     newIncome = await Income.create({
       ...body,
-      user: userId,
+      owner: userId,
     });
   } catch (e) {
     return Response.json(e, {status: 500});
@@ -45,31 +45,3 @@ export const POST = auth(async function (request) {
     result: newIncome
   }, {status: 200});
 });
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-// Update an income based on id
-export const PUT = auth(async function (request) {
-  if (!request.auth) return Response.json("Unauthorised.", {status: 401});
-  const userId = request.auth.user.id;
-
-  const body = await request.json();
-  console.log({ body });
-
-  let newIncome = [];
-
-  try {
-    await dbConnect();
-    newIncome = await Income.create({
-      ...body,
-      user: userId,
-    });
-  } catch (e) {
-    return Response.json(e, {status: 500});
-  }
-  return Response.json({
-    message: 'ok',
-    result: newIncome
-  }, {status: 200});
-});
-

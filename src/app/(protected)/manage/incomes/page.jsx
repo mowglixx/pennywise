@@ -4,7 +4,7 @@ import { ToolbarContext } from "@/components/Contexts"
 import { AddIncomeForm, DeleteIncomeForm, EditIncomeForm } from "@/components/forms/manage/income"
 import { calculateNextPayday } from "@/lib/tools/compare-dates"
 import { Add } from "@mui/icons-material"
-import { Box, Card, CardContent, CardHeader, Chip, Fab, Paper, Portal, Skeleton, Stack, Typography, Unstable_Grid2 as Grid } from "@mui/material"
+import { Box, Card, CardContent, CardHeader, Chip, Fab, Paper, Portal, Skeleton, Stack, Typography, Unstable_Grid2 as Grid, Button } from "@mui/material"
 import { useSession } from "next-auth/react"
 import { useSearchParams } from "next/navigation"
 import { Suspense, useContext, useEffect, useState } from "react"
@@ -69,7 +69,6 @@ const ManageIncomesPage = () => {
 
       <Grid xs={12} md={6}>
         <Stack rowGap={2} sx={{
-          minHeight: '80svh',
           overflowY: !!incomes.length ? 'scroll' : undefined
         }}>
           {!!incomes.length ? incomes.map((income) => {
@@ -89,14 +88,14 @@ const ManageIncomesPage = () => {
               }}>
                 <CardHeader
                   title={`£ ${(income?.amount / 100).toFixed(2)}`}
-                  subheader={`${income?.name || 'Income'}${income?.type?.length ? ' - ' + income.type.join(', ') : ''}`}
+                  subheader={`${income?.name || 'Income'}${income?.tags?.length ? ' - ' + income.tags.join(', ') : ''}`}
                 />
                 <CardContent>
                   <Stack direction={'row'} spacing={2}>
                     <Chip
                       variant="outlined"
                       title={'Next Payday'}
-                      label={`Next Payday ${calculateNextPayday(new Date(), income.paymentFrequency).toLocaleString('en-gb', { year: "2-digit", month: "short", day: "numeric" })}`} />
+                      label={`Next Payday ${calculateNextPayday(new Date(), income.frequency).toLocaleString('en-gb', { year: "2-digit", month: "short", day: "numeric" })}`} />
                   </Stack>
                 </CardContent>
               </Card>)

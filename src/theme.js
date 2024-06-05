@@ -8,7 +8,7 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-const theme = createTheme({
+const theme = (prefersDarkMode) => createTheme({
   components: {
     MuiGrid2: {
       defaultProps: {
@@ -19,17 +19,17 @@ const theme = createTheme({
     },
   },
   palette: {
-    mode: 'dark',
+    mode: prefersDarkMode ? 'dark' : 'light',
     primary: {
-      main: '#c73d0c'
+      main: 'hsl(20 100 60)'
     },
-    secondary: {
-      main: '#4e888a'
-    },
-    background: {
-      default: '#312f3a',
-      paper: '#312f3a'
-    }
+    // secondary: {
+    //   main: '#4e888a'
+    // },
+    // background: {
+    //   default: '#312f3a',
+    //   paper: '#312f3a'
+    // }
     },
   typography: {
     fontFamily: roboto.style.fontFamily,

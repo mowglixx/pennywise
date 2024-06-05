@@ -1,45 +1,14 @@
 import mongoose, { Schema, SchemaTypes } from "mongoose";
+import ModelFragments from "./Fragments";
 
 const IncomeSchema = new Schema({
-  name: {
-    type: String,
-    trim: true,
-    minLength: 2,
-    maxLength: 128,
-    default: "Mysterious Income"
-  },
-  amount: {
-    type: Number,
-    set: (v) => Math.round(Number.parseFloat(v).toFixed(2) * 100),
-    default: 0.00,
-    required: true
-  },
-  paymentFrequency: {
-    startDate: {
-      type: Date,
-      default: new Date()
-    },
-    interval: {
-      type: String,
-      trim: true,
-      lowercase: true,
-      default: "monthly",
-      enum: {
-        values: [
-          "weekly",
-          "fortnightly",
-          "fourweekly",
-          "monthly",
-          "quarterly",
-          "annually",
-        ],
-        message:
-          "Please choose a valid interval, `{VALUE}` is not a valid entry for `{PATH}`",
-      }
-    },
-  },
-  type: { type: [String], default: [] },
-  user: { type: SchemaTypes.ObjectId, ref: "user", index: true },
+  name: {...ModelFragments.name, default: "Untitled Income"},
+  amount: ModelFragments.amount,
+  frequency: ModelFragments.frequency,
+  tags: ModelFragments.tags,
+  notes: String,
+  owner: ModelFragments.references.user,
+  company: ModelFragments.company,
 }, {
   timestamps: true
 });

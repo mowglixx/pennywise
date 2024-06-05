@@ -16,7 +16,7 @@ async function dbConnect() {
   };
   try {
     await mongoose.connect(MONGODB_URI, opts);
-    console.log("DB connected");
+    // console.log("DB connected");
   } catch (e) {
     console.error("There has been an error connecting to the DB", e);
   }

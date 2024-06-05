@@ -1,9 +1,9 @@
 import { ToolbarFormDrawerControlsContext } from "@/components/structure/PageToolbar"
 import { calculateNextPayday } from "@/lib/tools/compare-dates"
-import { Add, Delete, Edit } from "@mui/icons-material"
-import { Button, Card, CardContent, CardHeader, Chip, Fab, FormHelperText, Unstable_Grid2 as Grid, IconButton, Input, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material"
+import { Add, Delete, Edit, Save } from "@mui/icons-material"
+import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Chip, Fab, FormHelperText, Unstable_Grid2 as Grid, IconButton, Input, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material"
 import { useRouter } from "next/navigation"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ export const AddIncomeForm = () => {
         const data = {
             name,
             amount: amount,
-            paymentFrequency: {
+            frequency: {
                 startDate: lastPayday,
                 interval: paydayFrequency
             }
@@ -31,14 +31,14 @@ export const AddIncomeForm = () => {
 
     return (
         <Card sx={{ minWidth: '100%' }} p={2}>
-            <CardHeader title="Add Income" />
-            <CardContent>
+            <form
+                onSubmit={handleSubmit(addIncome)}
+                autoComplete="off"
+                noValidate
+            >
+                <CardHeader title="Add Income" />
 
-                <form
-                    onSubmit={handleSubmit(addIncome)}
-                    autoComplete="off"
-                    noValidate
-                >
+                <CardContent>
                     <Grid container spacing={2} direction={'column'}>
 
 
@@ -98,29 +98,28 @@ export const AddIncomeForm = () => {
                             </Select>
 
                         </Grid>
-                        <Grid xs={12} align={'end'}>
-                            <Fab type="submit">
-                                <Add />
-                            </Fab>
                         </Grid>
-                    </Grid>
-                </form>
-            </CardContent>
-        </Card>
-    )
+                </CardContent>
+                <CardActions>
+                    <Button type="submit" startIcon={<Add />}>
+                        Add Income
+                    </Button>
+                </CardActions>
+            </form>
+        </Card>)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const EditIncomeForm = ({ income }) => {
     const { register, handleSubmit } = useForm()
-    const router = useRouter()
     const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
+        
     const editIncome = ({ name, amount, paydayFrequency, lastPayday }) => {
         //  prepare object from input
         const data = {
             name,
             amount: amount,
-            paymentFrequency: {
+            frequency: {
                 startDate: lastPayday,
                 interval: paydayFrequency
             }
@@ -143,14 +142,14 @@ export const EditIncomeForm = ({ income }) => {
 
     return (
         <Card sx={{ minWidth: '100%' }} p={2}>
-            <CardHeader title={`Edit ${income.name}`} />
-            <CardContent>
 
-                <form
-                    onSubmit={handleSubmit(editIncome)}
-                    autoComplete="off"
-                    noValidate
-                >
+            <form
+                onSubmit={handleSubmit(editIncome)}
+                autoComplete="off"
+                noValidate
+            >
+                <CardHeader title={`Edit ${income.name}`} />
+                <CardContent>
                     <Grid container spacing={2} direction={'column'}>
 
 
@@ -191,7 +190,7 @@ export const EditIncomeForm = ({ income }) => {
                                 inputProps={
                                     {
                                         ...register('lastPayday'),
-                                        defaultValue: formatDate(income.paymentFrequency.startDate)
+                                        defaultValue: formatDate(income.frequency.startDate)
                                     }} />
                         </Grid>
 
@@ -204,9 +203,8 @@ export const EditIncomeForm = ({ income }) => {
                                 components={'select'}
                                 id="payday-interval-select"
                                 fullWidth
-                                defaultValue={income.paymentFrequency.interval}
-                                {...register('paydayFrequency', {
-                                })}
+                                defaultValue={income.frequency.interval}
+                                {...register('paydayFrequency')}
                             >
                                 <MenuItem value={'weekly'}>Weekly</MenuItem>
                                 <MenuItem value={'fortnightly'}>Fortnightly</MenuItem>
@@ -217,14 +215,14 @@ export const EditIncomeForm = ({ income }) => {
                             </Select>
 
                         </Grid>
-                        <Grid xs={12} align={'end'}>
-                            <Fab type="submit">
-                                <Edit />
-                            </Fab>
-                        </Grid>
                     </Grid>
-                </form>
-            </CardContent>
+                </CardContent>
+                <CardActions>
+                    <Button type="submit" startIcon={<Save />}>
+                        Save Changes
+                    </Button>
+                </CardActions>
+            </form>
         </Card>
     )
 }
@@ -247,27 +245,25 @@ export const DeleteIncomeForm = ({ income }) => {
                 Delete {income.name}?
             </Typography>
             <Card sx={{ minWidth: '100%' }} elevation={4}>
-                <Grid container direction={'column'}>
-                    <CardHeader
-                        title={`£ ${(income?.amount / 100).toFixed(2)}`}
-                        subheader={`${income?.name || 'Mysterious Income'}${income?.type?.length ? ' - ' + income.type.join(', ') : ''}`}
-                    />
-                    <CardContent>
-                        <Stack direction={'row'} spacing={4}>
-                            <Chip title={'Payday'} label={`${new Date(income.paymentFrequency.startDate).toLocaleString('en-gb', { month: "short", day: "numeric" })}`} />
-                            <Chip title={'Next Payday'} label={`${calculateNextPayday(new Date(), income.paymentFrequency).toLocaleString('en-gb', { year: "2-digit", month: "short", day: "numeric" })}`} />
-                        </Stack>
-                    </CardContent>
-                    <Typography>
-                        The following item will be deleted
-                    </Typography>
-                    <Grid xs={12} align={'end'}>
-                        <form onSubmit={handleSubmit(deleteIncome)}>
-                            <Fab type="submit">
-                                <Delete />
-                            </Fab>
-                        </form>
-                    </Grid>
+                <CardHeader
+                    title={`£ ${(income?.amount / 100).toFixed(2)}`}
+                    subheader={`${income?.name || 'Mysterious Income'}${income?.type?.length ? ' - ' + income.type.join(', ') : ''}`}
+                />
+                <CardContent>
+                    <Stack direction={'row'} spacing={4}>
+                        <Chip title={'Payday'} label={`${new Date(income.frequency.startDate).toLocaleString('en-gb', { month: "short", day: "numeric" })}`} />
+                        <Chip title={'Next Payday'} label={`${calculateNextPayday(new Date(), income.frequency).toLocaleString('en-gb', { year: "2-digit", month: "short", day: "numeric" })}`} />
+                    </Stack>
+                </CardContent>
+                <Typography>
+                    The following item will be deleted
+                </Typography>
+                <Grid xs={12} align={'end'}>
+                    <form onSubmit={handleSubmit(deleteIncome)}>
+                        <Fab type="submit">
+                            <Delete />
+                        </Fab>
+                    </form>
                 </Grid >
             </Card>
         </>
