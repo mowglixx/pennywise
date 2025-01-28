@@ -1,10 +1,12 @@
-import { ToolbarFormDrawerControlsContext } from "@/components/structure/PageToolbar"
-import { calculateNextPayday } from "@/lib/tools/compare-dates"
-import { Add, Delete, Edit, Save } from "@mui/icons-material"
-import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Chip, Fab, FormHelperText, Unstable_Grid2 as Grid, IconButton, Input, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material"
+
+// Global Imports
 import { useRouter } from "next/navigation"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
+
+// Local Imports
+import { ToolbarFormDrawerControlsContext } from "@/components/structure/PageToolbar"
+import { calculateNextPayday } from "@/lib/tools/compare-dates"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const AddIncomeForm = () => {
@@ -30,90 +32,88 @@ export const AddIncomeForm = () => {
 
 
     return (
-        <Card sx={{ minWidth: '100%' }} p={2}>
+        <div sx={{ minWidth: '100%' }} p={2}>
             <form
                 onSubmit={handleSubmit(addIncome)}
                 autoComplete="off"
                 noValidate
             >
-                <CardHeader title="Add Income" />
+                <div title="Add Income" />
 
-                <CardContent>
-                    <Grid container spacing={2} direction={'column'}>
+                <div>
+                    <div container spacing={2} direction={'column'}>
 
 
                         {/* Name */}
-                        <Grid xs={12}>
-                            <TextField
+                        <div xs={12}>
+                            <input
                                 fullWidth
                                 label={'Name'}
                                 {...register("name", {
                                     required: true,
                                 })} />
 
-                        </Grid>
+                        </div>
 
                         {/* Amount */}
-                        <Grid xs={12}>
-                            <TextField
+                        <div xs={12}>
+                            <input
                                 type="number"
                                 label={'Amount'}
                                 fullWidth
-                                helperText={'If this is your wages, input the amout you get on payday. no need for tax details.'}
+                                helperText={'If this is your wages, input the amount you get on payday. no need for tax details.'}
                                 {...register("amount", {
                                     required: true,
                                 })} />
-                        </Grid>
+                        </div>
 
                         {/* Last Payday */}
-                        <Grid xs={12}>
-                            <Typography component={'label'} htmlFor="last-payday-input" variant="subtitle2">
+                        <div xs={12}>
+                            <p component={'label'} htmlFor="last-payday-input" variant="subtitle2">
                                 When were you last paid this amount?
-                            </Typography>
-                            <TextField
+                            </p>
+                            <input
                                 type="date"
                                 id="last-payday-input"
                                 fullWidth
-                                inputProps={{ ...register('lastPayday') }} />
-                        </Grid>
+                                {...register('lastPayday')} />
+                        </div>
 
-                        <Grid xs={12}>
+                        <div xs={12}>
                             {/* Frequency */}
-                            <Typography component={'label'} htmlFor="last-payday-input" variant="subtitle2">
+                            <p component={'label'} htmlFor="last-payday-input" variant="subtitle2">
                                 How often are you paid this amount?
-                            </Typography>
-                            <Select
-                                components={'select'}
+                            </p>
+                            <select
                                 id="payday-interval-select"
-                                fullWidth
                                 defaultValue={'monthly'}
                                 {...register('paydayFrequency')}
                             >
-                                <MenuItem value={'weekly'}>Weekly</MenuItem>
-                                <MenuItem value={'fortnightly'}>Fortnightly</MenuItem>
-                                <MenuItem value={'fourweekly'}>4-weekly</MenuItem>
-                                <MenuItem value={'monthly'}>Monthly</MenuItem>
-                                <MenuItem value={'quarterly'}>Quarterly</MenuItem>
-                                <MenuItem value={'annually'}>Annually</MenuItem>
-                            </Select>
+                                <option value={'weekly'}>Weekly</option>
+                                <option value={'fortnightly'}>Fortnightly</option>
+                                <option value={'fourweekly'}>4-weekly</option>
+                                <option value={'monthly'}>Monthly</option>
+                                <option value={'quarterly'}>Quarterly</option>
+                                <option value={'annually'}>Annually</option>
+                            </select>
 
-                        </Grid>
-                        </Grid>
-                </CardContent>
-                <CardActions>
-                    <Button type="submit" startIcon={<Add />}>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit">
                         Add Income
-                    </Button>
-                </CardActions>
+                    </button>
+                </div>
             </form>
-        </Card>)
+        </div>)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const EditIncomeForm = ({ income }) => {
     const { register, handleSubmit } = useForm()
     const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
-        
+
     const editIncome = ({ name, amount, paydayFrequency, lastPayday }) => {
         //  prepare object from input
         const data = {
@@ -141,21 +141,21 @@ export const EditIncomeForm = ({ income }) => {
     }).split('/').reverse().join('-')
 
     return (
-        <Card sx={{ minWidth: '100%' }} p={2}>
+        <div sx={{ minWidth: '100%' }} p={2}>
 
             <form
                 onSubmit={handleSubmit(editIncome)}
                 autoComplete="off"
                 noValidate
             >
-                <CardHeader title={`Edit ${income.name}`} />
-                <CardContent>
-                    <Grid container spacing={2} direction={'column'}>
+                <h3>Edit {income.name}</h3>
+                <div>
+                    <div container spacing={2} direction={'column'}>
 
 
                         {/* Name */}
-                        <Grid xs={12}>
-                            <TextField
+                        <div xs={12}>
+                            <input
                                 fullWidth
                                 defaultValue={income.name}
                                 label={'Name'}
@@ -163,11 +163,11 @@ export const EditIncomeForm = ({ income }) => {
                                     required: true,
                                 })} />
 
-                        </Grid>
+                        </div>
 
                         {/* Amount */}
-                        <Grid xs={12}>
-                            <TextField
+                        <div xs={12}>
+                            <input
                                 type="number"
                                 label={'Amount'}
                                 defaultValue={(Number.parseFloat(income.amount) / 100).toFixed(2)}
@@ -176,54 +176,50 @@ export const EditIncomeForm = ({ income }) => {
                                 {...register("amount", {
                                     required: true,
                                 })} />
-                        </Grid>
+                        </div>
 
                         {/* Last Payday */}
-                        <Grid xs={12}>
-                            <Typography component={'label'} htmlFor="last-payday-input" variant="subtitle2">
+                        <div xs={12}>
+                            <p component={'label'} htmlFor="last-payday-input" variant="subtitle2">
                                 When were you last paid this amount?
-                            </Typography>
-                            <TextField
+                            </p>
+                            <input
                                 type="date"
                                 id="last-payday-input"
                                 fullWidth
-                                inputProps={
-                                    {
-                                        ...register('lastPayday'),
-                                        defaultValue: formatDate(income.frequency.startDate)
-                                    }} />
-                        </Grid>
+                                defaultValue={formatDate(income.frequency.startDate)}
+                                {...register('lastPayday')}
+                            />
+                        </div>
 
-                        <Grid xs={12}>
+                        <div xs={12}>
                             {/* Frequency */}
-                            <Typography component={'label'} htmlFor="last-payday-input" variant="subtitle2">
+                            <p component={'label'} htmlFor="last-payday-input" variant="subtitle2">
                                 How often are you paid this amount?
-                            </Typography>
-                            <Select
-                                components={'select'}
+                            </p>
+                            <select
                                 id="payday-interval-select"
-                                fullWidth
                                 defaultValue={income.frequency.interval}
                                 {...register('paydayFrequency')}
                             >
-                                <MenuItem value={'weekly'}>Weekly</MenuItem>
-                                <MenuItem value={'fortnightly'}>Fortnightly</MenuItem>
-                                <MenuItem value={'fourweekly'}>4-weekly</MenuItem>
-                                <MenuItem value={'monthly'}>Monthly</MenuItem>
-                                <MenuItem value={'quarterly'}>Quarterly</MenuItem>
-                                <MenuItem value={'annually'}>Annually</MenuItem>
-                            </Select>
+                                <option value={'weekly'}>Weekly</option>
+                                <option value={'fortnightly'}>Fortnightly</option>
+                                <option value={'fourweekly'}>4-weekly</option>
+                                <option value={'monthly'}>Monthly</option>
+                                <option value={'quarterly'}>Quarterly</option>
+                                <option value={'annually'}>Annually</option>
+                            </select>
 
-                        </Grid>
-                    </Grid>
-                </CardContent>
-                <CardActions>
-                    <Button type="submit" startIcon={<Save />}>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit">
                         Save Changes
-                    </Button>
-                </CardActions>
+                    </button>
+                </div>
             </form>
-        </Card>
+        </div>
     )
 }
 
@@ -241,31 +237,31 @@ export const DeleteIncomeForm = ({ income }) => {
 
     return (
         <>
-            <Typography variant="h3">
+            <p variant="h3">
                 Delete {income.name}?
-            </Typography>
-            <Card sx={{ minWidth: '100%' }} elevation={4}>
-                <CardHeader
+            </p>
+            <div sx={{ minWidth: '100%' }} elevation={4}>
+                <div
                     title={`£ ${(income?.amount / 100).toFixed(2)}`}
                     subheader={`${income?.name || 'Mysterious Income'}${income?.type?.length ? ' - ' + income.type.join(', ') : ''}`}
                 />
-                <CardContent>
-                    <Stack direction={'row'} spacing={4}>
-                        <Chip title={'Payday'} label={`${new Date(income.frequency.startDate).toLocaleString('en-gb', { month: "short", day: "numeric" })}`} />
-                        <Chip title={'Next Payday'} label={`${calculateNextPayday(new Date(), income.frequency).toLocaleString('en-gb', { year: "2-digit", month: "short", day: "numeric" })}`} />
-                    </Stack>
-                </CardContent>
-                <Typography>
+                <div>
+                    <div direction={'row'} spacing={4}>
+                        <div title={'Payday'} label={`${new Date(income.frequency.startDate).toLocaleString('en-gb', { month: "short", day: "numeric" })}`} />
+                        <div title={'Next Payday'} label={`${calculateNextPayday(new Date(), income.frequency).toLocaleString('en-gb', { year: "2-digit", month: "short", day: "numeric" })}`} />
+                    </div>
+                </div>
+                <p>
                     The following item will be deleted
-                </Typography>
-                <Grid xs={12} align={'end'}>
+                </p>
+                <div xs={12} align={'end'}>
                     <form onSubmit={handleSubmit(deleteIncome)}>
-                        <Fab type="submit">
-                            <Delete />
-                        </Fab>
+                        <button type="submit">
+                            Delete
+                        </button>
                     </form>
-                </Grid >
-            </Card>
+                </div >
+            </div>
         </>
     )
 }

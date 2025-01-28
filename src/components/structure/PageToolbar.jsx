@@ -1,10 +1,10 @@
 "use client"
 
+// Global Imports
 import { createContext, useContext, useState } from "react"
-import { ToolbarContext } from "../Contexts"
-import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, Drawer, Grid, IconButton, Modal, Paper, Toolbar } from "@mui/material"
-import { Add, Edit, Delete, ExpandMore, Close } from "@mui/icons-material"
 
+// Local Imports
+import { ToolbarContext } from "../Contexts"
 
 export const ToolbarFormDrawerControlsContext = createContext()
 
@@ -20,83 +20,71 @@ export const PageToolbar = (props) => {
     <>
       {
         props?.debugging &&
-        (<Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMore />}>
+        (<div>
+          <div>
             Toolbar Debugging
-          </AccordionSummary>
-          <AccordionDetails>
+          </div>
+          <div>
             <pre title="Toolbar">
               {JSON.stringify(toolbarState, null, 2)}
             </pre>
-          </AccordionDetails>
-        </Accordion>)
+          </div>
+        </div>)
       }
 
 
-      <Toolbar>
-        <IconButton onClick={() => {
+      <div>
+        <button onClick={() => {
           setDrawerForm(toolbarState.forms.add)
           setOpen(true)
         }}>
-          <Add />
-        </IconButton>
-        <IconButton
+          Add
+        </button>
+        <button
           onClick={() => {
             setDrawerForm(toolbarState.forms.edit)
             setOpen(true)
           }}
           disabled={toolbarState?.selectedItem === null ? true : false}>
-          <Edit />
-        </IconButton>
-        <IconButton
+          Edit
+        </button>
+        <button
           onClick={() => {
             setDrawerForm(toolbarState.forms.delete)
             setOpen(true)
           }}
           disabled={toolbarState?.selectedItem === null ? true : false}>
-          <Delete />
-        </IconButton>
-      </Toolbar>
+          Delete
+        </button>
+      </div>
 
-      <Drawer anchor="right" open={open} onClose={toggleDrawer} sx={'50vw'}>
-        <Grid sx={{minWidth: 'clamp(250px, 50svw, 500px)', padding: 'max(16px, 5svh)', gap: 'max(16px, 5svh)'}} container direction={'column'}>
+      <div anchor="right" open={open} onClose={toggleDrawer} sx={'50vw'}>
+        <div>
 
-        <Grid item>
-        <Box flex={1}>&nbsp;</Box>
-        <Box>
-          <IconButton onClick={() => {setOpen(false)}}>
-            <Close />
-          </IconButton>
-        </Box>
-        </Grid>
-        <Grid item>
-          {props?.debugging && <Accordion>
-            <AccordionSummary>
+        <div>
+        <div>
+          <button onClick={() => {setOpen(false)}}>
+            Close
+          </button>
+        </div>
+        </div>
+        <div>
+          {props?.debugging && <div>
+            <div>
               Toolbar Debugging
-            </AccordionSummary>
-            <AccordionDetails>
+            </div>
+            <div>
               <pre title="Toolbar">
                 {JSON.stringify(toolbarState, null, 2)}
               </pre>
-            </AccordionDetails>
-          </Accordion>}
-        </Grid>
+            </div>
+          </div>}
+        </div>
 
-          <Grid item>
-            <ToolbarFormDrawerControlsContext.Provider 
-            value={{
-              drawerState: {
-                open,
-                setOpen
-              },
-              toggleDrawer,
-            }}>
-            {DrawerForm}
-            </ToolbarFormDrawerControlsContext.Provider>
-          </Grid>
-        </Grid>
-      </Drawer>
+          <div>
+          </div>
+        </div>
+      </div>
     </>
 
   )

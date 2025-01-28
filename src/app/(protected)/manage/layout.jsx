@@ -2,7 +2,6 @@
 
 import { ToolbarContext } from "@/components/Contexts";
 import {PageToolbar} from "@/components/structure/PageToolbar";
-import { Stack } from "@mui/material";
 import { useState } from "react"
 
 export default function ManageRouteLayout({ children }) {
@@ -16,10 +15,10 @@ export default function ManageRouteLayout({ children }) {
   return (
     <>
       <ToolbarContext.Provider value={{ toolbarState, setToolbarState }}>
-        <Stack spacing={1}>
+        <div spacing={1}>
         <PageToolbar debugging={false} />
         {children}
-        </Stack>
+        </div>
       </ToolbarContext.Provider>
     </>
   )

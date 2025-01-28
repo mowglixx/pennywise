@@ -1,7 +1,7 @@
-import { user } from "./user";
+import { User } from "./User";
 
 const references = {
-    user
+    User
 }
 
 export default references

@@ -12,6 +12,7 @@ export const GET = auth(async function( request, params){
     // get the document using findOne to search by owner and ObjectId
     await dbConnect();
     const {incomeId} = params;
+    console.log(JSON.stringify(request.auth.user, null, 2))
     const foundIncome = await Income.findOne({
         _id: new ObjectId(incomeId), 
         owner: request.auth.user.id

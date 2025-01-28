@@ -27,7 +27,6 @@ export const POST = auth(async function (request) {
   const userId = request.auth.user.id;
 
   const body = await request.json();
-  // console.log({ API: body });
 
   let newIncome = [];
 

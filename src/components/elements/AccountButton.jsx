@@ -1,8 +1,6 @@
 "use client"
-import theme from "@/theme"
-import { Google } from "@mui/icons-material"
-import { Avatar, Button, Divider, Grid, ListItemText, Menu, MenuItem, Skeleton, Typography } from "@mui/material"
 import { signIn, signOut, useSession } from "next-auth/react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -34,11 +32,7 @@ const AccountButton = () => {
     // Loading
     if (loading) return (
         <>
-            <Button
-                variant="inherit"
-                startIcon={<Skeleton animation="wave" variant="circular" width={34} height={34}>
-                    <Google />
-                </Skeleton>}
+            <button
                 onClick={() => {
                     console.log(
                         loading ? 'please wait... loading login session' : 'how is this possible???'
@@ -46,19 +40,17 @@ const AccountButton = () => {
                 }}
                 width={150}
                 disabled>
-                {
-                    <Skeleton animation="wave" variant="text" width={150} />
-                }
-            </Button>
+                    Loading...
+            </button>
         </>
     )
     return (
         <>
-            <Button
+            <button
                 variant={"inherit"}
                 startIcon={session.status === "authenticated"
-                    ? (<Avatar src={session.data.user.image} width={34} height={34} />)
-                    : (<Google />)}
+                    ? (<Image alt={`${session.data.user.name}'s Display Picture`} src={session.data.user.image} />)
+                    : (<p>G</p>)}
                 onClick={async (e) => {
                     return session.status !== "authenticated" ? signIn('google', {callbackUrl: '/dashboard'}) : handleClick(e)} }
                 size="large"
@@ -70,8 +62,8 @@ const AccountButton = () => {
                 width={150}
             >
                 {session.status === "authenticated" ? session.data.user.name : 'Signin with Google'}
-            </Button>
-            <Menu
+            </button>
+            <ul
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
@@ -88,27 +80,27 @@ const AccountButton = () => {
                     horizontal: 'left',
                   }}
                 >
-                <MenuItem onClick={(e)=>{
+                <li onClick={(e)=>{
                     handleClose(e)
                     return router.push('/dashboard')
                     
-                    }}>Dashboard</MenuItem>
-                <MenuItem onClick={(e)=>{
+                    }}>Dashboard</li>
+                <li onClick={(e)=>{
                     handleClose(e)
                     return router.push('/manage/account')
                     
-                    }}>Account Settings</MenuItem>
-                <Divider />
-                <MenuItem onClick={(e)=>{
+                    }}>Account Settings</li>
+                <hr/>
+                <li onClick={(e)=>{
                     handleClose(e)
                     return router.push('/help')
-                    }}>Help</MenuItem>
-                <Divider />
-                <MenuItem onClick={async (e)=>{
+                    }}>Help</li>
+                <hr/>
+                <li onClick={async (e)=>{
                     handleClose(e) 
                     return signOut()
-                    }}>Signout</MenuItem>
-            </Menu>
+                    }}>Signout</li>
+            </ul>
         </>
 
     )

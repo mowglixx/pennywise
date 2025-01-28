@@ -1,4 +1,4 @@
-import mongoose, { Schema, SchemaTypes } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import ModelFragments from "./Fragments";
 
 const IncomeSchema = new Schema({
@@ -7,13 +7,13 @@ const IncomeSchema = new Schema({
   frequency: ModelFragments.frequency,
   tags: ModelFragments.tags,
   notes: String,
-  owner: ModelFragments.references.user,
+  owner: ModelFragments.references.User,
   company: ModelFragments.company,
 }, {
   timestamps: true
 });
 
 const Income =
-  mongoose.models?.Income ?? mongoose.model("income", IncomeSchema, "incomes");
+  mongoose.models?.Income ?? mongoose.model("Income", IncomeSchema, "Incomes");
 
 export default Income;
