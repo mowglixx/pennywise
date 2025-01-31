@@ -1,0 +1,10 @@
+button.account_button{
+    display: flex;
+    flex-direction: row;
+    background: blue;
+    padding: var(--padding);
+}
+
+/* button.account_button:disabled{
+
+} */
