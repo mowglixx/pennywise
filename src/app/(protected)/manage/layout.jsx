@@ -10,15 +10,17 @@ export default function ManageRouteLayout({ children }) {
     selectedItem: null,
     forms: null
   }
-  const [toolbarState, setToolbarState] = useState({...defaultToolbar});
+  const [toolbarState, setToolbarState] = useState(defaultToolbar);
 
   return (
     <>
       <ToolbarContext.Provider value={{ toolbarState, setToolbarState }}>
         <div spacing={1}>
-        <PageToolbar debugging={false} />
+        <PageToolbar debugging={process.env.NODE_ENV == 'development'} />
         {children}
+        
         </div>
+
       </ToolbarContext.Provider>
     </>
   )

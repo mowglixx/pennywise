@@ -1,7 +1,6 @@
 
 // Global Imports
-import { useRouter } from "next/navigation"
-import { useContext, useEffect, useMemo, useState } from "react"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
 
 // Local Imports
@@ -11,8 +10,8 @@ import { calculateNextPayday } from "@/lib/tools/compare-dates"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const AddIncomeForm = () => {
     const { register, handleSubmit } = useForm()
-    const router = useRouter()
-    const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
+    // const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
+    
     const addIncome = ({ name, amount, paydayFrequency, lastPayday }) => {
         const data = {
             name,
@@ -21,33 +20,30 @@ export const AddIncomeForm = () => {
                 startDate: lastPayday,
                 interval: paydayFrequency
             }
-        }
+        };
+
         fetch('/api/incomes', {
             method: 'POST',
             body: JSON.stringify(data)
         })
-            .then(toggleDrawer)
+            // .then(toggleDrawer)
             .then(() => window.location.reload())
     }
 
 
     return (
-        <div sx={{ minWidth: '100%' }} p={2}>
+        <div>
             <form
                 onSubmit={handleSubmit(addIncome)}
                 autoComplete="off"
                 noValidate
             >
-                <div title="Add Income" />
+                <h1>Add Income</h1>
 
                 <div>
-                    <div container spacing={2} direction={'column'}>
-
-
                         {/* Name */}
                         <div xs={12}>
                             <input
-                                fullWidth
                                 label={'Name'}
                                 {...register("name", {
                                     required: true,
@@ -60,8 +56,7 @@ export const AddIncomeForm = () => {
                             <input
                                 type="number"
                                 label={'Amount'}
-                                fullWidth
-                                helperText={'If this is your wages, input the amount you get on payday. no need for tax details.'}
+                                placeholder={'If this is your wages, input the amount you get on payday. no need for tax details.'}
                                 {...register("amount", {
                                     required: true,
                                 })} />
@@ -75,7 +70,6 @@ export const AddIncomeForm = () => {
                             <input
                                 type="date"
                                 id="last-payday-input"
-                                fullWidth
                                 {...register('lastPayday')} />
                         </div>
 
@@ -98,12 +92,11 @@ export const AddIncomeForm = () => {
                             </select>
 
                         </div>
-                    </div>
-                </div>
                 <div>
                     <button type="submit">
                         Add Income
                     </button>
+                </div>
                 </div>
             </form>
         </div>)
@@ -112,7 +105,7 @@ export const AddIncomeForm = () => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const EditIncomeForm = ({ income }) => {
     const { register, handleSubmit } = useForm()
-    const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
+    // const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
 
     const editIncome = ({ name, amount, paydayFrequency, lastPayday }) => {
         //  prepare object from input
@@ -129,7 +122,7 @@ export const EditIncomeForm = ({ income }) => {
             method: 'PUT',
             body: JSON.stringify(data)
         })
-            .then(toggleDrawer)
+            // .then(toggleDrawer)
             .then(() => window.location.reload())
 
     }
@@ -141,7 +134,7 @@ export const EditIncomeForm = ({ income }) => {
     }).split('/').reverse().join('-')
 
     return (
-        <div sx={{ minWidth: '100%' }} p={2}>
+        <div>
 
             <form
                 onSubmit={handleSubmit(editIncome)}
@@ -150,15 +143,15 @@ export const EditIncomeForm = ({ income }) => {
             >
                 <h3>Edit {income.name}</h3>
                 <div>
-                    <div container spacing={2} direction={'column'}>
+                    <div>
 
 
                         {/* Name */}
                         <div xs={12}>
                             <input
-                                fullWidth
                                 defaultValue={income.name}
                                 label={'Name'}
+                                placholder="Wages..."
                                 {...register("name", {
                                     required: true,
                                 })} />
@@ -166,13 +159,12 @@ export const EditIncomeForm = ({ income }) => {
                         </div>
 
                         {/* Amount */}
-                        <div xs={12}>
+                        <div>
                             <input
                                 type="number"
                                 label={'Amount'}
-                                defaultValue={(Number.parseFloat(income.amount) / 100).toFixed(2)}
-                                fullWidth
-                                helperText={'If this is your wages, input the amout you get on payday. no need for tax details.'}
+                                defaultValue={(income.amount / 100).toFixed(2)}
+                                placholder={'Input the amout you get on payday. no need for tax details.'}
                                 {...register("amount", {
                                     required: true,
                                 })} />
@@ -180,26 +172,27 @@ export const EditIncomeForm = ({ income }) => {
 
                         {/* Last Payday */}
                         <div xs={12}>
-                            <p component={'label'} htmlFor="last-payday-input" variant="subtitle2">
+                            <p>
                                 When were you last paid this amount?
                             </p>
                             <input
                                 type="date"
                                 id="last-payday-input"
-                                fullWidth
                                 defaultValue={formatDate(income.frequency.startDate)}
+                                placeholder="Pay Date"
                                 {...register('lastPayday')}
                             />
                         </div>
 
                         <div xs={12}>
                             {/* Frequency */}
-                            <p component={'label'} htmlFor="last-payday-input" variant="subtitle2">
+                            <p>
                                 How often are you paid this amount?
                             </p>
                             <select
                                 id="payday-interval-select"
                                 defaultValue={income.frequency.interval}
+                                placeholder="How often are you paid this?"
                                 {...register('paydayFrequency')}
                             >
                                 <option value={'weekly'}>Weekly</option>
@@ -227,11 +220,11 @@ export const EditIncomeForm = ({ income }) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const DeleteIncomeForm = ({ income }) => {
     const { handleSubmit } = useForm()
-    const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
+    // const { toggleDrawer } = useContext(ToolbarFormDrawerControlsContext)
 
     const deleteIncome = () => {
         fetch(`/api/incomes/${income._id}`, { method: 'DELETE' })
-            .then(toggleDrawer)
+            // .then(toggleDrawer)
             .then(() => window.location.reload())
     }
 

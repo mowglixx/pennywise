@@ -9,67 +9,22 @@ import { ToolbarContext } from "../Contexts"
 export const ToolbarFormDrawerControlsContext = createContext()
 
 export const PageToolbar = (props) => {
-  const { toolbarState } = useContext(ToolbarContext)
-  const [open, setOpen] = useState(false)
-  const [DrawerForm, setDrawerForm] = useState(<></>)
 
-  const toggleDrawer = () => setOpen(!open)
+  const { toolbarState, setToolbarState } = useContext(ToolbarContext)
 
-  return (
+  const FormRenderer = ({ formContext }) => {
 
-    <>
+    const CurrentForm = () => formContext?.forms?.[formContext.selectedAction]?.component || null
+    return <CurrentForm />
+
+  }
+
+  return (<>
+    <div>
       {
         props?.debugging &&
-        (<div>
-          <div>
-            Toolbar Debugging
-          </div>
-          <div>
-            <pre title="Toolbar">
-              {JSON.stringify(toolbarState, null, 2)}
-            </pre>
-          </div>
-        </div>)
-      }
-
-
-      <div>
-        <button onClick={() => {
-          setDrawerForm(toolbarState.forms.add)
-          setOpen(true)
-        }}>
-          Add
-        </button>
-        <button
-          onClick={() => {
-            setDrawerForm(toolbarState.forms.edit)
-            setOpen(true)
-          }}
-          disabled={toolbarState?.selectedItem === null ? true : false}>
-          Edit
-        </button>
-        <button
-          onClick={() => {
-            setDrawerForm(toolbarState.forms.delete)
-            setOpen(true)
-          }}
-          disabled={toolbarState?.selectedItem === null ? true : false}>
-          Delete
-        </button>
-      </div>
-
-      <div anchor="right" open={open} onClose={toggleDrawer} sx={'50vw'}>
-        <div>
-
-        <div>
-        <div>
-          <button onClick={() => {setOpen(false)}}>
-            Close
-          </button>
-        </div>
-        </div>
-        <div>
-          {props?.debugging && <div>
+        (
+          <>
             <div>
               Toolbar Debugging
             </div>
@@ -78,14 +33,38 @@ export const PageToolbar = (props) => {
                 {JSON.stringify(toolbarState, null, 2)}
               </pre>
             </div>
-          </div>}
-        </div>
+          </>)
+      }
 
-          <div>
-          </div>
-        </div>
+      <div>
+        <button
+          onClick={() => {
+            setToolbarState({ ...toolbarState, selectedAction: "add" })
+            // setDrawerForm(toolbarState.forms.add.component)
+          }}>
+          Add
+        </button>
+        <button
+          onClick={() => {
+            setToolbarState({ ...toolbarState, selectedAction: "edit" })
+            // setDrawerForm(toolbarState.forms.edit.component)
+          }}
+          disabled={toolbarState?.selectedItem === null ? true : false}>
+          Edit
+        </button>
+        <button
+          onClick={() => {
+            setToolbarState({ ...toolbarState, selectedAction: "delete" })
+            // setDrawerForm(toolbarState.forms.delete.component)
+          }}
+          disabled={toolbarState?.selectedItem === null ? true : false}>
+          Delete
+        </button>
       </div>
-    </>
 
-  )
+      <div>
+        <FormRenderer formContext={toolbarState} />
+      </div>
+    </div>
+  </>)
 }

@@ -7,8 +7,6 @@ import { usePathname } from 'next/navigation';
 // local imports
 import { Providers } from './Providers';
 import Header from '@/components/structure/Header';
-import { BreadcrumbsContext } from '@/components/Contexts';
-import Link from 'next/link';
 
 
 export default function MainStructureLayout({ children }) {
@@ -23,6 +21,7 @@ export default function MainStructureLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <meta name="apple-mobile-web-app-title" content="Pennywise" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>
       <body>

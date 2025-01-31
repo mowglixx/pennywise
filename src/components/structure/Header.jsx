@@ -51,6 +51,7 @@ const Header = () => {
                     <li key={link.id}><Link href={link.href}>{link.label}</Link></li>
                 ))}
             </ul>
+            <AccountButton />
         </nav>
     )
 }
