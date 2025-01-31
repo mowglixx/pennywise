@@ -8,3 +8,4 @@ export const ToolbarContext = createContext({
     selectedAction: null,
     forms: {}
 })
+export const ProfileContext = createContext(null)

@@ -1,9 +1,9 @@
 "use client"
 import { signIn, signOut, useSession } from "next-auth/react"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import styles from "./styles.module.css"
+import styles from "./AccountButton.module.css"
+import { useRouter } from "next/navigation.js"
+import NextImage from "next/image.js"
 
 const AccountButton = () => {
     // Login Button
@@ -25,7 +25,6 @@ const AccountButton = () => {
         <>
             <button
                 className={styles.account_button}
-                width={150}
                 disabled>
                 Loading...
             </button>
@@ -36,24 +35,25 @@ const AccountButton = () => {
             <button
                 className={styles.account_button}
                 onClick={async (e) => {
-                    return session.status !== "authenticated" ? signIn('google', { callbackUrl: '/dashboard' }) : handleClick(e)
+                    return session.status !== "authenticated" && signIn('google', { callbackUrl: '/dashboard' })
                 }}
 
                 id="basic-button"
             >
                 <div>
 
-                    {session.status === "authenticated"
-                        ? (<Image
-                            alt={`${session.data.user.name}'s Display Picture`}
-                            src={session.data.user.image}
+                    {session.status === "authenticated" && !!session.data?.user?.name
+                        ? (<NextImage
+                            priority
+                            alt={`${session.data?.user?.name}'s Display Picture`}
+                            src={session?.data?.user?.image || ""}
                             width={96}
                             height={96}
                         />)
                         : (<p>G</p>)}
                 </div>
                 <div>
-                    {session.status === "authenticated" ? session.data.user.name : 'Signin with Google'}
+                    {session.status === "authenticated" ? session.data.user?.name : 'Signin with Google'}
                 </div>
 
             </button>
@@ -61,23 +61,20 @@ const AccountButton = () => {
                 aria-labelledby='basic-button'
             >
                 <li onClick={(e) => {
-                    handleClose(e)
+                    
                     return router.push('/dashboard')
 
                 }}>Dashboard</li>
                 <li onClick={(e) => {
-                    handleClose(e)
                     return router.push('/manage/account')
 
                 }}>Account Settings</li>
                 <hr />
                 <li onClick={(e) => {
-                    handleClose(e)
                     return router.push('/help')
                 }}>Help</li>
                 <hr />
                 <li onClick={async (e) => {
-                    handleClose(e)
                     return signOut()
                 }}>Signout</li>
             </ul>

@@ -15,7 +15,7 @@ export default function ManageRouteLayout({ children }) {
   return (
     <>
       <ToolbarContext.Provider value={{ toolbarState, setToolbarState }}>
-        <div spacing={1}>
+        <div>
         <PageToolbar debugging={process.env.NODE_ENV == 'development'} />
         {children}
         

@@ -1,11 +1,11 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import AccountButton from "@/components/elements/AccountButton";
+import React from "react";
 import Link from "next/link";
 
+import AccountButton from "@/components/elements/AccountButton";
+
+import styles from './Header.module.css'
 const Header = () => {
-   
+
     const links = [
         {
             id: "home",
@@ -44,15 +44,21 @@ const Header = () => {
         },
     ]
 
-    return(
-        <nav>
-            <ul>
-                {links.map(link => (
-                    <li key={link.id}><Link href={link.href}>{link.label}</Link></li>
-                ))}
-            </ul>
-            <AccountButton />
-        </nav>
+    return (
+        <header className={styles.header}>
+            <nav className={styles.header_nav}>
+                <ul className={styles.header_navlist}>
+                    {links.map(link => (
+                        <li className={styles.header_navlist_item} key={link.id}>
+                            <Link className={styles.header_navlist_item_link} href={link.href}>
+                                {link.label}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+                <AccountButton />
+        </header>
     )
 }
 export default Header
