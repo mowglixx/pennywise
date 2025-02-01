@@ -1,29 +1,27 @@
 {
-  "name": "pennywise-budget-tracker",
-  "version": "0.2.0",
+  "name": "new-pennywise",
+  "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@auth/mongodb-adapter": "^3.0.0",
-    "bcrypt": "^5.1.1",
-    "mongodb": "^6.6.1",
-    "mongoose": "^8.3.2",
-    "mongoose-currency": "^0.3.0",
+    "@auth/prisma-adapter": "^2.7.4",
+    "@prisma/client": "^6.3.0",
     "next": "15.1.6",
-    "next-auth": "^4.24.11",
+    "next-auth": "^5.0.0-beta.25",
     "react": "^19.0.0",
+    "prisma": "^6.3.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.51.3"
+    "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
+    "@types/node": "^22.13.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
