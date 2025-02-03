@@ -1,12 +1,19 @@
 model User {
   id            String          @id @default(cuid())
-  name          String?
   email         String          @unique
-  emailVerified DateTime?
   image         String?
+  name          String?
+  emailVerified DateTime?
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
+
+// Money
+  incomes   Income[]
+  expenses  Expense[]
+  bills Bill[]
+  food_shop FoodBudget[]
+  // refunds Refund[]
 }
 
 model Account {
@@ -31,6 +38,7 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

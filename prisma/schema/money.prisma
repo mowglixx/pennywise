@@ -1,0 +1,61 @@
+enum Frequency {
+      DAILY
+      WEEKLY
+      FORTNIGHTLY
+      FOURWEEKLY
+      MONTHLY
+      ANNUALLY
+}
+
+model Income {
+      id         String    @id @default(cuid())
+      userId     String
+      source     String
+      amount     Decimal
+      receivedAt DateTime  @default(now())
+      createdAt  DateTime?  @default(now())
+      updatedAt  DateTime?  @updatedAt
+      frequency  Frequency
+
+      user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+      id        String    @id @default(cuid())
+      userId    String
+      category  String
+      amount    Decimal
+      dueDate   DateTime
+      paid      Boolean   @default(false)
+      createdAt DateTime?  @default(now())
+      updatedAt DateTime?  @updatedAt
+      frequency Frequency
+
+      user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model FoodBudget {
+      id           String    @id @default(cuid())
+      userId       String
+      amount       Decimal
+      paid         Boolean   @default(false)
+      shoppingDate DateTime  @default(now())
+      createdAt    DateTime?  @default(now())
+      updatedAt    DateTime?  @updatedAt
+      frequency    Frequency
+
+      user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Bill {
+      id          String   @id @default(cuid())
+      userId      String
+      description String
+      amount      Decimal
+      paid        Boolean  @default(false)
+      incurredAt  DateTime? @default(now())
+      createdAt   DateTime? @default(now())
+      updatedAt   DateTime? @updatedAt
+
+      user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

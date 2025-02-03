@@ -1,31 +1,43 @@
 {
-  "name": "new-pennywise",
+  "name": "pennywise",
+  "description": "A terrifyingly simple budget app",
+  "author": {
+    "name": "Dan Monaghan (mowglixx)",
+    "url": "https://github.com/mowglixx"
+  },
+  "repository": {
+    "url": "https://github.com/mowglixx/pennywise",
+    "type": "GitHub"
+  },
   "version": "0.1.0",
   "private": true,
+  "prisma": {},
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate deploy",
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
     "@prisma/client": "^6.3.0",
-    "next": "15.1.6",
     "next-auth": "^5.0.0-beta.25",
-    "react": "^19.0.0",
+    "next": "15.1.6",
     "prisma": "^6.3.0",
     "react-dom": "^19.0.0",
+    "react": "^19.0.0",
     "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^22.13.0",
-    "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@types/react": "^19",
     "eslint-config-next": "15.1.6",
+    "eslint": "^9",
+    "prisma": "^6.3.0",
     "typescript": "^5"
   }
 }
