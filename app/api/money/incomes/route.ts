@@ -1,10 +1,10 @@
 import { auth } from "@/auth"
-import { PrismaClient } from "@prisma/client"
-import Error from "next/error"
+// import { PrismaClient } from "@prisma/client"
+import { NextRequest } from "next/server"
 
-const p = new PrismaClient()
+// const p = new PrismaClient()
 
-export const GET = auth(async (request) => {
+export const GET = auth(async (_: NextRequest) => {
 
     // const name = request.nextUrl.searchParams.get("name")
     // const email = request.nextUrl.searchParams.get("email")
@@ -26,14 +26,16 @@ export const GET = auth(async (request) => {
             data: {},
             message: ""
         })
-    }catch(e: Error){
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch (e: any) {
 
         return Response.json({
-            message: e.message
+            message: e?.message
         }, {status: 401})
 
     }
 
         
-    }
+
 })
