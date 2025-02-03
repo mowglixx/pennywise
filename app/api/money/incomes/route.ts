@@ -21,11 +21,7 @@ export const GET = auth(async (request) => {
     //     })
 
     try{
-        p.income.create({
-        data: {
-            
-        }
-        })
+        // p.income.create({})
         return Response.json({
             data: {},
             message: ""
