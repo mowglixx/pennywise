@@ -13,27 +13,27 @@
     border-radius: var(--size_6);
     border: 4px solid var(--text);
 
-    >:nth-child(1) {
+}
 
-        display: flex;
+.accountButton:nth-child(1) {
+
+    display: flex;
         align-items: center;
         justify-content: center;
         max-height: var(--icon-size);
         max-width: var(--icon-size);
         box-sizing: content-box;
 
-        >img {
-            max-height: var(--icon-size);
-            max-width: var(--icon-size);
-            clip-path: circle(51% at 50%);
-        }
-    }
+}
 
-    >:nth-child(2) {
-        font-weight: bold;
-        display: none;
-    }
-
+.accountButton:nth-child(1)>img {
+    max-height: var(--icon-size);
+    max-width: var(--icon-size);
+    clip-path: circle(51% at 50%);
+}
+.accountButton:nth-child(2) {
+    font-weight: bold;
+    display: none;
 }
 
 .accountButton[title="Sign In with Google"] {
@@ -41,14 +41,12 @@
     border: 1px solid var(--text);
     gap: var(--size_2);
     padding: var(--size_2);
+}
 
-    >:nth-child(1) {
+.accountButton[title="Sign In with Google"]:nth-child(1) {
         border-radius: var(--size_2);
-
+    
     }
-
-
-    >:nth-child(2) {
-        display: flex;
-    }
+.accountButton[title="Sign In with Google"]:nth-child(2) {
+    display: flex;
 }
