@@ -4,6 +4,7 @@ import { NextRequest } from "next/server"
 
 // const p = new PrismaClient()
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET = auth(async (_: NextRequest) => {
 
     // const name = request.nextUrl.searchParams.get("name")
