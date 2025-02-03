@@ -1,4 +1,24 @@
-.main{
-  /* background-color: var(--color__primary); */
-  padding: var(--size_6) var(--size_2)
+.section {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.section__article {
+  display: flex;
+  flex-direction: column;
+  padding: 90px;
+}
+
+.section_article__image {
+  display: flex;
+}
+
+.section_article__contentHeader {
+  display: flex;
+  font-size: max(20px, 10vw);
+}
+
+.section_article__contentBody {
+  display: flex;
 }

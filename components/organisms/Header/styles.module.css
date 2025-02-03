@@ -1,0 +1,32 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 0.001rem solid var(--accent);
+    grid-area: header;
+    padding: var(--size_2);
+}
+
+.header__link {
+    --logo-size: var(--size_6);
+    --padding: var(--size_2);
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 1;
+    max-height: calc(var(--logo-size) + calc(var(--size_2)*2));
+    padding: var(--padding);
+    gap: var(--size_2);
+    text-decoration: none;
+    color: var(--text);
+}
+
+.header_link__logo {
+    display: flex;
+    max-height: var(--logo-size);
+    max-width: var(--logo-size);
+}
+
+.header_link__logoText {
+    display: flex;
+    align-items: center;
+    font-size: var(--size_3);
+}

@@ -5,9 +5,10 @@ import image__Logo_PNG from '@/app/icon.png'
 // import image__Logo_ICO from '@/app/icon.ico'
 import image__Logo_Apple from '@/app/apple-icon.png'
 import Image from 'next/image'
+import { HTMLAttributes } from 'react'
 
-interface Props {
-    type?: "svg" | "png" | "ico" | "apple"
+interface Props extends HTMLAttributes<HTMLImageElement> {
+    type?: "svg" | "png" | "ico" | "apple",
 }
 
 const BrandLogo = ({ type, ...props }: Props) => {

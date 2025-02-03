@@ -1,0 +1,6 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    grid-area: content;
+    padding: var(--size_6);
+}

@@ -8,10 +8,10 @@ model User {
   sessions      Session[]
   Authenticator Authenticator[]
 
-// Money
+  // Money
   incomes   Income[]
   expenses  Expense[]
-  bills Bill[]
+  bills     Bill[]
   food_shop FoodBudget[]
   // refunds Refund[]
 }
@@ -38,8 +38,8 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

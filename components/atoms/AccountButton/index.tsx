@@ -1,30 +1,25 @@
 "use client"
 
-import { SessionContextValue, signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import styles from "./styles.module.css"
 
-interface Props {
-  session: SessionContextValue
-}
 
-function AccountButton({ session }: Props) {
+function AccountButton() {
 
-  return <>
-    <button type="button" onClick={() => {
-      return session?.status !== "authenticated" ? signIn("google") : signOut({ redirect: true, redirectTo: '/' })
-    }}>
-      <div style={{ display: "flex" }}>
-        <div>
-          {session?.data?.user?.image && session?.data?.user.name ?
-            <Image alt={`Display Picture for ${session?.data.user.name}`} src={session?.data?.user?.image} width={96} height={96} /> :
-            <strong>G</strong>}
-        </div>
-        <div>
-          {session?.data?.user?.name ? `${session?.data.user.name}` : "Sign In with Google"}
-        </div>
-      </div>
-    </button>
-  </>;
+  const session = useSession();
+  return (<button className={styles.accountButton} type="button" title={session.status === "authenticated" ? "Sign Out" : "Sign In with Google"} onClick={() => {
+    return session?.status !== "authenticated" ? signIn("google") : signOut({ redirect: true, redirectTo: '/' })
+  }}>
+    <div>
+      {session.status === "unauthenticated" && <strong>G</strong>}
+      {session?.data?.user?.image && session?.data?.user.name &&
+        <Image alt={`Display Picture for ${session?.data.user.name}`} src={session?.data?.user?.image} width={96} height={96} />}
+    </div>
+    <div>
+      {session?.data?.user?.name ? `${session?.data.user.name}` : "Sign In with Google"}
+    </div>
+  </button>)
 }
 
 export default AccountButton

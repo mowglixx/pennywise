@@ -1,7 +1,7 @@
 
 function Page() {
     return (
-        <>Content</>
+        <>Incomes Content</>
     )
 }
 

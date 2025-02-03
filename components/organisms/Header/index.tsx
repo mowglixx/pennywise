@@ -5,24 +5,26 @@ import { useSession, } from "next-auth/react"
 import Link from "next/link";
 
 // Local imports
-import AccountButton from '@/components/atoms/AccountButton'
 import BrandLogo from "@/components/atoms/BrandLogo";
+import HeaderNav from "@/components/organisms/HeaderNav";
+
+import styles from './styles.module.css'
 
 // Header to contain navigation and AccountButton
 const Header = () => {
-  const session = useSession()
 
+  const session = useSession()
   const navItems = [
-    {
-      id: 'home',
-      href: '/',
-      label: 'Home',
-      description: ''
-    }
   ]
 
   if (session.status === 'authenticated') {
     navItems.push(
+      {
+        id: 'home',
+        href: '/',
+        label: 'Dashboard',
+        description: 'See insights about your budget'
+      },
       {
         id: 'income',
         href: '/manage/incomes',
@@ -48,37 +50,31 @@ const Header = () => {
         description: 'Keep track of bills'
       })
   }
+  navItems.push(
+    {
+      id: 'about',
+      href: '/help',
+      label: 'About',
+      description: 'Learn about pennywise and its features'
+    },
+    {
+      id: 'help',
+      href: '/help',
+      label: 'Help',
+      description: 'Docs and FAQ'
+    }
+  )
 
-  navItems.push({
-    id: 'help',
-    href: '/',
-    label: 'Help',
-    description: 'Docs and FAQ'
-  })
 
   return (
     <>
-      <header>
-        <div>
-          <Link href={'/'}>
-            <BrandLogo />
+      <header className={styles.header}>
+
+        <Link className={styles.header__link} href={'/'}>
+          <BrandLogo className={styles.header_link__logo} aria-labelledby="logo-text" />
+          <h1 className={styles.header_link__logoText} id="logo-text">Pennywise</h1>
           </Link>
-        </div>
-        <nav>
-          <ul>
-            {navItems.map(({ id, href, label, description, ...props }) => (
-              <li key={id}>
-                <Link href={href} target="_self" {...props}>{label}</Link>
-                {description && <p>{description}</p>}
-              </li>
-            ))
-            }
-          </ul>
-        </nav>
-        <div className="nav__button-wrapper">
-          <AccountButton session={session} />
-          <button className="nav-expand">+</button>
-        </div>
+        <HeaderNav navItems={navItems} />
       </header>
 
     </>)

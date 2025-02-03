@@ -1,5 +1,3 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-mongo
 {
 	"name": "Pennywise Dev Container",
 	"dockerComposeFile": "docker-compose.yml",
@@ -29,6 +27,6 @@
 		5432, // Postgres
 		5555 // Prisma Studio
 	],
-	"postCreateCommand": "yarn install",
+	"postCreateCommand": "yarn",
 	"postAttachCommand": "yarn next telemetry disable && echo '\n\n\nRun `yarn run dev` to begin work.'"
 }
