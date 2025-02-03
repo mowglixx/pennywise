@@ -1,0 +1,9 @@
+{
+    "reactSnippets.settings.importReactOnTop": false,
+    "extensions.closeExtensionDetailsOnViewChange": true,
+    "window.autoDetectColorScheme": true,
+    "files.autoSave": "afterDelay",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "diffEditor.experimental.useTrueInlineView": false
+}
