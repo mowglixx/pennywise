@@ -1,9 +1,9 @@
 .navWrapper {
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
     justify-content: flex-end;
     align-items: center;
+    align-self: flex-end;
 }
 
 .navWrapper__nav {
@@ -18,12 +18,12 @@
 
 
     display: flex;
-    flex-direction: column;
     position: absolute;
+        top: calc(var(--size_6) + calc(var(--size_2) * 2));
+        right: 0em;
+    flex-direction: column;
     background-color: var(--background, black);
     color: var(--text, white);
-    top: calc(var(--size_6) + calc(var(--size_2) * 2));
-    right: 0em;
     width: calc(100dvw - calc(var(--size_2) * 2));
     /* opacity: 0; */
     clip-path: circle(150% at 100% 0%);
@@ -43,10 +43,10 @@
         clip-path: circle(0% at 100% 0%);
     }
 
-    /* bigger than a tablet  */
+        /* bigger than a tablet 
     @media (min-width: 769px) {
         width: 25dvw;
-    }
+    */
 
 
 }

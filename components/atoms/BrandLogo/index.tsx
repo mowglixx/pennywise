@@ -9,9 +9,10 @@ import { HTMLAttributes } from 'react'
 
 interface Props extends HTMLAttributes<HTMLImageElement> {
     type?: "svg" | "png" | "ico" | "apple",
+    size: number
 }
 
-const BrandLogo = ({ type, ...props }: Props) => {
+const BrandLogo = ({ type, size, ...props }: Props) => {
 
     let src;
     switch (type) {
@@ -33,6 +34,8 @@ const BrandLogo = ({ type, ...props }: Props) => {
         <Image
             src={src}
             alt={'Pennywise Logo'}
+            width={size}
+            height={size}
             {...props}
         />
     )

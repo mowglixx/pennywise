@@ -1,13 +1,12 @@
 .section {
   display: flex;
   flex-direction: column;
-
 }
 
 .section__article {
   display: flex;
   flex-direction: column;
-  padding: 90px;
+  padding: var(--size_2);
 }
 
 .section_article__image {
@@ -16,7 +15,7 @@
 
 .section_article__contentHeader {
   display: flex;
-  font-size: max(20px, 10vw);
+  font-size: var(--size_6);
 }
 
 .section_article__contentBody {

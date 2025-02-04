@@ -2,51 +2,43 @@
 
     --icon-size: var(--size_6);
 
-    min-height: var(--icon-size);
-    min-width: var(--icon-size);
-
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: var(--size_6);
-    border: 4px solid var(--text);
-
-}
-
-.accountButton:nth-child(1) {
-
-    display: flex;
-        align-items: center;
-        justify-content: center;
-        max-height: var(--icon-size);
-        max-width: var(--icon-size);
-        box-sizing: content-box;
-
-}
-
-.accountButton:nth-child(1)>img {
-    max-height: var(--icon-size);
-    max-width: var(--icon-size);
-    clip-path: circle(51% at 50%);
-}
-.accountButton:nth-child(2) {
-    font-weight: bold;
-    display: none;
-}
-
-.accountButton[title="Sign In with Google"] {
-    border-radius: var(--size_1);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    border-radius: var(--size_2);
     border: 1px solid var(--text);
-    gap: var(--size_2);
-    padding: var(--size_2);
+    justify-content: center;
+    align-items: center;
 }
 
-.accountButton[title="Sign In with Google"]:nth-child(1) {
-        border-radius: var(--size_2);
-    
-    }
-.accountButton[title="Sign In with Google"]:nth-child(2) {
+.accountButton__iconWrapper {
     display: flex;
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+
+.accountButton__iconWrapper__strong {
+    display: none;
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+.accountButton[title="Sign In with Google"] .accountButton__iconWrapper__strong {
+    display: flex;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    justify-content: center;
+    align-items: center;
+}
+
+.accountButton_iconWrapper__img {
+    display: flex;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    aspect-ratio: 1;
+    border-radius: var(--size_2);
+}
+.accountButton__iconWrapper__strong {
+    display: flex;
+    width: var(--icon-size);
+    height: var(--icon-size);
 }

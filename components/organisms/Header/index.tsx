@@ -71,7 +71,7 @@ const Header = () => {
       <header className={styles.header}>
 
         <Link className={styles.header__link} href={'/'}>
-          <BrandLogo className={styles.header_link__logo} aria-labelledby="logo-text" />
+          <BrandLogo className={styles.header_link__logo} size={64} aria-labelledby="logo-text" />
           <h1 className={styles.header_link__logoText} id="logo-text">Pennywise</h1>
           </Link>
         <HeaderNav navItems={navItems} />
