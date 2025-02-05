@@ -10,18 +10,14 @@
     --accent: hsl(318, 39%, 52%);
   
     /* Sizes */
-    /* 53.92px */
-    --size_6: 3.366rem;
-    /* 40.32px */
-    --size_5: 2.525rem;
-    /* 30.24px */
-    --size_4: 1.894rem;
-    /* 22.72px */
-    --size_3: 1.421rem;
-    /* 17.12px */
-    --size_2: 1.066rem;
-    /* 9.6px */
-    --size_1: 0.600rem;
+    --size_1: clamp(0.707rem, 0.154cqi + 0.669rem, 0.792rem);
+    --size_2: clamp(1rem, 0.341cqi + 0.915rem, 1.188rem);
+    --size_3: clamp(1.414rem, 0.668cqi + 1.247rem, 1.781rem);
+    --size_4: clamp(1.999rem, 1.223cqi + 1.694rem, 2.672rem);
+    --size_5: clamp(2.827rem, 2.147cqi + 2.29rem, 4.008rem);
+    --size_6: clamp(3.998rem, 3.662cqi + 3.082rem, 6.012rem);
+
+    scroll-behavior: smooth;
 }
 
 

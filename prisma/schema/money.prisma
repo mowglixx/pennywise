@@ -1,9 +1,11 @@
 enum Frequency {
+      ONEOFF
       DAILY
       WEEKLY
       FORTNIGHTLY
       FOURWEEKLY
       MONTHLY
+      QUARTERLY
       ANNUALLY
 }
 
@@ -12,9 +14,10 @@ model Income {
       userId     String
       source     String
       amount     Decimal
+      tags       String[]  @default([])
       receivedAt DateTime  @default(now())
-      createdAt  DateTime?  @default(now())
-      updatedAt  DateTime?  @updatedAt
+      createdAt  DateTime? @default(now())
+      updatedAt  DateTime? @updatedAt
       frequency  Frequency
 
       user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -26,9 +29,10 @@ model Expense {
       category  String
       amount    Decimal
       dueDate   DateTime
+      tags      String[]  @default([])
       paid      Boolean   @default(false)
-      createdAt DateTime?  @default(now())
-      updatedAt DateTime?  @updatedAt
+      createdAt DateTime? @default(now())
+      updatedAt DateTime? @updatedAt
       frequency Frequency
 
       user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -40,19 +44,21 @@ model FoodBudget {
       amount       Decimal
       paid         Boolean   @default(false)
       shoppingDate DateTime  @default(now())
-      createdAt    DateTime?  @default(now())
-      updatedAt    DateTime?  @updatedAt
+      createdAt    DateTime? @default(now())
+      updatedAt    DateTime? @updatedAt
+      tags         String[]  @default(["Shopping"])
       frequency    Frequency
 
       user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Bill {
-      id          String   @id @default(cuid())
+      id          String    @id @default(cuid())
       userId      String
       description String
       amount      Decimal
-      paid        Boolean  @default(false)
+      tags        String[]  @default(["Bill"])
+      paid        Boolean   @default(false)
       incurredAt  DateTime? @default(now())
       createdAt   DateTime? @default(now())
       updatedAt   DateTime? @updatedAt

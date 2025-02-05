@@ -17,7 +17,7 @@ interface Props {
 
 export default function HeaderNav({ navItems }: Props) {
 
-    const [navExpand, setNavExpand] = useState(true);
+    const [navExpand, setNavExpand] = useState(false);
 
     return (
         <section className={styles.navWrapper}>

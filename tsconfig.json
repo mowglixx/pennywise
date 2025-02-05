@@ -27,6 +27,6 @@
     ".next/types/**/*.ts",
     "**/*.ts", 
     "**/*.tsx"
-, "app/api/money/incomes/route.ts.bak"  ],
+, "app/api/money/income/route.ts.bak"  ],
   "exclude": ["node_modules"]
 }

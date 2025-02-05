@@ -1,7 +1,13 @@
+import { CreateForm } from "@/components/molecules/Forms/Income"
 
 function Page() {
     return (
-        <>Incomes Content</>
+        <>
+            <h2>
+                Incomes Content
+            </h2>
+            <CreateForm />
+        </>
     )
 }
 
