@@ -20,10 +20,10 @@ function Page() {
 
     return (
         <>
-            <Stack direction='row' p='5'>
+            <Stack direction={{ base: 'row', md: 'row' }} p='5' gap='5' overflowX={'scroll'}>
                 {incomes?.length ? incomes.map(({ id, source, amount, tags, receivedAt }: IncomeModel) => {
                     return (
-                        <Card.Root key={id}>
+                        <Card.Root key={id} minW={'200px'}>
                             <Card.Header as='h3'>
                                 {source}
                             </Card.Header>
@@ -34,10 +34,9 @@ function Page() {
                                         <p>{new Date(receivedAt).toLocaleDateString()}</p>
                                         <p>£{new Prisma.Decimal(amount).toFixed(2)}</p>
                                     </Stack>
-                                    <Spinner>
 
                                         <Stack direction='row'>
-                                            {tags?.length &&
+                                        {tags?.length ?
                                                 <>
                                                     {
                                                         tags.map((tag, i) => (
@@ -49,9 +48,13 @@ function Page() {
                                                         ))
                                                     }
                                                 </>
+                                            : (<Tag.Root>
+                                                < Tag.Label>
+                                                    Untagged
+                                                </Tag.Label>
+                                            </Tag.Root>)
                                             }
-                                        </Stack>
-                                    </Spinner>
+                                    </Stack>
                                 </Stack>
                             </Card.Body>
                         </Card.Root>
