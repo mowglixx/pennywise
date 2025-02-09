@@ -2,13 +2,15 @@ import { auth } from "@/auth";
 // import { IncomeModel } from "@/infrastructure/prismaRepository";
 import { prisma as p } from "@/prisma";
 import { Prisma } from "@prisma/client";
+import { NextRequest } from "next/server";
 
 // create
-export const POST = auth(async (req) => {
+export const POST = async (req: NextRequest) => {
 
+  const authSession = await auth();
   const data = await req.json()
 
-  if (!req.auth?.user?.email) {
+  if (!authSession?.user?.email) {
 
     return Response.json({ message: "Not authenticated" }, { status: 401 })
 
@@ -23,7 +25,7 @@ export const POST = auth(async (req) => {
         receivedAt: new Date(data.receivedAt),
         user: {
           connect: {
-            email: `${req.auth.user.email}`
+            email: `${authSession.user.email}`
           }
         }
       }
@@ -38,20 +40,29 @@ export const POST = auth(async (req) => {
   }
 
 
-})
+};
 
 
 // read
-export const GET = auth(async (req) => {
-  try {
-    if (req?.auth?.user) {
+export const GET = async () => {
 
-      console.log(`Incomes pulled for ${req.auth.user.name}`)
+  const authSession = await auth();
+
+  if (!authSession?.user?.email) {
+
+    return Response.json({ message: "Not authenticated" }, { status: 401 })
+
+  }
+
+  try {
+    if (authSession?.user) {
+
+      console.log(`Incomes pulled for ${authSession?.user?.name}`)
 
       return Response.json(await p.income.findMany({
         where: {
           user: {
-            email: `${req.auth.user.email}`
+            email: `${authSession?.user?.email}`
           }
         },
         orderBy: {
@@ -71,5 +82,4 @@ export const GET = auth(async (req) => {
   } catch (error) {
     return Response.json({ error })
   }
-  return Response.json({ message: "Not authenticated" }, { status: 401 })
-})
+};

@@ -37,12 +37,16 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
             submitTrigger(submitState + 1)
         }
 
-        // POST `/api/money/income`
+        // POST a new income to the user's incomes
         fetch('/api/money/income', {
             method: "POST",
             body: JSON.stringify({
                 source, amount: Number.parseFloat(amount), tags, receivedAt: new Date(receivedAt), frequency
-            })
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
         });
     };
 

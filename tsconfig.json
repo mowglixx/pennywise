@@ -43,7 +43,9 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+,
+"app/api/money/income/[id]/route.ts.plan"
+],
   "exclude": [
     "node_modules"
   ]
