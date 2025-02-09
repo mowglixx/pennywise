@@ -34,7 +34,6 @@ export default function HeaderNav({ navItems }: Props) {
     return (
         <>
             <HStack justifyContent={'flex-end'}>
-                <AccountButton />
                 <Button onClick={() => setNavExpand(!navExpand)}><LuMenu /></Button>
                 <DrawerRoot open={navExpand} aria-hidden={!navExpand}>
                     <DrawerBackdrop />
@@ -66,8 +65,8 @@ export default function HeaderNav({ navItems }: Props) {
                             </Stack>
 
                         </DrawerBody>
-                        <DrawerFooter>
-
+                        <DrawerFooter justifyContent={'center'}>
+                            <AccountButton />
                         </DrawerFooter>
                     </DrawerContent>
                 </DrawerRoot>
