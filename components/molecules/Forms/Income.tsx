@@ -27,8 +27,7 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
             tags: ["Earned Income"],
             frequency: "MONTHLY",
             amount: '499.99'
-        },
-        mode: 'onSubmit'
+        }
     });
     const onSubmit = ({ source, amount, tags, receivedAt, frequency }: FieldValues) => {
 
@@ -37,11 +36,25 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
             submitTrigger(submitState + 1)
         }
 
+        console.log({
+            submittedData: JSON.parse(JSON.stringify({
+                source,
+                amount: Number(amount),
+                tags: tags,
+                receivedAt: new Date(receivedAt),
+                frequency
+            }))
+        })
+
         // POST a new income to the user's incomes
         fetch('/api/money/income', {
             method: "POST",
             body: JSON.stringify({
-                source, amount: Number.parseFloat(amount), tags, receivedAt: new Date(receivedAt), frequency
+                source,
+                amount: Number(amount),
+                tags: tags,
+                receivedAt: new Date(receivedAt),
+                frequency
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -67,22 +80,22 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
                     />
                 </Field>
 
-                <Stack direction={'row'} gap={'10'} justifyContent={'space-between'}>
 
                     <Field
-                        w={'50%'}
                         label="Amount"
                         invalid={!!formState.errors.amount}
                         errorText={formState.errors.amount?.message}
                     >
                         <Group>
-
-                            <InputAddon><LuPoundSterling /></InputAddon>
+                            <InputAddon>
+                                <LuPoundSterling />
+                            </InputAddon>
                             <NumberInputRoot
                                 name={'amount'}
-                                w={'100%'}
+                                inputMode={'decimal'}
                                 min={0}
                                 step={0.01}
+                                width={'fit'}
                             >
                                 <NumberInputField {...register("amount", { required: true })} />
                             </NumberInputRoot>
@@ -93,7 +106,6 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
                         label={"Due"}
                         invalid={!!formState.errors.receivedAt}
                         errorText={formState.errors.receivedAt?.message}
-                        w={'50%'}
                         helperText={"When did/do you recieve this payment?"}
                     >
                         <Input type="date" placeholder="Date" {...register("receivedAt", {
@@ -101,7 +113,6 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
                         })} />
                     </Field>
 
-                </Stack>
                 <Field
                     label={"Tags"}
                     invalid={!!formState.errors.tags}
@@ -151,59 +162,3 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
     );
 }
 
-// export const UpdateForm = ({ incomeToEdit }) => {
-//     const { register, handleSubmit, formState: { errors } } = useForm();
-//     const onSubmit = (data: Income) => {
-//         // PUT `/api/money/income/[id]`
-//         console.log(data);
-//     }
-
-//     console.log(errors);
-
-//     return (
-//         <form onSubmit={handleSubmit(onSubmit)}>
-//             <input type="text" placeholder="Income Source" {...register("Income Source", { required: true })} />
-//             <input type="number" placeholder="Amount" {...register("Amount", { required: true, min: 0 })} />
-//             <select {...register("Tags")} multiple>
-//                 <option value="Earned income">Earned income</option>
-//                 <option value="Passive income">Passive income</option>
-//                 <option value="Rental income">Rental income</option>
-//                 <option value="Capital gains">Capital gains</option>
-//                 <option value="Dividend income">Dividend income</option>
-//                 <option value="Interest">Interest</option>
-//                 <option value="Portfolio income">Portfolio income</option>
-//                 <option value="Royalties">Royalties</option>
-//                 <option value="Profit income">Profit income</option>
-//                 <option value="Active income">Active income</option>
-//                 <option value="Investment income">Investment income</option>
-//                 <option value="Commission">Commission</option>
-//                 <option value="Pension income">Pension income</option>
-//                 <option value="Salary">Salary</option>
-//                 <option value="Taxable income">Taxable income</option>
-//                 <option value="Allowances">Allowances</option>
-//                 <option value="Disposable income">Disposable income</option>
-//                 <option value="Miscellaneous income">Miscellaneous income</option>
-//                 <option value="Related articles">Related articles</option>
-//                 <option value="Social Security benefits">Social Security benefits</option>
-//                 <option value="Tax-exempt income">Tax-exempt income</option>
-//             </select>
-//             <input type="datetime-local" placeholder="Due Date" {...register} />
-
-//             <input type="submit" />
-//         </form>
-//     );
-// }
-
-// export const DeleteForm = ({ incomeToDelete }) => {
-//     const { register, handleSubmit, formState: { errors } } = useForm();
-//     const onSubmit = (data) => console.log(data);
-//     console.log(errors);
-
-//     return (
-//         <form onSubmit={handleSubmit(onSubmit)}>
-//             <textarea {...register("Delete Confirm", { required: true })} />
-
-//             <input type="submit" />
-//         </form>
-//     );
-// }

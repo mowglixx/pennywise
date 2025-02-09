@@ -7,14 +7,16 @@
 // Local imports
 // import BrandLogo from "@/components/atoms/BrandLogo";
 import HeaderNav from "@/components/organisms/HeaderNav";
+import { Heading, HStack, Link, LinkBox, LinkOverlay, Stack } from "@chakra-ui/react";
+import { LuBanknote } from "react-icons/lu";
+
 
 // import styles from './styles.module.css'
-
 
 const navItems = [
   {
     id: 'home',
-    href: '/',
+    href: '/manage/dash',
     label: 'Dashboard',
     description: 'See insights about your budget'
   },
@@ -42,13 +44,6 @@ const navItems = [
     label: 'Bills',
     description: 'Keep track of bills'
   },
-
-  {
-    id: 'about',
-    href: '/help',
-    label: 'About',
-    description: 'Learn about pennywise and its features'
-  },
   {
     id: 'help',
     href: '/help',
@@ -59,9 +54,21 @@ const navItems = [
 
 const Header = () => {
   return (
-    <div>
+    <Stack p={'5'} outline={'solid'} _backdrop={{ backdropBlur: '5px', backdropBrightness: '50%' }}>
+      <HStack justifyContent={'space-between'}>
+        <LinkBox>
+          <LinkOverlay asChild>
+            <Link aria-label="Homepage" href="/">
+              <LuBanknote />
+              <Heading as={'h1'}>
+                Pennywise
+              </Heading>
+            </Link>
+          </LinkOverlay>
+        </LinkBox>
       <HeaderNav navItems={navItems} />
-    </div>
+      </HStack>
+    </Stack>
   )
 }
 export default Header

@@ -22,6 +22,7 @@ export const POST = async (req: NextRequest) => {
         source: data.source,
         amount: new Prisma.Decimal(data.amount),
         frequency: data.frequency,
+        tags: data.tags,
         receivedAt: new Date(data.receivedAt),
         user: {
           connect: {

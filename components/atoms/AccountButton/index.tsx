@@ -2,24 +2,43 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import styles from "./styles.module.css"
+import { Avatar, Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { BsGoogle } from "react-icons/bs";
 
 
 function AccountButton() {
 
   const session = useSession();
-  return (<button className={styles.accountButton} type="button" title={session.status === "authenticated" && session.data.user ? `Signed in as ${session?.data?.user?.name}, click to sign out` : "Sign In with Google"} onClick={() => {
-    return session?.status !== "authenticated" ? signIn("google") : signOut({ redirect: true, redirectTo: '/' })
-  }}>
-    <div className={styles.accountButton__iconWrapper}>
-      {session.status === "unauthenticated" && <strong className={styles.accountButton__iconWrapper__strong}>G</strong>}
-      {session?.data?.user?.image && session?.data?.user.name &&
-        <Image priority className={styles.accountButton_iconWrapper__img} alt={`Display Picture for ${session?.data.user.name}`} src={session?.data?.user?.image} width={96} height={96} />}
-    </div>
-    <div className={styles.accountButton__iconWrapper}>
-      {/* {session?.data?.user?.name ? `` : "Sign In with Google"} */}
-    </div>
-  </button>)
+  return (
+
+    <>
+      <Button maxW={'15rem'} variant={'solid'} colorPalette={session?.status !== "authenticated" ? 'blue' : 'white'} onClick={() => {
+        return session?.status !== "authenticated" ? signIn("google", { redirect: true, redirectTo: '/manage/dash' }) : signOut({ redirect: true, redirectTo: '/' })
+      }}>
+        {session?.status !== "authenticated" ? (
+          // Signed out
+          <HStack>
+            <BsGoogle /> SignIn With Google
+          </HStack>
+        ) : (
+          // Signed in
+          <HStack alignItems={'start'}>
+            <Avatar.Root size={'xs'} outline={'solid'} outlineColor={'blue.600'}>
+              {session.data?.user?.name && <Avatar.Fallback name={session.data?.user?.name} />}
+              {session.data?.user?.image && session.data?.user?.name && <Avatar.Image src={session.data?.user?.image} />}
+            </Avatar.Root>
+            <Stack gap="0" textAlign={'left'}>
+              <Text textStyle={'xs'} fontWeight={'Bold'} truncate>{session.data?.user?.name}</Text>
+              <Text color="blue.subtle" textStyle="2xs" fontWeight={'bold'}>
+                Click to sign out
+              </Text>
+            </Stack>
+          </HStack>
+
+        )}
+      </Button>
+    </>
+  )
 }
 
 export default AccountButton 

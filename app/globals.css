@@ -1,7 +1,7 @@
-:root {
+/* :root {
   
   
-  /* Colors - dark by default for my linux homies */
+
     color-scheme: dark;
     --text: hsl(217, 39%, 94%);
     --background: hsl(222, 39%, 6%);
@@ -9,7 +9,7 @@
     --secondary: hsl(294, 39%, 35%);
     --accent: hsl(318, 39%, 52%);
   
-    /* Sizes */
+
     --size_1: clamp(0.707rem, 0.154cqi + 0.669rem, 0.792rem);
     --size_2: clamp(1rem, 0.341cqi + 0.915rem, 1.188rem);
     --size_3: clamp(1.414rem, 0.668cqi + 1.247rem, 1.781rem);
@@ -32,4 +32,4 @@
       --accent: hsl(318, 39%, 48%);
   }
 
-}
+} */
