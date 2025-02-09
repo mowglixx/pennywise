@@ -54,7 +54,7 @@ export default function Home() {
         <h2 className={styles.section_article__contentHeader}>Support My Work</h2>
         <p>This app is built with love, caffeine, and a concerning amount of Walkers (Lays) Crisps. If you like Pennywise and want to keep me fueled, consider donating.If you do, I&apos;ll even add your name to the contributors&apos; page (coming soon).</p>
         <a href="https://paypal.me/mowglixx" className={styles.donateButton}>Donate Here</a>
-        <p>If you don&apos;t want to donate, that&apos;s fine. But don&apos;t come crying to me when I run out of crisps and the app stops getting updates. 😤</p>
+        <p>If you don&apos;t want to donate, that&apos;s fine. But don&apos;t come crying to me when I&apos;m out of crisps and the app stops getting updates. 😤</p>
       </article>
 
     </section>

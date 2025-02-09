@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         search: '',
       }
     ]
+  },
+  experimental: {
+    optimizePackageImports:[
+      "@chakra-ui/react"
+    ]
   }
 };
 

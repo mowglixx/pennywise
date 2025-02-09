@@ -14,7 +14,7 @@ function AccountButton() {
     <div className={styles.accountButton__iconWrapper}>
       {session.status === "unauthenticated" && <strong className={styles.accountButton__iconWrapper__strong}>G</strong>}
       {session?.data?.user?.image && session?.data?.user.name &&
-        <Image className={styles.accountButton_iconWrapper__img} alt={`Display Picture for ${session?.data.user.name}`} src={session?.data?.user?.image} width={96} height={96} />}
+        <Image priority className={styles.accountButton_iconWrapper__img} alt={`Display Picture for ${session?.data.user.name}`} src={session?.data?.user?.image} width={96} height={96} />}
     </div>
     <div className={styles.accountButton__iconWrapper}>
       {/* {session?.data?.user?.name ? `` : "Sign In with Google"} */}
@@ -22,4 +22,4 @@ function AccountButton() {
   </button>)
 }
 
-export default AccountButton
+export default AccountButton 

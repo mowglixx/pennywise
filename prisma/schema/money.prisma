@@ -13,7 +13,7 @@ model Income {
       id         String    @id @default(cuid())
       userId     String
       source     String
-      amount     Decimal
+      amount     Decimal   @db.Money
       tags       String[]  @default([])
       receivedAt DateTime  @default(now())
       createdAt  DateTime? @default(now())
@@ -27,7 +27,7 @@ model Expense {
       id        String    @id @default(cuid())
       userId    String
       category  String
-      amount    Decimal
+      amount    Decimal   @db.Money
       dueDate   DateTime
       tags      String[]  @default([])
       paid      Boolean   @default(false)
@@ -41,7 +41,7 @@ model Expense {
 model FoodBudget {
       id           String    @id @default(cuid())
       userId       String
-      amount       Decimal
+      amount       Decimal   @db.Money
       paid         Boolean   @default(false)
       shoppingDate DateTime  @default(now())
       createdAt    DateTime? @default(now())
@@ -56,7 +56,7 @@ model Bill {
       id          String    @id @default(cuid())
       userId      String
       description String
-      amount      Decimal
+      amount      Decimal   @db.Money
       tags        String[]  @default(["Bill"])
       paid        Boolean   @default(false)
       incurredAt  DateTime? @default(now())

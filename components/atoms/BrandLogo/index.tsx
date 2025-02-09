@@ -37,6 +37,7 @@ const BrandLogo = ({ type, size, ...props }: Props) => {
             width={size}
             height={size}
             {...props}
+            priority
         />
     )
 
