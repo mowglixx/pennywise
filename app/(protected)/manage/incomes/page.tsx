@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, Spinner, Stack, Tag } from "@chakra-ui/react"
+import { Card, Stack, Tag } from "@chakra-ui/react"
 import { Prisma } from "@prisma/client"
 import { useState, useEffect } from "react"
 
