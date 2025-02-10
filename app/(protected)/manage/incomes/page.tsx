@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, Stack, Tag, EmptyState, Button, ActionBarSeparator, ActionBarSelectionTrigger, ActionBarContent, ActionBarRoot } from "@chakra-ui/react"
+import { Card, Stack, Tag, EmptyState, Button, ActionBarSeparator, ActionBarSelectionTrigger, ActionBarContent, ActionBarRoot, Heading, HStack, Text } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 
 // local imports
@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/drawer"
 
 function Page() {
-    const [incomeTrigger, setIncomeTrigger] = useState(1)
     const [incomes, setIncomes] = useState([])
     const [showCreateIncomeForm, setShowCreateIncomeForm] = useState(false)
 
@@ -35,13 +34,21 @@ function Page() {
 
     useEffect(fetchIncomes, [])
 
+    // runs as part of the form submission
+    const addIncomeSubmitHook = () => {
+        // close the create income form drawer
+        setShowCreateIncomeForm(false)
+        // fetch the new incomes
+        fetchIncomes()
+    }
+
     return (
         <Stack direction={{ base: 'column' }} gap={5} >
-            <Stack direction={{ base: 'row' }} p='5' gap='5' overflowX={'scroll'}>
+            <Stack direction={{ base: 'row' }} gap='5' overflowX={'scroll'}>
                 {incomes?.length ?
                     incomes.map(({ id, source, amount, tags, receivedAt }: IncomeModel) => {
                     return (
-                        <Card.Root key={id} minW={'200px'}>
+                        <Card.Root key={id} minW={{ base: incomes.length > 1 ? '80%' : '100%', md: '300px' }}>
                             <Card.Header as='h3'>
                                 {source}
                             </Card.Header>
@@ -94,15 +101,22 @@ function Page() {
                         </EmptyState.Content>
                     </EmptyState.Root>)}
             </Stack>
-            <Card.Root as={'div'}>
+            <Stack as={'div'}>
 
-                <Card.Header as="h2">
+                <Heading as="h2">
                     Incomes
-                </Card.Header>
-                <Card.Body>
+                </Heading>
 
-                </Card.Body>
-            </Card.Root>
+                <Button onClick={() => setShowCreateIncomeForm(true)}>
+                    <HStack>
+                        <LuPlus />
+                        <Text>
+                            Add Income
+                        </Text>
+                    </HStack>
+                </Button>
+
+            </Stack>
 
 
 
@@ -112,10 +126,12 @@ function Page() {
                 <DrawerContent>
                     <DrawerCloseTrigger onClick={() => setShowCreateIncomeForm(false)} />
                     <DrawerHeader>
-                        <DrawerTitle />
+                        <DrawerTitle>
+                            Add an income
+                        </DrawerTitle>
                     </DrawerHeader>
                     <DrawerBody>
-                        <CreateIncomeForm submitState={incomeTrigger} submitTrigger={setIncomeTrigger} />
+                        <CreateIncomeForm submitTrigger={addIncomeSubmitHook} />
                     </DrawerBody>
                     <DrawerFooter />
                 </DrawerContent>

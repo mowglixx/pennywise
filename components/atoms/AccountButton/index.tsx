@@ -1,24 +1,24 @@
 "use client"
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import { Avatar, Button, HStack, Stack, Text } from "@chakra-ui/react";
-import { BsGoogle } from "react-icons/bs";
+import { FcGoogle } from 'react-icons/fc'
 
 
 function AccountButton() {
 
   const session = useSession();
+
   return (
 
     <>
-      <Button maxW={'15rem'} variant={'solid'} colorPalette={session?.status !== "authenticated" ? 'blue' : 'white'} onClick={() => {
+      <Button maxW={'15rem'} variant={'solid'} colorPalette={'white'} onClick={() => {
         return session?.status !== "authenticated" ? signIn("google", { redirect: true, redirectTo: '/manage/dash' }) : signOut({ redirect: true, redirectTo: '/' })
       }}>
         {session?.status !== "authenticated" ? (
           // Signed out
           <HStack>
-            <BsGoogle /> SignIn With Google
+            <FcGoogle /> SignIn With Google
           </HStack>
         ) : (
           // Signed in

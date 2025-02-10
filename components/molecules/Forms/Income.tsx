@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
 
 // imports
@@ -7,20 +8,19 @@ import { FieldValues, useForm } from 'react-hook-form';
 
 
 // local imports
-import { Button, Group, Input, InputAddon, Stack } from "@chakra-ui/react"
+import { Button, Group, HStack, Input, InputAddon, Stack, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { NativeSelectField, NativeSelectRoot } from "@/components/ui/native-select"
 import { NumberInputField, NumberInputRoot } from "@/components/ui/number-input"
 import { IncomeModel } from '@/infrastructure/prismaRepository';
-import { LuPoundSterling } from 'react-icons/lu';
+import { LuPlus, LuPoundSterling } from 'react-icons/lu';
 
 // triggers an effect outside the component
 interface Props {
-    submitState?: number;
-    submitTrigger?: Dispatch<SetStateAction<number>>;
+    submitTrigger?: Function;
 }
 
-export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
+export const CreateIncomeForm = ({ submitTrigger }: Props) => {
 
     const { register, handleSubmit, formState } = useForm<IncomeModel>({
         defaultValues: {
@@ -31,20 +31,16 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
     });
     const onSubmit = ({ source, amount, tags, receivedAt, frequency }: FieldValues) => {
 
-        // triggers an update on submit
-        if (submitTrigger && submitState) {
-            submitTrigger(submitState + 1)
-        }
 
-        console.log({
-            submittedData: JSON.parse(JSON.stringify({
-                source,
-                amount: Number(amount),
-                tags: tags,
-                receivedAt: new Date(receivedAt),
-                frequency
-            }))
-        })
+        // console.log({
+        //     submittedData: JSON.parse(JSON.stringify({
+        //         source,
+        //         amount: Number(amount),
+        //         tags: tags,
+        //         receivedAt: new Date(receivedAt),
+        //         frequency
+        //     }))
+        // })
 
         // POST a new income to the user's incomes
         fetch('/api/money/income', {
@@ -60,7 +56,13 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
                 'Content-Type': 'application/json'
             },
             credentials: 'include'
+        }).then(() => {
+            // triggers an update on submit
+            if (submitTrigger) {
+                submitTrigger()
+            }
         });
+
     };
 
     return (
@@ -81,37 +83,37 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
                 </Field>
 
 
-                    <Field
-                        label="Amount"
-                        invalid={!!formState.errors.amount}
-                        errorText={formState.errors.amount?.message}
-                    >
-                        <Group>
-                            <InputAddon>
-                                <LuPoundSterling />
-                            </InputAddon>
-                            <NumberInputRoot
-                                name={'amount'}
-                                inputMode={'decimal'}
-                                min={0}
-                                step={0.01}
-                                width={'fit'}
-                            >
-                                <NumberInputField {...register("amount", { required: true })} />
-                            </NumberInputRoot>
-                        </Group>
-                    </Field>
+                <Field
+                    label="Amount"
+                    invalid={!!formState.errors.amount}
+                    errorText={formState.errors.amount?.message}
+                >
+                    <Group>
+                        <InputAddon>
+                            <LuPoundSterling />
+                        </InputAddon>
+                        <NumberInputRoot
+                            name={'amount'}
+                            inputMode={'decimal'}
+                            min={0}
+                            step={0.01}
+                            width={'fit'}
+                        >
+                            <NumberInputField {...register("amount", { required: true })} />
+                        </NumberInputRoot>
+                    </Group>
+                </Field>
 
-                    <Field
-                        label={"Due"}
-                        invalid={!!formState.errors.receivedAt}
-                        errorText={formState.errors.receivedAt?.message}
-                        helperText={"When did/do you recieve this payment?"}
-                    >
-                        <Input type="date" placeholder="Date" {...register("receivedAt", {
-                            required: true
-                        })} />
-                    </Field>
+                <Field
+                    label={"Due"}
+                    invalid={!!formState.errors.receivedAt}
+                    errorText={formState.errors.receivedAt?.message}
+                    helperText={"When did/do you recieve this payment?"}
+                >
+                    <Input type="date" placeholder="Date" {...register("receivedAt", {
+                        required: true
+                    })} />
+                </Field>
 
                 <Field
                     label={"Tags"}
@@ -156,7 +158,14 @@ export const CreateIncomeForm = ({ submitState, submitTrigger }: Props) => {
 
 
                 </Field>
-                <Button type="submit">Save</Button>
+                <Button type={'submit'}>
+                    <HStack>
+                        <LuPlus />
+                        <Text>
+                            Add Income
+                        </Text>
+                    </HStack>
+                </Button>
             </Stack>
         </form>
     );
