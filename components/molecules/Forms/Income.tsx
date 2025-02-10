@@ -67,7 +67,7 @@ export const CreateIncomeForm = ({ submitTrigger }: Props) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack rowGap={'5'} columns={2}>
+            <Stack gap={5}>
 
                 <Field
                     label={"Source"}
