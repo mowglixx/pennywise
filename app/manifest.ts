@@ -10,15 +10,15 @@ export default function manifest(): MetadataRoute.Manifest {
 
     // Localization
     lang: "en",
-    start_url: "/manage/dashboard",
+    start_url: "/manage/dash",
 
     // Display
     display: "standalone",
     orientation: "natural",
 
     // Theming
-    theme_color: "#a44698",
-    background_color: "#0b040b",
+    theme_color: "#ffffff",
+    background_color: "#000000",
     icons: [
       {
         src: "/web-app-manifest-192x192.png",
