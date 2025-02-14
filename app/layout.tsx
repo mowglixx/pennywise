@@ -6,8 +6,6 @@ import { Stack } from "@chakra-ui/react";
 import Providers from "./providers";
 import Header from "@/components/organisms/Header";
 
-// Styles
-
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
 
@@ -19,10 +17,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-
+        <noscript>You need to enable JavaScript to run this app.</noscript>
         <Providers>
-          <Stack as='main'>
             <Header />
+          <Stack pt={'10'} as='main'>
             {children}
           </Stack>
         </Providers>

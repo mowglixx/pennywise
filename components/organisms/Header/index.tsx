@@ -62,7 +62,7 @@ const Header = () => {
     description: 'Docs and FAQ'
   })
   return (
-    <Stack p={'5'} outline={'solid'} _backdrop={{ backdropBlur: '5px', backdropBrightness: '50%' }}>
+    <Stack p={'5'} position={'fixed'} width={'100%'} zIndex={999} outline={'solid'} backdropFilter={'blur(3px) brightness(0.25)'}>
       <HStack justifyContent={'space-between'}>
         <LinkBox>
           <LinkOverlay asChild>

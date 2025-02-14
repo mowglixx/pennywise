@@ -1,9 +1,8 @@
 "use client"
 
-import styles from './styles.module.css'
 import AccountButton from "@/components/atoms/AccountButton";
 import { useState } from "react";
-import { Button, Stack, Heading, Link, LinkOverlay, Text, LinkBox, HStack } from "@chakra-ui/react";
+import { Button, Stack, Link, LinkOverlay, Text, LinkBox, HStack, useMediaQuery } from "@chakra-ui/react";
 import {
     DrawerBackdrop,
     DrawerBody,
@@ -17,6 +16,7 @@ import {
 } from "@/components/ui/drawer"
 
 import { LuMenu } from 'react-icons/lu';
+import { ColorModeButton } from '@/components/ui/color-mode';
 
 interface Props {
     navItems: {
@@ -30,12 +30,10 @@ interface Props {
 export default function HeaderNav({ navItems }: Props) {
 
     const [navExpand, setNavExpand] = useState(false);
-
     return (
         <>
-            <HStack justifyContent={'flex-end'}>
-                <Button onClick={() => setNavExpand(!navExpand)}><LuMenu /></Button>
-                <DrawerRoot open={navExpand} aria-hidden={!navExpand}>
+            {/* Navbar Drawer */}
+            <DrawerRoot open={navExpand} aria-hidden={!navExpand}>
                     <DrawerBackdrop />
                     <DrawerTrigger />
                     <DrawerContent>
@@ -70,6 +68,12 @@ export default function HeaderNav({ navItems }: Props) {
                         </DrawerFooter>
                     </DrawerContent>
                 </DrawerRoot>
+
+
+            {/* Navbar content */}
+            <HStack justifyContent={'flex-end'} gapX={'5'}>
+                <ColorModeButton />
+                <Button onClick={() => setNavExpand(!navExpand)}><LuMenu /></Button>
             </HStack>
         </>
     );
