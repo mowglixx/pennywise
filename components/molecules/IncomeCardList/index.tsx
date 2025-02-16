@@ -14,8 +14,9 @@ export interface IncomeCardListProps {
 const IncomeCardList = ({ incomes, setDrawerState }: IncomeCardListProps) => {
 
     // if there are incomes, show a list of the incomes
-    if (incomes?.length < 1) {
-        return (
+    return (
+        <Suspense fallback={<Spinner size={'xl'} />}>
+            {/* {incomes?.length < 1 ? (
             // if there are no incomes show an empty state container
             <EmptyState.Root>
                 <EmptyState.Content>
@@ -31,13 +32,16 @@ const IncomeCardList = ({ incomes, setDrawerState }: IncomeCardListProps) => {
                         </Button>
                     </EmptyState.Description>
                 </EmptyState.Content>
-            </EmptyState.Root>)
-    }
-    return (<Stack direction={{ base: 'row', md: 'column' }}>
-        {incomes.map(({ id, source, amount, tags, receivedAt }: IncomeModel, _, arr) => {
-            return <IncomeCard key={id} count={arr.length} source={source} receivedAt={receivedAt} amount={amount} tags={tags} />
-        })}
-    </Stack>)
+                </EmptyState.Root>) : ( */}
+
+            <Stack direction={{ base: 'row', md: 'column' }} gapX={'5'}>
+                {incomes.map(({ id, source, amount, tags, receivedAt }: IncomeModel) => {
+                    return <IncomeCard key={id} count={incomes.length} source={source} receivedAt={receivedAt} amount={amount} tags={tags} />
+                })}
+
+            </Stack>
+            {/* )} */}
+        </Suspense>)
 
 
 }
