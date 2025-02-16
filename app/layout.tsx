@@ -15,12 +15,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <meta name="apple-mobile-web-app-title" content="Pennywise" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Pennywise</title>
       </head>
       <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <Providers>
             <Header />
-          <Stack pt={'10'} as='main'>
+          <Stack pt={'20'} as='main'>
             {children}
           </Stack>
         </Providers>
