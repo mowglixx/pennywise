@@ -11,12 +11,14 @@ export default function Home() {
 
       <Stack py={'60'} textAlign={{ base: 'center' }}>
         <Heading as={'h2'} fontSize={{ base: '2xl' }}>Pennywise</Heading>
+      {/* Section */}
         <Text>A budget tracker so simple, even a kid could use it.</Text>
         <Em> Because tracking money sucks.</Em>
         {status === "unauthenticated" && <button onClick={() => signIn("google")}>Sign Up Now</button>}
       </Stack>
 
       <Stack py={'60'} textAlign={{ base: 'center' }}>
+      {/* Section */}
         <Heading as={'h2'} fontSize={{ base: '2xl' }}>Feature Showcase</Heading>
         <Stack as={'ul'}>
           <Card.Root>
@@ -43,6 +45,7 @@ export default function Home() {
           </Card.Root>
         </Stack>
       </Stack>
+      {/* Section */}
 
       <Stack py={'60'} textAlign={{ base: 'center' }}>
         <Heading as={'h2'} fontSize={{ base: '2xl' }}>Why?</Heading>
@@ -50,11 +53,13 @@ export default function Home() {
       </Stack>
 
       <Stack py={'60'} textAlign={{ base: 'center' }}>
+      {/* Section */}
         <Heading as={'h2'} fontSize={{ base: '2xl' }}>Your Data, I don&apos;t want it, ew</Heading>
         <p>Not only do I not want your data—I actively encourage you to self-host Pennywise. The only thing I store is your Google Email and Display Name, just so I can link your account. That&apos;s it. No tracking, no selling, no &quot;trusted partners&quot;.</p>
       </Stack>
 
       <Stack py={'60'} textAlign={{ base: 'center' }}>
+      {/* Section */}
         <Heading as={'h2'} fontSize={{ base: '2xl' }}>Support My Work</Heading>
         <p>This app is built with love, caffeine, and a concerning amount of Walkers (Lays) Crisps. If you like Pennywise and want to keep me fueled, consider donating.If you do, I&apos;ll even add your name to the contributors&apos; page (coming soon).</p>
         <a href="https://paypal.me/mowglixx">Donate Here</a>
