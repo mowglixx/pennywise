@@ -1,7 +1,7 @@
 "use client"
 
-import { Card, Stack, Tag, EmptyState, Button, ActionBarSeparator, ActionBarSelectionTrigger, ActionBarContent, ActionBarRoot, Heading, HStack, Text } from "@chakra-ui/react"
-import { useState, useEffect, useRef } from "react"
+import { Stack, Button, Heading, HStack, Text } from "@chakra-ui/react"
+import { useState, useEffect } from "react"
 
 // local imports
 import { CreateIncomeForm } from "@/components/molecules/Forms/Income"
@@ -45,7 +45,7 @@ function IncomesPage() {
 
     return (
         <Stack direction={{ base: 'column', md: 'row' }} gap={5} >
-            <Stack direction={{ base: 'row', md: 'column' }} gap='5' overflowX={'scroll'}>
+            <Stack direction={{ base: 'row', md: 'column' }} gap='5' overflowX={{ smDown: 'scroll' }}>
                 {<IncomeCardList incomes={incomes} setDrawerState={setShowCreateIncomeForm} />}
             </Stack>
             <Stack as={'section'} aria-labelledby="incomeSummaryHeading">
