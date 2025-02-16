@@ -1,6 +1,12 @@
+import { Stack } from "@chakra-ui/react"
+
+
+
 const DashboardPage = () => {
     return (
-        <div>DashboardPage</div>
+        <Stack>
+            Howdy
+        </Stack>
     )
 }
 export default DashboardPage
