@@ -1,19 +1,14 @@
 "use client"
 
 // imports
-// import { useSession, } from "next-auth/react"
-// import Link from "next/link";
-
-// Local imports
-// import BrandLogo from "@/components/atoms/BrandLogo";
-import HeaderNav from "@/components/organisms/HeaderNav";
 import { Heading, HStack, Link, LinkBox, LinkOverlay, Stack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { LuBanknote } from "react-icons/lu";
 
 
-// import styles from './styles.module.css'
-
+// Local imports
+import HeaderNav from "@/components/molecules/HeaderNav";
+import { useMemo } from "react";
 
 const Header = () => {
 

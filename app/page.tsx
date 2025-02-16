@@ -1,6 +1,6 @@
 "use client"
 
-import { Heading, Stack, Text, Card, Em, } from "@chakra-ui/react";
+import { Heading, Stack, Text, Card, Em, Button, HStack, StackSeparator, Link } from "@chakra-ui/react";
 import { signIn, useSession } from "next-auth/react";
 
 export default function Home() {

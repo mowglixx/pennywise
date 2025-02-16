@@ -1,7 +1,8 @@
 import { IncomeModel } from "@/infrastructure/prismaRepository";
-import { Button, EmptyState, Stack } from "@chakra-ui/react";
+import { Button, EmptyState, Spinner, Stack } from "@chakra-ui/react";
 import { LuBanknote, LuPlus } from "react-icons/lu";
 import IncomeCard from "@/components/atoms/IncomeCard";
+import { Suspense } from "react";
 
 
 export interface IncomeCardListProps {
