@@ -18,7 +18,7 @@ const IncomeCard = ({ count, source, receivedAt, amount, tags }: IncomeCardProps
         <Card.Body>
             <Stack>
 
-                <Stack direction='row'>
+                <Stack direction='row' justifyContent={'space-between'}>
                     <p>{new Date(receivedAt).toLocaleDateString()}</p>
                     <p>£{new Prisma.Decimal(amount).toFixed(2)}</p>
                 </Stack>
