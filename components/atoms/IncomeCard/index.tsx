@@ -11,7 +11,7 @@ export interface IncomeCardProps {
 }
 
 const IncomeCard = ({ count, source, receivedAt, amount, tags }: IncomeCardProps) => {
-    return <Card.Root minW={{ base: count > 1 ? '80%' : '100%', md: '300px' }}>
+    return <Card.Root minW={{ base: count > 1 ? '300px' : '90vw', md: '300px' }}>
         <Card.Header as='h3'>
             {source}
         </Card.Header>
