@@ -1,3 +1,5 @@
+"use client"
+
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
 import { Heading, Stack } from "@chakra-ui/react"
 import { useContext } from "react"
@@ -8,21 +10,21 @@ import { IncomeModel } from "@/infrastructure/prismaRepository";
 
 
 const DashboardPage = () => {
-    const userData = useContext(UserDataContext)
+    const { userData } = useContext(UserDataContext)
 
     return (
         <Stack>
             <Heading>
                 Dashboard
             </Heading>
-            {userData.userData.incomes?.map && (
+            {userData?.incomes?.map && (
                 <Pie
                     title="Incomes"
                     data={{
-                        labels: [...userData.userData.incomes.map((income: IncomeModel) => income.source)],
+                        labels: [...userData.incomes.map((income: IncomeModel) => income.source)],
                         datasets: [{
                             label: 'Amount',
-                            data: userData.userData.incomes.map((income: IncomeModel) => Number(income.amount).toFixed(2)),
+                            data: userData.incomes.map((income: IncomeModel) => Number(income.amount).toFixed(2)),
                         }]
                     }}
                 />)
