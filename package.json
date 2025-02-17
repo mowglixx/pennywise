@@ -23,6 +23,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
     "@chakra-ui/react": "^3.7.0",
+    "@choc-ui/chakra-autocomplete": "6.0.0",
     "@emotion/react": "^11.14.0",
     "@prisma/client": "^6.3.1",
     "chart.js": "^4.4.7",
