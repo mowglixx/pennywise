@@ -1,50 +1,55 @@
-import { Card, Stack, Tag } from '@chakra-ui/react'
+import { UpdateIncomeForm } from '@/components/molecules/Forms/Income'
+import { IncomeModel } from '@/infrastructure/prismaRepository'
+import toTitleCase from '@/lib/helpers/toTitleCase'
+import relativeTimeFormatter from '@/lib/helpers/toTitleCase/realiveDateFormatter'
+import { Card, Drawer, DrawerRoot, Stack, Tag, Text } from '@chakra-ui/react'
 import { Prisma } from '@prisma/client'
 
-
 export interface IncomeCardProps {
-    count: number,
-    source: string,
-    receivedAt: Date,
-    amount: string | number,
-    tags: string[] | undefined
+    index: number,
+    income: IncomeModel
+
 }
 
-const IncomeCard = ({ count, source, receivedAt, amount, tags }: IncomeCardProps) => {
-    return <Card.Root minW={{ base: count > 1 ? '300px' : '90vw', md: '300px' }}>
-        <Card.Header as='h3'>
-            {source}
+const IncomeCard = ({ index, income }: IncomeCardProps) => {
+
+    return (
+        <Card.Root as={'li'}
+            width={{ base: "100%", smDown: '90vw' }}
+            h={'100%'}
+            variant={index > 0 ? "elevated" : "subtle"}
+        >
+            <Card.Header>
+                {income.source}
         </Card.Header>
         <Card.Body>
             <Stack>
 
                 <Stack direction='row' justifyContent={'space-between'}>
-                    <p>{new Date(receivedAt).toLocaleDateString()}</p>
-                    <p>£{new Prisma.Decimal(amount).toFixed(2)}</p>
+                        <Text fontVariant={'all-small-caps'}>{income.frequency}</Text>
                 </Stack>
 
-                <Stack direction='row'>
-                    {tags?.length ?
-                        // if there are tags, show a list of the tags
-                        <>
-                            {tags.map((tag, i) => (
+                    <Stack direction='row' justifyContent={'space-between'}>
+                        <Text>{relativeTimeFormatter(new Date(income.receivedAt))}</Text>
+                        <Text>{new Date(income.receivedAt).toDateString()}</Text>
+                        <Text fontStyle={'italic'}>£{new Prisma.Decimal(income.amount).toFixed(2)}</Text>
+                    </Stack>
+
+                    {
+                        Array.isArray(income.tags) && income.tags?.length &&
+                        <Stack direction='row'>
+                                {income.tags.map((tag, i) => (
                                 <Tag.Root key={i}>
                                     <Tag.Label>
                                         {tag}
                                     </Tag.Label>
                                 </Tag.Root>
-                            ))}
-                        </>
-                        // if there are no tags, show an "Untagged" tag
-                        : (<Tag.Root>
-                            <Tag.Label>
-                                Untagged
-                            </Tag.Label>
-                        </Tag.Root>)}
-                </Stack>
+                                ))}
+                            </Stack>
+                    }
             </Stack>
         </Card.Body>
-    </Card.Root>
+        </Card.Root>)
 }
 
 export default IncomeCard
