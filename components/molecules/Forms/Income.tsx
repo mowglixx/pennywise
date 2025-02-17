@@ -4,11 +4,21 @@
 
 // imports
 import React, { Dispatch, SetStateAction } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 
 
 // local imports
-import { Button, Group, HStack, Input, InputAddon, Stack, Text } from "@chakra-ui/react"
+import { Button, FieldHelperText, Group, HStack, Input, InputAddon, Separator, Stack, Text } from "@chakra-ui/react"
+import {
+    AutoComplete,
+    AutoCompleteInput,
+    AutoCompleteItem,
+    AutoCompleteTag,
+    AutoCompleteList,
+    AutoCompleteCreatable,
+} from "@choc-ui/chakra-autocomplete";
+
+
 import { Field } from "@/components/ui/field"
 import { NativeSelectField, NativeSelectRoot } from "@/components/ui/native-select"
 import { NumberInputField, NumberInputRoot } from "@/components/ui/number-input"
@@ -22,25 +32,29 @@ interface Props {
 
 export const CreateIncomeForm = ({ submitTrigger }: Props) => {
 
-    const { register, handleSubmit, formState } = useForm<IncomeModel>({
+    const { register, control, handleSubmit, formState } = useForm<IncomeModel>({
         defaultValues: {
-            tags: ["Earned Income"],
             frequency: "MONTHLY",
-            amount: '499.99'
+            amount: '499.99',
+            // used for default taglist
+            tags: [
+                "Earned Income",
+                "Benefits",
+                "Unearned Income"],
         }
     });
     const onSubmit = ({ source, amount, tags, receivedAt, frequency }: FieldValues) => {
 
 
-        // console.log({
-        //     submittedData: JSON.parse(JSON.stringify({
-        //         source,
-        //         amount: Number(amount),
-        //         tags: tags,
-        //         receivedAt: new Date(receivedAt),
-        //         frequency
-        //     }))
-        // })
+        console.log({
+            submittedData: JSON.parse(JSON.stringify({
+                source,
+                amount: Number(amount),
+                tags: tags,
+                receivedAt: new Date(receivedAt),
+                frequency
+            }))
+        })
 
         // POST a new income to the user's incomes
         fetch('/api/money/income', {
@@ -115,24 +129,46 @@ export const CreateIncomeForm = ({ submitTrigger }: Props) => {
                     })} />
                 </Field>
 
+
                 <Field
                     label={"Tags"}
                     invalid={!!formState.errors.tags}
                     errorText={formState.errors.tags?.message}
                 >
-                    <NativeSelectRoot
-                        minH={10}
-                        {...register("tags")}>
-                        <NativeSelectField
-                            minH={10}
-                            items={[
-                                "Earned Income",
-                                "Unemployment Benefit",
-                                "Disability Benefit"
-                            ]}
-                        />
-                    </NativeSelectRoot>
+                    <Controller
+                        control={control}
+                        rules={{
+                            required: true,
+                        }}
+                        name="tags"
+                        render={({ field }) => (
+                            <AutoComplete openOnFocus multiple onChange={field.onChange} suggestWhenEmpty creatable>
+                                <AutoCompleteList>
+                                    {field?.value && field?.value?.length && field?.value?.map((tag, cid) => (
+                                        <AutoCompleteItem key={`option-${cid}`} value={tag}>
+                                            {tag}
+                                        </AutoCompleteItem>
+                                    ))}
+                                    <AutoCompleteCreatable>
+                                        {({ value }) => <span>Add {value} to Tags</span>}
+                                    </AutoCompleteCreatable>
+                                </AutoCompleteList>
+                                <AutoCompleteInput>
+                                    {({ tags }) => tags.map((tag, tid) => (
+                                        <AutoCompleteTag
+                                            key={tid}
+                                            label={tag.label}
+                                            onRemove={tag.onRemove}
+                                        />
+                                    ))}
+                                </AutoCompleteInput>
+                            </AutoComplete>)}
+                    />
+                    {formState.errors.tags && <FieldHelperText>{formState.errors.tags?.message}</FieldHelperText>}
                 </Field>
+
+
+
                 <Field
                     label={"Frequency"}
                     invalid={!!formState.errors.frequency}
