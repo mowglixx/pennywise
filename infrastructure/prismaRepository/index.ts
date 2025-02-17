@@ -1,18 +1,5 @@
-// import { prisma } from '@/prisma';
-import { Income, Expense, FoodBudget, Bill, Prisma } from '@prisma/client';
-// import { PrismaClient } from '@prisma/client/extension';
+import { Income, Expense, FoodBudget, Bill, Prisma, User } from '@prisma/client';
 
-// import { Income } from '@prisma/client';
-
-
-// class PrismaRepository {
-
-//     private client: PrismaClient= prisma
-
-
-
-
-// }
 // Workaround for Decimals in Postgres so react-hook-form is easier to work with
 export type IncomeInputs = Income & {
     amount: number;
@@ -48,5 +35,28 @@ export class IncomeModel {
         this.createdAt = income.createdAt || undefined
         this.updatedAt = income.updatedAt || undefined
         this.frequency = income.frequency
+    }
+}
+
+export class UserDataModel {
+    name?: string
+    email: string
+    image?: string
+    incomes: IncomeModel[]
+    expenses: Expense[]
+    bills: Bill[]
+    food_shop: FoodBudget[]
+    emailVerified?: Date
+
+    constructor(user: User & { incomes: IncomeModel[], expenses: Expense[], bills: Bill[], food_shop: FoodBudget[] }) {
+        this.name = user.name || undefined
+        this.email = user.email
+        this.image = user.image || undefined
+        this.incomes = user.incomes || []
+        this.expenses = user.expenses || []
+        this.bills = user.bills || []
+        this.food_shop = user.food_shop || []
+
+        this.emailVerified = user.emailVerified || undefined
     }
 }
