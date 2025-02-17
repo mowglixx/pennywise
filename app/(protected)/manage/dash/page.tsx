@@ -5,7 +5,7 @@ import { Heading, Stack } from "@chakra-ui/react"
 import { useContext } from "react"
 import 'chart.js/auto';
 import { Pie } from "react-chartjs-2"
-import { IncomeModel } from "@/infrastructure/prismaRepository";
+import { IncomeModel } from "@/lib/infrastructure/prismaRepository";
 
 
 

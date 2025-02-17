@@ -1,5 +1,5 @@
 import { UpdateIncomeForm } from '@/components/molecules/Forms/Income'
-import { IncomeModel } from '@/infrastructure/prismaRepository'
+import { IncomeModel } from '@/lib/infrastructure/prismaRepository'
 import toTitleCase from '@/lib/helpers/toTitleCase'
 import relativeTimeFormatter from '@/lib/helpers/toTitleCase/realiveDateFormatter'
 import { Card, Drawer, DrawerRoot, Stack, Tag, Text } from '@chakra-ui/react'
