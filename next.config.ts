@@ -1,22 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  images:{
+  images: {
     remotePatterns: [
       {
         hostname: '*.googleusercontent.com',
         protocol: 'https',
-        port: '',
-        pathname: '/**',
-        search: '',
+        pathname: '/**'
       }
     ]
   },
   experimental: {
-    optimizePackageImports:[
-      "@chakra-ui/react"
-    ]
-  }
+      optimizePackageImports: [
+        "@chakra-ui/react"
+      ]
+    }
 };
 
 export default nextConfig;
