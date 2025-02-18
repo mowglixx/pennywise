@@ -1,7 +1,7 @@
 'use client'
-import { UserDataModel } from '@/infrastructure/prismaRepository'
+import { UserDataModel } from '@/lib/infrastructure/prismaRepository'
 import { useSession } from 'next-auth/react'
-import { createContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 
 const emptyUser: UserDataModel = {
@@ -22,7 +22,8 @@ export default function UserDataProvider({ children }: { children: React.ReactNo
 
     const [userData, setUserData] = useState(emptyUser)
     const userSession = useSession()
-    // memo an empty user to prevent re-renders
+
+    // used to reload data
     const triggerUpdate = () => {
 
         // get active session
@@ -30,16 +31,18 @@ export default function UserDataProvider({ children }: { children: React.ReactNo
             fetch('/api/userdata')
                 .then(res => res.json())
                 .then(data => { setUserData(data); return data })
-                .then(console.log)
+                // .then(console.log)
         } else {
             setUserData({ ...emptyUser })
         }
     }
 
 
-
+    // update on session change to clear data
     useEffect(triggerUpdate, [userSession])
 
-    return <UserDataContext.Provider value={{ userData, update: triggerUpdate }}>{children}</UserDataContext.Provider>
+    return (<UserDataContext.Provider value={{ userData, update: triggerUpdate }}>
+        {children}
+    </UserDataContext.Provider>)
 
 }
