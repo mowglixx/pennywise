@@ -3,7 +3,7 @@
 import { Stack, Button, Heading, HStack, Text, Separator, DataList, Portal, VisuallyHidden, Grid } from "@chakra-ui/react"
 import { useContext } from "react"
 import 'chart.js/auto';
-import { Pie } from 'react-chartjs-2';
+import { Pie, Chart } from 'react-chartjs-2';
 
 // local imports
 // import { CreateIncomeForm, UpdateIncomeForm } from "@/components/molecules/Forms/Income"
@@ -32,9 +32,8 @@ function IncomesPage() {
     return (
         <>
 
-                <Grid templateColumns={{ base: "2fr 1fr", mdDown: "1fr" }} gap={5} pb={'10'} >
-                    <IncomeCardList incomes={userData.incomes} />
-                    <Stack position={'sticky'} as={'section'} direction={{ base: 'column' }} aria-labelledby="incomeSummaryHeading">
+            <Grid templateColumns={{ base: "2fr 1fr", mdDown: "1fr" }} gap={5} pb={'20'} >
+                <Stack order={{ mdDown: 0 }} position={'sticky'} as={'section'} direction={{ base: 'column' }} aria-labelledby="incomeSummaryHeading">
                         <Heading id="incomeSummaryHeading">
                             Summary
                         </Heading>
@@ -44,7 +43,8 @@ function IncomesPage() {
                                 <>
                                     <Stack direction={{ base: 'column' }}>
                                         <Stack py={'5'}>
-                                            <Pie
+                                        <Chart
+                                            type="doughnut"
                                                 data={{
                                                     labels: [...userData.incomes.map((income: IncomeModel) => income.source)],
                                                     datasets: [{
@@ -52,7 +52,7 @@ function IncomesPage() {
                                                         data: userData.incomes.map((income: IncomeModel) => Number(income.amount).toFixed(2)),
                                                     }]
                                                 }}
-                                            redraw={false}
+                                            redraw
                                             />
                                         </Stack>
                                         <DataList.Root variant={'bold'} orientation="horizontal" justifyContent={'center'}>
@@ -68,10 +68,11 @@ function IncomesPage() {
                                     </Stack>
                                 </>
                             )
-                            }
+                        }
                         </Stack>
 
                     </Stack>
+                <IncomeCardList incomes={userData.incomes} />
                 </Grid>
             <ActionBarRoot open>
                 <ActionBarContent>
