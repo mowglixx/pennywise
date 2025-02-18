@@ -1,81 +1,48 @@
 "use client"
 
-import { Stack, Button, Heading, HStack, Text, DataList, Separator } from "@chakra-ui/react"
-import { useState, useEffect, useContext } from "react"
+import { Stack, Button, Heading, HStack, Text, Separator, DataList } from "@chakra-ui/react"
+import { useContext } from "react"
 import 'chart.js/auto';
 import { Pie } from 'react-chartjs-2';
 
 // local imports
-import { CreateIncomeForm } from "@/components/molecules/Forms/Income"
+// import { CreateIncomeForm, UpdateIncomeForm } from "@/components/molecules/Forms/Income"
 import IncomeCardList from "@/components/molecules/IncomeCardList"
 
 // Chakra UI Local Imports
 import { LuPlus } from "react-icons/lu"
-import {
-    DrawerBackdrop,
-    DrawerBody,
-    DrawerCloseTrigger,
-    DrawerContent,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerRoot,
-    DrawerTitle,
-    DrawerTrigger,
-} from '@/components/ui/drawer';
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
-import { IncomeModel } from "@/infrastructure/prismaRepository";
-import { relative } from "path";
+import { IncomeModel } from "@/lib/infrastructure/prismaRepository";
+import { useActionDrawer } from "@/components/contexts/ActionDrawerContext";
 
 
 
 function IncomesPage() {
-    const [showCreateIncomeForm, setShowCreateIncomeForm] = useState(false)
 
-    const { userData, update } = useContext(UserDataContext)
+    const { userData } = useContext(UserDataContext)
+    const { setActionForm } = useActionDrawer()
 
-
-    // runs as part of the form submission
-    const addIncomeSubmitHook = () => {
-        // close the create income form drawer
-        setShowCreateIncomeForm(false)
-        // fetch the new incomes
-        update()
-    }
 
     return (
         <>
-            <DrawerRoot open={showCreateIncomeForm} placement={{ smDown: 'bottom', md: 'end' }} size={{ smDown: 'sm', md: 'md' }} >
-                <DrawerBackdrop />
-                <DrawerTrigger />
-                <DrawerContent offset={{ smDown: '10' }}>
-                    <DrawerCloseTrigger onClick={() => setShowCreateIncomeForm(false)} />
-                    <DrawerHeader>
-                        <DrawerTitle>
-                            Add an income
-                        </DrawerTitle>
-                    </DrawerHeader>
-                    <DrawerBody>
-                        {/* Submit hook allows for page refresh after submit */}
-                        <CreateIncomeForm submitTrigger={addIncomeSubmitHook} />
-                    </DrawerBody>
-                    <DrawerFooter />
-                </DrawerContent>
-            </DrawerRoot>
+            <Stack position={'relative'} direction={{ base: 'column-reverse', md: 'row' }} gap={5}>
 
-
-            <Stack position={'relative'} direction={{ base: 'column', md: 'row' }} gap={5} >
-
-                <Stack position={'relative'} direction={{ base: 'row', md: 'column' }} gap='5' overflowX={{ smDown: 'scroll' }}>
-                    {<IncomeCardList incomes={userData.incomes} setDrawerState={setShowCreateIncomeForm} />}
+                <Stack mb={0} position={'relative'} direction={{ base: 'row', md: 'column' }} gap='5' overflowX={{ smDown: 'scroll' }}>
+                    {Array.isArray(userData?.incomes) && <IncomeCardList incomes={userData.incomes} />}
+                    {/* <pre>
+                        {JSON.stringify(userData, null, 2)}
+                    </pre> */}
                 </Stack>
+                <Separator mt={-5} />
 
-                <Stack position={'sticky'} as={'section'} direction={{ base: 'column' }} aria-labelledby="incomeSummaryHeading" minH={'100vh'}>
+                <Stack position={'sticky'} as={'section'} direction={{ base: 'column' }} aria-labelledby="incomeSummaryHeading">
                     <Heading as="h2" id="incomeSummaryHeading">
                         Income Summary
                     </Heading>
-                    <Stack>
+                    <Stack direction={{ base: 'column-reverse', md: 'column' }}>
 
-                        {userData.incomes?.map && (
+                        {userData.incomes?.length && userData.incomes?.map && (
+                            <>
                             <Stack direction={{ base: 'column', md: 'row' }}>
                                 <Stack py={'5'}>
                                     <Pie
@@ -86,9 +53,9 @@ function IncomesPage() {
                                                 data: userData.incomes.map((income: IncomeModel) => Number(income.amount).toFixed(2)),
                                             }]
                                         }}
-                                    />
+                                        />
                                 </Stack>
-                                <Separator />
+                                </Stack>
                                 <DataList.Root variant={'bold'} orientation="horizontal">
                                     <DataList.Item>
                                         <DataList.ItemLabel>Incomes Sources</DataList.ItemLabel>
@@ -99,12 +66,14 @@ function IncomesPage() {
                                         <DataList.ItemValue>£{userData.incomes.reduce((prev, current) => { return prev + Number(current.amount) }, 0).toFixed(2)}</DataList.ItemValue>
                                     </DataList.Item>
                                 </DataList.Root>
-                            </Stack>
+                            </>
                         )
                         }
 
 
-                        <Button justifySelf={'end'} onClick={() => setShowCreateIncomeForm(true)} aria-labelledby="AddIncomeFormButton">
+                        <Button justifySelf={'end'} onClick={() => {
+                            setActionForm("income", "create", undefined)
+                        }} aria-labelledby="AddIncomeFormButton">
                             <HStack>
                                 <LuPlus />
                                 <Text id="AddIncomeFormButton">
