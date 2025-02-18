@@ -1,7 +1,7 @@
 
 // "Borrowed" from https://blog.webdevsimplified.com/2020-07/relative-time-format/
 
-const formatter = new Intl.RelativeTimeFormat(undefined, {
+const formatter = new Intl.RelativeTimeFormat("en", {
     numeric: "auto",
 })
 
@@ -15,7 +15,7 @@ const DIVISIONS: { amount: number, name: Intl.RelativeTimeFormatUnit }[] = [
     { amount: Number.POSITIVE_INFINITY, name: "years" },
 ]
 
-export default function relativeTimeFormatter(date: Date) {
+export default function relativeDateFormatter(date: Date) {
     let duration = (Number(date) - Number(new Date())) / 1000
 
     for (const division of DIVISIONS) {
