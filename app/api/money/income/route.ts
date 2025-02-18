@@ -1,10 +1,9 @@
 import { auth } from "@/auth";
-// import { IncomeModel } from "@/infrastructure/prismaRepository";
 import { prisma as p } from "@/prisma";
 import { Prisma } from "@prisma/client";
 import { NextRequest } from "next/server";
 
-// create
+
 export const POST = async (req: NextRequest) => {
 
   const authSession = await auth();
@@ -58,7 +57,7 @@ export const GET = async () => {
   try {
     if (authSession?.user) {
 
-      console.log(`Incomes pulled for ${authSession?.user?.name}`)
+      // console.log(`Incomes pulled for ${authSession?.user?.name}`)
 
       return Response.json(await p.income.findMany({
         where: {
