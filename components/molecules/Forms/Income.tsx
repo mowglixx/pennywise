@@ -20,7 +20,6 @@ import { Field } from "@/components/ui/field"
 import { NativeSelectField, NativeSelectRoot } from "@/components/ui/native-select"
 import { NumberInputField, NumberInputRoot } from "@/components/ui/number-input"
 import { IncomeModel } from '@/lib/infrastructure/prismaRepository';
-import { UserDataContext } from '@/components/contexts/UserDataProvider';
 import { useActionDrawer } from '@/components/contexts/ActionDrawerContext';
 import IncomeCard from '@/components/atoms/IncomeCard';
 
@@ -31,12 +30,7 @@ export const CreateIncomeForm = () => {
     const { register, control, handleSubmit, formState } = useForm<IncomeModel>({
         defaultValues: {
             frequency: "MONTHLY",
-            amount: '499.99',
-            // used for default taglist
-            tags: [
-                "Earned Income",
-                "Benefits",
-                "Unearned Income"],
+            amount: '499.99'
         }
     });
     const onSubmit = ({ source, amount, tags, receivedAt, frequency }: FieldValues) => {
@@ -47,7 +41,7 @@ export const CreateIncomeForm = () => {
             body: JSON.stringify({
                 source,
                 amount: Number(amount),
-                tags: tags,
+                tags: tags.split(',')?.map((t: string) => t.trim()),
                 receivedAt: new Date(receivedAt),
                 frequency
             }),
@@ -111,42 +105,18 @@ export const CreateIncomeForm = () => {
                     })} />
                 </Field>
 
-
                 <Field
                     label={"Tags"}
                     invalid={!!formState.errors.tags}
                     errorText={formState.errors.tags?.message}
                 >
-                    <Controller
-                        control={control}
-                        rules={{
-                            required: true,
-                        }}
-                        name="tags"
-                        render={({ field }) => (
-                            <AutoComplete openOnFocus multiple onChange={field.onChange} suggestWhenEmpty creatable>
-                                <AutoCompleteList>
-                                    {field?.value && field?.value?.length && field?.value?.map((tag, cid) => (
-                                        <AutoCompleteItem key={`option-${cid}`} value={tag}>
-                                            {tag}
-                                        </AutoCompleteItem>
-                                    ))}
-                                    <AutoCompleteCreatable>
-                                        {({ value }) => <span>Add {value} to Tags</span>}
-                                    </AutoCompleteCreatable>
-                                </AutoCompleteList>
-                                <AutoCompleteInput>
-                                    {({ tags }) => tags.map((tag, tid) => (
-                                        <AutoCompleteTag
-                                            key={tid}
-                                            label={tag.label}
-                                            onRemove={tag.onRemove}
-                                        />
-                                    ))}
-                                </AutoCompleteInput>
-                            </AutoComplete>)}
+
+                    <Input
+                        type="text"
+                        placeholder="Wages, Benefits, Rent Income..."
+                        {...register("tags", { required: true })}
                     />
-                    {formState.errors.tags && <FieldHelperText>{formState.errors.tags?.message}</FieldHelperText>}
+                    <FieldHelperText>Tags are seperated by a comma. Tags can be anything you like and can help categorise your incomes.</FieldHelperText>
                 </Field>
 
 
@@ -199,24 +169,13 @@ export const UpdateIncomeForm = () => {
     });
     const onSubmit = ({ source, amount, tags, receivedAt, frequency }: FieldValues) => {
 
-
-// console.log({
-//     submittedData: JSON.parse(JSON.stringify({
-//         source,
-//         amount: Number(amount),
-//         tags: tags,
-//         receivedAt: new Date(receivedAt),
-//         frequency
-//     }))
-// })
-
         // PATCH an income to update the details
         fetch(`/api/money/income/${actionDrawerState?.resourceObject?.id}`, {
             method: "PATCH",
             body: JSON.stringify({
                 source,
                 amount: Number(amount),
-                tags: tags,
+                tags: tags.split(',')?.map((t: string) => t.trim()),
                 receivedAt: new Date(receivedAt),
                 frequency
             }),
@@ -283,45 +242,21 @@ export const UpdateIncomeForm = () => {
                     })} />
                 </Field>
 
-
+                {/* TODO: Autocomplete Tag Field has dep conflicts with react 19, wait for update or find alt lib */}
                 <Field
                     label={"Tags"}
                     invalid={!!formState.errors.tags}
                     errorText={formState.errors.tags?.message}
                 >
-                    <Controller
-                        control={control}
-                        rules={{
-                            required: true,
-                        }}
-                        name="tags"
-                        disabled={!!actionDrawerState?.resourceObject?.id}
-                        render={({ field }) => (
-                            <AutoComplete openOnFocus multiple onChange={field.onChange} suggestWhenEmpty creatable>
-                                <AutoCompleteList>
-                                    {field?.value && field?.value?.length && field?.value?.map((tag, cid) => (
-                                        <AutoCompleteItem key={`option-${cid}`} value={tag}>
-                                            {tag}
-                                        </AutoCompleteItem>
-                                    ))}
-                                    <AutoCompleteCreatable>
-                                        {({ value }) => <span>Add {value} to Tags</span>}
-                                    </AutoCompleteCreatable>
-                                </AutoCompleteList>
-                                <AutoCompleteInput>
-                                    {({ tags }) => tags.map((tag, tid) => (
-                                        <AutoCompleteTag
-                                            key={tid}
-                                            label={tag.label}
-                                            onRemove={tag.onRemove}
-                                        />
-                                    ))}
-                                </AutoCompleteInput>
-                            </AutoComplete>)}
-                    />
-                    {formState.errors.tags && <FieldHelperText>{formState.errors.tags?.message}</FieldHelperText>}
-                </Field>
 
+                    <Input
+                        type="text"
+                        placeholder="Wages, Benefits, Rent Income..."
+                        {...register("tags", { required: true })}
+                        disabled={!!actionDrawerState?.resourceObject?.id}
+                    />
+                    <FieldHelperText>Tags can be anything you like and can help categorise your incomes, tags are seperated by a comma (,)</FieldHelperText>
+                </Field>
 
 
                 <Field
