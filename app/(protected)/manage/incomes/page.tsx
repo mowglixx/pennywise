@@ -52,6 +52,7 @@ function IncomesPage() {
                                                         data: userData.incomes.map((income: IncomeModel) => Number(income.amount).toFixed(2)),
                                                     }]
                                                 }}
+                                            redraw={false}
                                             />
                                         </Stack>
                                         <DataList.Root variant={'bold'} orientation="horizontal" justifyContent={'center'}>
