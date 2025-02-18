@@ -20,12 +20,9 @@ const IncomeCard = ({ income, hideControls }: IncomeCardProps) => {
     const { setActionForm } = useActionDrawer()
 
     return (
-        <Card.Root as={'li'}
-            width={{ base: "100%", smDown: '90vw' }}
-            h={'100%'}
-        >
+        <Card.Root as={'li'}>
             <Card.Header>
-                <HStack justifyContent={'space-between'}>
+                <Stack justifyContent={'space-between'} direction={{ base: 'row', mdDown: 'column' }}>
                     <Stack truncate>
                         {income.source}
                     </Stack>
@@ -33,7 +30,7 @@ const IncomeCard = ({ income, hideControls }: IncomeCardProps) => {
                         <Button variant={'ghost'} onClick={() => setActionForm("income", "update", income)}><LuPencil /></Button>
                         <Button variant={'ghost'} onClick={() => setActionForm("income", "delete", income)}><LuTrash /></Button>
                     </HStack>}
-                </HStack>
+                </Stack>
             </Card.Header>
             <Card.Body>
                 <Stack>
