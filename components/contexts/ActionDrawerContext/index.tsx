@@ -1,10 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { CreateIncomeForm, DeleteIncomeForm, UpdateIncomeForm } from '@/components/molecules/Forms/Income'
-import { Button, Dialog, Drawer, Portal, useDialog, useDrawer } from '@chakra-ui/react'
+import { useDrawer } from '@chakra-ui/react'
 import React, { createContext, useContext, useState } from 'react'
 import { UserDataContext } from '../UserDataProvider'
 import { IncomeModel } from '@/lib/infrastructure/prismaRepository'
+import {
+    DrawerBackdrop,
+    DrawerBody,
+    DrawerCloseTrigger,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerRoot,
+    DrawerTitle,
+} from "@/components/ui/drawer"
 
 interface IActionDrawerContext {
     actionDrawerState: ActionDrawerState | any,
@@ -112,7 +122,7 @@ export type ActionDrawerState = {
 export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { update } = useContext(UserDataContext)
-    const drawer = useDrawer()
+    const [drawerExpand, setDrawerExpand] = useState(false);
 
     const [actionDrawerState, setActionDrawerState] = useState<ActionDrawerState>(defaultState);
 
@@ -123,35 +133,38 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
             if (resourceObject) {
                 console.log({ resourceObject })
             }
-            drawer.setOpen(true)
+            setDrawerExpand(true)
         }
 
     }
 
     const toggleDrawerAndUpdate = () => {
-        drawer.setOpen(false)
+        setDrawerExpand(false)
         setActionDrawerState(defaultState)
         update()
     }
 
     return (
         <ActionDrawerContext.Provider value={{ actionDrawerState, setActionForm, toggleDrawerAndUpdate, }}>
-            <Drawer.RootProvider value={drawer} size={'md'} placement={'bottom'}>
-                {/* <Dialog.Root open={actionDrawerState.open} size={'cover'} placement={'center'}> */}
-                <Drawer.Backdrop />
-                <Drawer.Content offset={{ smDown: '10' }}>
-                    <Drawer.Header>
-                        <Drawer.Title>
+            <DrawerRoot
+                open={drawerExpand}
+                aria-hidden={!drawerExpand}
+                placement={{ base: 'end', smDown: 'bottom' }}
+                size={{ base: 'md', smDown: 'full' }}
+            >
+                <DrawerBackdrop />
+                <DrawerContent>
+                    <DrawerCloseTrigger onClick={() => setDrawerExpand(false)} />
+                    <DrawerHeader>
+                        <DrawerTitle>
                             {actionDrawerState?.actionDrawerChildren?.title && actionDrawerState.actionDrawerChildren.title}
-                        </Drawer.Title>
-                        <Drawer.CloseTrigger />
-                    </Drawer.Header>
-                    <Drawer.Body>
+                        </DrawerTitle>
+                    </DrawerHeader>
+                    <DrawerBody>
                         {actionDrawerState?.actionDrawerChildren?.Component && <actionDrawerState.actionDrawerChildren.Component />}
-                    </Drawer.Body>
-                    <Drawer.Footer />
-                </Drawer.Content>
-            </Drawer.RootProvider>
+                    </DrawerBody>
+                </DrawerContent>
+            </DrawerRoot>
             {children}
         </ActionDrawerContext.Provider>)
 }

@@ -5,7 +5,7 @@ import { Stack } from "@chakra-ui/react";
 // Local Imports
 import Providers from "./providers";
 import Header from "@/components/organisms/Header";
-
+import { ActionDrawerProvider } from "@/components/contexts/ActionDrawerContext";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
 
@@ -22,7 +22,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Providers>
             <Header />
           <Stack pt={'20'} as='main'>
+            <ActionDrawerProvider>
             {children}
+            </ActionDrawerProvider>
           </Stack>
         </Providers>
       </body>

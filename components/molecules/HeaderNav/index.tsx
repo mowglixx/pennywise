@@ -33,7 +33,12 @@ export default function HeaderNav({ navItems }: Props) {
     return (
         <>
             {/* Navbar Drawer */}
-            <DrawerRoot open={navExpand} aria-hidden={!navExpand}>
+            <DrawerRoot
+                open={navExpand}
+                aria-hidden={!navExpand}
+                placement={{ base: 'end', smDown: 'top' }}
+                size={{ base: 'md', smDown: 'lg' }}
+            >
                     <DrawerBackdrop />
                     <DrawerTrigger />
                     <DrawerContent>
