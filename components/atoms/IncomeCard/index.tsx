@@ -1,20 +1,23 @@
 "use client"
 
 import { IncomeModel } from '@/lib/infrastructure/prismaRepository'
-import { Card, Stack, Tag, Text } from '@chakra-ui/react'
+import { Button, Card, HStack, Stack, Tag, Text } from '@chakra-ui/react'
 import { calculateNextPayday } from '@/lib/helpers/calcDates'
 import relativeDateFormatter from '@/lib/helpers/relativeDateFormatter'
 import { useState } from 'react'
 import { Prisma } from '@prisma/client'
+import { useActionDrawer } from '@/components/contexts/ActionDrawerContext'
+import { LuPencil, LuTrash } from 'react-icons/lu'
 
 export interface IncomeCardProps {
     income: IncomeModel
-
+    hideControls?: boolean
 }
 
-const IncomeCard = ({ income }: IncomeCardProps) => {
+const IncomeCard = ({ income, hideControls }: IncomeCardProps) => {
 
     const nextPayday = calculateNextPayday({ startDate: income.receivedAt, interval: income.frequency }, new Date())
+    const { setActionForm } = useActionDrawer()
 
     return (
         <Card.Root as={'li'}
@@ -22,7 +25,15 @@ const IncomeCard = ({ income }: IncomeCardProps) => {
             h={'100%'}
         >
             <Card.Header>
-                {income.source}
+                <HStack justifyContent={'space-between'}>
+                    <Stack truncate>
+                        {income.source}
+                    </Stack>
+                    {!hideControls && <HStack>
+                        <Button variant={'ghost'} onClick={() => setActionForm("income", "update", income)}><LuPencil /></Button>
+                        <Button variant={'ghost'} onClick={() => setActionForm("income", "delete", income)}><LuTrash /></Button>
+                    </HStack>}
+                </HStack>
             </Card.Header>
             <Card.Body>
                 <Stack>
@@ -40,12 +51,12 @@ const IncomeCard = ({ income }: IncomeCardProps) => {
 
                     <Stack direction='row'>
                         {income?.tags?.map && income.tags.map((tag, i) => (
-                                <Tag.Root key={i}>
-                                    <Tag.Label>
-                                        {tag}
-                                    </Tag.Label>
-                                </Tag.Root>
-                                ))}
+                            <Tag.Root key={i}>
+                                <Tag.Label>
+                                    {tag}
+                                </Tag.Label>
+                            </Tag.Root>
+                        ))}
                     </Stack>
                 </Stack>
             </Card.Body>

@@ -3,11 +3,12 @@ import { prisma as p } from "@/prisma";
 import { Prisma } from "@prisma/client";
 import { NextRequest } from "next/server";
 
-
-export const POST = async (req: NextRequest) => {
+//update
+export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
 
   const authSession = await auth();
-  const data = await req.json()
+  const data = await req.json();
+  const id = (await params).id;
 
   if (!authSession?.user?.email) {
 
@@ -16,7 +17,8 @@ export const POST = async (req: NextRequest) => {
   }
   try {
 
-    const createdIncome = await p.income.create({
+    const updatedIncome = await p.income.update({
+      where: { id },
       data: {
         source: data.source,
         amount: new Prisma.Decimal(data.amount),
@@ -31,7 +33,7 @@ export const POST = async (req: NextRequest) => {
       }
     })
 
-    return Response.json(createdIncome)
+    return Response.json(updatedIncome)
 
   } catch (error) {
 
@@ -43,41 +45,30 @@ export const POST = async (req: NextRequest) => {
 };
 
 
-// read
-export const GET = async () => {
+// // delete
+export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
 
   const authSession = await auth();
+  const id = (await params).id;
 
   if (!authSession?.user?.email) {
 
     return Response.json({ message: "Not authenticated" }, { status: 401 })
 
   }
-
   try {
-    if (authSession?.user) {
 
-      return Response.json(await p.income.findMany({
-        where: {
-          user: {
-            email: `${authSession?.user?.email}`
-          }
-        },
-        orderBy: {
-          receivedAt: "asc"
-        },
-        select: {
-          id: true,
-          source: true,
-          amount: true,
-          tags: true,
-          receivedAt: true,
-          updatedAt: true
-        }
-      })
-      )
-    }
+    const updatedIncome = await p.income.delete({
+      where: { id }
+    })
+
+    return Response.json(updatedIncome)
+
   } catch (error) {
+
     return Response.json({ error })
+
   }
+
+
 };

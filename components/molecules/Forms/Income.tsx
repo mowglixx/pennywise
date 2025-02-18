@@ -4,7 +4,7 @@
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button, FieldHelperText, Group, HStack, Input, InputAddon, Stack, Text } from "@chakra-ui/react"
 
-import { LuPlus, LuPoundSterling } from 'react-icons/lu';
+import { LuPencil, LuPlus, LuPoundSterling, LuTrash } from 'react-icons/lu';
 
 
 // Local Imports
@@ -157,7 +157,9 @@ export const UpdateIncomeForm = () => {
     const { actionDrawerState, toggleDrawerAndUpdate } = useActionDrawer()
 
     const { register, control, handleSubmit, formState } = useForm<IncomeModel>({
-        defaultValues: actionDrawerState?.resourceObject ? { ...actionDrawerState.resourceObject } : {}
+        defaultValues: {
+            ...actionDrawerState.resourceObject, receivedAt: new Date(actionDrawerState.resourceObject.receivedAt).valueOf()
+        }
     });
     const onSubmit = ({ source, amount, tags, receivedAt, frequency }: FieldValues) => {
 
@@ -167,7 +169,7 @@ export const UpdateIncomeForm = () => {
             body: JSON.stringify({
                 source,
                 amount: Number(amount),
-                tags: tags.split(',')?.map((t: string) => t.trim()),
+                tags: `${tags}`.split(',')?.map((t: string) => t.trim()),
                 receivedAt: new Date(receivedAt),
                 frequency
             }),
@@ -197,7 +199,7 @@ export const UpdateIncomeForm = () => {
                         type="text"
                         placeholder="Secret Millions"
                         {...register("source", { required: true })}
-                        disabled={!!actionDrawerState?.resourceObject?.id}
+                        disabled={!actionDrawerState?.resourceObject?.id}
                     />
                 </Field>
 
@@ -218,7 +220,7 @@ export const UpdateIncomeForm = () => {
                             step={0.01}
                             width={'fit'}
                         >
-                            <NumberInputField {...register("amount", { required: true })} disabled={!!actionDrawerState?.resourceObject?.id} />
+                            <NumberInputField {...register("amount", { required: true })} disabled={!actionDrawerState?.resourceObject?.id} />
                         </NumberInputRoot>
                     </Group>
                 </Field>
@@ -245,7 +247,7 @@ export const UpdateIncomeForm = () => {
                         type="text"
                         placeholder="Wages, Benefits, Rent Income..."
                         {...register("tags", { required: true })}
-                        disabled={!!actionDrawerState?.resourceObject?.id}
+                        disabled={!actionDrawerState?.resourceObject?.id}
                     />
                     <FieldHelperText>Tags can be anything you like and can help categorise your incomes, tags are seperated by a comma (,)</FieldHelperText>
                 </Field>
@@ -278,9 +280,9 @@ export const UpdateIncomeForm = () => {
                 </Field>
                 <Button type={'submit'}>
                     <HStack>
-                        <LuPlus />
+                        <LuPencil />
                         <Text>
-                            Add Income
+                            Update Income
                         </Text>
                     </HStack>
                 </Button>
@@ -298,15 +300,8 @@ export const DeleteIncomeForm = () => {
     const onSubmit = ({ source, amount, tags, receivedAt, frequency }: FieldValues) => {
 
         // POST a new income to the user's incomes
-        fetch('/api/money/income', {
-            method: "POST",
-            body: JSON.stringify({
-                source,
-                amount: Number(amount),
-                tags: tags,
-                receivedAt: new Date(receivedAt),
-                frequency
-            }),
+        fetch(`/api/money/income/${actionDrawerState.resourceObject.id}`, {
+            method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -326,11 +321,11 @@ export const DeleteIncomeForm = () => {
                 </Text>
                 {
                     actionDrawerState?.resourceObject &&
-                    <IncomeCard income={actionDrawerState.resourceObject} />
+                    <IncomeCard income={actionDrawerState.resourceObject} hideControls />
                 }
                 <Button type={'submit'}>
                     <HStack>
-                        <LuPlus />
+                        <LuTrash />
                         <Text>
                             Delete Income
                         </Text>

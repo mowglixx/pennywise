@@ -1,7 +1,5 @@
 import { auth } from "@/auth";
 import { prisma as p } from "@/prisma";
-import { Prisma } from "@prisma/client";
-import { NextRequest } from "next/server";
 
 export const GET = async () => {
 
@@ -15,9 +13,6 @@ export const GET = async () => {
 
     try {
         if (authSession?.user) {
-
-            console.log(`Incomes pulled for ${authSession?.user?.name}`)
-
             return Response.json(await p.user.findUnique({
                 where: {
                     email: authSession.user.email

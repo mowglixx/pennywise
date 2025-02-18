@@ -120,6 +120,9 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
 
         if (["income", "expense", "bill", "food_shop"].includes(resourceType) && ["create", "update", "delete"].includes(action)) {
             setActionDrawerState({ ...defaultState, actionDrawerChildren: forms[resourceType][action], resourceObject })
+            if (resourceObject) {
+                console.log({ resourceObject })
+            }
             drawer.setOpen(true)
         }
 
