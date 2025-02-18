@@ -1,17 +1,9 @@
 'use client'
 
 // imports
-import { useContext } from 'react';
-import { Controller, FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import { Button, FieldHelperText, Group, HStack, Input, InputAddon, Stack, Text } from "@chakra-ui/react"
-import {
-    AutoComplete,
-    AutoCompleteInput,
-    AutoCompleteItem,
-    AutoCompleteTag,
-    AutoCompleteList,
-    AutoCompleteCreatable,
-} from "@choc-ui/chakra-autocomplete";
+
 import { LuPlus, LuPoundSterling } from 'react-icons/lu';
 
 
