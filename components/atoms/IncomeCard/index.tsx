@@ -27,7 +27,7 @@ const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
                     </Text>
                     {
                         !hideControls &&
-                        <Checkbox checked={selectedResource.selectedResource.id === income.id} />
+                        <Checkbox checked={selectedResource.selectedResource?.id === income.id} />
 
                     }
                 </HStack>

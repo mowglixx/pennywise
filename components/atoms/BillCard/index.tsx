@@ -27,7 +27,7 @@ const BillCard = ({ bill, hideControls, onClick }: BillCardProps) => {
                     </Text>
                     {
                         !hideControls &&
-                        <Checkbox checked={selectedResource.selectedResource.id === bill.id} />
+                        <Checkbox checked={selectedResource.selectedResource?.id === bill.id} />
                     }
                 </HStack>
                 <Text fontWeight={'bold'} fontSize={'xl'}><sup>£</sup> {new Prisma.Decimal(Number(bill.amount)).toFixed(2)}</Text>

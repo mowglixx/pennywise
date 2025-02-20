@@ -27,7 +27,7 @@ const ShppingCard = ({ shopping, hideControls, onClick }: ShppingCardProps) => {
                     </Text>
                     {
                         !hideControls &&
-                        <Checkbox checked={selectedResource.selectedResource.id === shopping.id} />
+                        <Checkbox checked={selectedResource.selectedResource?.id === shopping.id} />
                     }
                 </HStack>
                 <Text fontWeight={'bold'} fontSize={'xl'}><sup>£</sup> {new Prisma.Decimal(Number(shopping.amount)).toFixed(2)}</Text>
