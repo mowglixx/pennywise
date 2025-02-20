@@ -175,7 +175,6 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
         if (availableResourceTypes.includes(resourceType) && actionStringsArr.includes(action)) {
             setActionDrawerState({ ...defaultContext, actionDrawerChildren: forms[resourceType][action], resourceObject })
             if (resourceObject) {
-                // console.log({ resourceObject })
             }
             setDrawerExpand(true)
         }
@@ -190,7 +189,6 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
     }
     const selectResource = (resourceType: Prisma.ModelName | undefined, selectedResource: ResourceType | undefined) => {
         if (resourceType && availableResourceTypes.includes(resourceType)) {
-            // console.log({ resourceType, selectedResource })
             setSelectedItem({ resourceType, selectedResource })
         }
     }
