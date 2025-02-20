@@ -19,41 +19,39 @@ const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
     const { selectedResource } = useActionDrawer()
 
     return (
-        <Card.Root as={'li'} minW={'100%'} width={'100%'} onClick={onClick && !hideControls ? onClick : () => { }}>
+        <Card.Root as={'li'} minW={'100%'} width={'100%'} onClick={onClick && !hideControls ? onClick : () => { }} variant={'subtle'}>
             <Card.Header>
-                <Stack justifyContent={'space-between'} direction={{ base: 'row', mdDown: 'column' }}>
-                    <Stack truncate>
-                        <Heading>
-                            {income.source}
-                        </Heading>
-                    </Stack>
-                    {!hideControls && <HStack>
-                        <Checkbox checked={selectedResource.selectedResource === income} />
-                    </HStack>}
-                </Stack>
+                <HStack justifyContent={'space-between'}>
+                    <Text fontSize={'xl'}>
+                        {income.source}{income.description && ` - ${income.description}`}
+                    </Text>
+                    <Checkbox checked={selectedResource.selectedResource === income} />
+                </HStack>
+                <Text fontWeight={'bold'} fontSize={'xl'}><sup>£</sup> {new Prisma.Decimal(Number(income.amount)).toFixed(2)}</Text>
             </Card.Header>
             <Card.Body>
                 <Stack>
 
-                    <Stack direction='row' justifyContent={'space-between'}>
-                        <Text fontVariant={'all-small-caps'}>{income.frequency}</Text>
-                    </Stack>
-
-                    <Stack direction='row' justifyContent={'space-between'}>
-                        <Text title={nextPayday.toDateString()}>
-                            {relativeDateFormatter(nextPayday)}
+                    <Stack justifyContent={'space-between'} direction={{ base: 'row', smDown: 'column' }}>
+                        <Stack>
+                            <Text title={nextPayday.toDateString()}>
+                                Due {relativeDateFormatter(nextPayday)}
+                            </Text>
+                        </Stack>
+                        <Text fontSize={'sm'} fontVariant={'all-small-caps'}>
+                            {income.frequency}
                         </Text>
-                        <Text fontStyle={'italic'}>£{new Prisma.Decimal(Number(income.amount)).toFixed(2)}</Text>
-                    </Stack>
-
-                    <Stack direction='row'>
-                        {Array.isArray(income?.tags) && income.tags.map((tag, i) => (
-                            <Tag.Root key={i}>
-                                <Tag.Label>
-                                    {tag}
-                                </Tag.Label>
-                            </Tag.Root>
-                        ))}
+                        <Stack>
+                            <HStack>
+                                {Array.isArray(income?.tags) && income.tags.map((tag, i) => (
+                                    <Tag.Root size={'lg'} key={i} maxW={'100px'}>
+                                        <Tag.Label>
+                                            {tag}
+                                        </Tag.Label>
+                                    </Tag.Root>
+                                ))}
+                            </HStack>
+                        </Stack>
                     </Stack>
                 </Stack>
             </Card.Body>

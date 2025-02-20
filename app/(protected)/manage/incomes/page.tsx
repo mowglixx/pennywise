@@ -54,7 +54,7 @@ function IncomesPage() {
 
     return (
         <>
-            <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={5} pb={'20'}>
+
                 <GridItem order={{ mdDown: 0 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
                     <Heading>
                         Summary
@@ -83,6 +83,10 @@ function IncomesPage() {
                                             <DataList.ItemValue>{userData.incomes.length}</DataList.ItemValue>
                                         </DataList.Item>
                                         <DataList.Item>
+                                        <DataList.ItemLabel>Top Income</DataList.ItemLabel>
+                                        <DataList.ItemValue>{`${userData.incomes.sort((a, b) => Number(a.amount) - Number(b.amount))?.[0].source} - ${userData.incomes.sort((a, b) => Number(a.amount) - Number(b.amount))?.[0].description}`}</DataList.ItemValue>
+                                    </DataList.Item>
+                                    <DataList.Item>
                                             <DataList.ItemLabel>Total Income</DataList.ItemLabel>
                                             <DataList.ItemValue>£ {userData.incomes.reduce((prev, current) => { return prev + Number(current.amount) }, 0).toFixed(2)}</DataList.ItemValue>
                                         </DataList.Item>
@@ -96,8 +100,7 @@ function IncomesPage() {
                 </GridItem>
                 <GridItem order={{ mdDown: 1 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
                     <IncomeCardList incomes={userData.incomes} />
-                </GridItem>
-            </Grid>
+            </GridItem>
             <ActionBarRoot open={true}>
                 <ActionBarContent>
                     <Button justifySelf={'end'} onClick={() => {
