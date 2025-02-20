@@ -14,10 +14,8 @@ import { LuClipboardPen, LuPencil, LuPlus, LuTrash } from "react-icons/lu"
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
 import { useActionDrawer } from "@/components/contexts/ActionDrawerContext";
 import {
-    ActionBarCloseTrigger,
     ActionBarContent,
     ActionBarRoot,
-    ActionBarSelectionTrigger,
     ActionBarSeparator,
 } from "@/components/ui/action-bar"
 import { Prisma } from "@prisma/client";
