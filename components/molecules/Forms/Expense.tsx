@@ -12,25 +12,26 @@ import { Field } from "@/components/ui/field"
 import { NativeSelectField, NativeSelectRoot } from "@/components/ui/native-select"
 import { NumberInputField, NumberInputRoot } from "@/components/ui/number-input"
 import { useActionDrawer } from '@/components/contexts/ActionDrawerContext';
-import IncomeCard from '@/components/atoms/IncomeCard';
 import { Prisma } from '@prisma/client';
+import ExpenseCard from '@/components/atoms/ExpenseCard';
 
 export const CreateExpenseForm = () => {
 
     const { toggleDrawerAndUpdate } = useActionDrawer()
 
-    const { register, control, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
+    const { register, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
         defaultValues: {
             frequency: "MONTHLY"
         }
     });
-    const onSubmit = ({ source, amount, tags, dueDate, frequency }: FieldValues) => {
+    const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
         // POST a new expense to the user's expenses
         fetch('/api/money/expense', {
             method: "POST",
             body: JSON.stringify({
-                source,
+                source, 
+                description,
                 amount: Number(amount),
                 tags: tags.split(',')?.map((t: string) => t.trim()),
                 dueDate: new Date(dueDate),
@@ -60,6 +61,18 @@ export const CreateExpenseForm = () => {
                         type="text"
                         placeholder="New Shoes, Social Club...."
                         {...register("source", { required: true })}
+                    />
+                </Field>
+                <Field
+                    label={"Description"}
+                    invalid={!!formState.errors.description}
+                    errorText={formState.errors.description?.message}
+                >
+
+                    <Input
+                        type="text"
+                        placeholder="New Shoes, Social Club...."
+                        {...register("description", { required: true })}
                     />
                 </Field>
 
@@ -155,18 +168,19 @@ export const UpdateExpenseForm = () => {
 
     const { actionDrawerState, toggleDrawerAndUpdate } = useActionDrawer()
 
-    const { register, control, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
+    const { register, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
         defaultValues: {
             ...actionDrawerState.resourceObject, dueDate: new Date(actionDrawerState.resourceObject.dueDate).toISOString().substring(0, 10)
         }
     });
-    const onSubmit = ({ source, amount, tags, dueDate, frequency }: FieldValues) => {
+    const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
         // PATCH an expense to update the details
         fetch(`/api/money/expense/${actionDrawerState?.resourceObject?.id}`, {
             method: "PATCH",
             body: JSON.stringify({
-                source,
+                source, 
+                description,
                 amount: Number(amount),
                 tags: `${tags}`.split(',')?.map((t: string) => t.trim()),
                 dueDate: new Date(dueDate),
@@ -198,6 +212,20 @@ export const UpdateExpenseForm = () => {
                         type="text"
                         placeholder="Secret Millions"
                         {...register("source", { required: true })}
+                        disabled={!actionDrawerState?.resourceObject?.id}
+                    />
+                </Field>
+
+                <Field
+                    label={"Description"}
+                    invalid={!!formState.errors.description}
+                    errorText={formState.errors.description?.message}
+                >
+
+                    <Input
+                        type="text"
+                        placeholder="Secret Millions"
+                        {...register("description", { required: true })}
                         disabled={!actionDrawerState?.resourceObject?.id}
                     />
                 </Field>
@@ -320,7 +348,7 @@ export const DeleteExpenseForm = () => {
                 </Text>
                 {
                     actionDrawerState?.resourceObject &&
-                    <IncomeCard income={actionDrawerState.resourceObject} hideControls />
+                    <ExpenseCard expense={actionDrawerState.resourceObject} hideControls />
                 }
                 <Button type={'submit'}>
                     <HStack>
