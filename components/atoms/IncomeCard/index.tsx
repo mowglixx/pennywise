@@ -25,7 +25,10 @@ const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
                     <Text fontSize={'xl'}>
                         {income.source}{income.description && ` - ${income.description}`}
                     </Text>
-                    <Checkbox checked={selectedResource.selectedResource === income} />
+                    {
+                        !hideControls &&
+                        <Checkbox checked={selectedResource.selectedResource === income} />
+                    }
                 </HStack>
                 <Text fontWeight={'bold'} fontSize={'xl'}><sup>£</sup> {new Prisma.Decimal(Number(income.amount)).toFixed(2)}</Text>
             </Card.Header>
