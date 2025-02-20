@@ -22,14 +22,8 @@ const IncomeCardList = ({ incomes }: IncomeCardListProps) => {
     return (
         <Stack>
             <Heading>Income List</Heading>
-            <Grid as={'ul'} gap={'5'} p={'5'} templateColumns={{ base: "1fr", md: "1fr 1fr" }} borderBottom={'1px solid fg.100'}>
-                {incomes.map((income, i) => {
-                return (
-                    <GridItem key={income.id} colSpan={{ base: i === 0 ? 2 : 1, smDown: 1 }} rowSpan={1}>
-                        <IncomeCard onClick={() => { selectResource("Income", selectedResource?.selectedResource === income ? undefined : income) }} income={income} />
-                    </GridItem>
-                )
-            })}
+            <Grid as={'ul'} gap={'5'} templateColumns={"1fr"}>
+                {incomes.map((income, i) => <IncomeCard key={income.id} onClick={() => { selectResource("Income", selectedResource?.selectedResource === income ? undefined : income) }} income={income} />)}
         </Grid>
         </Stack>
     )

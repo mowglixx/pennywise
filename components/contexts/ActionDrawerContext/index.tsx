@@ -175,7 +175,7 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
         if (availableResourceTypes.includes(resourceType) && actionStringsArr.includes(action)) {
             setActionDrawerState({ ...defaultContext, actionDrawerChildren: forms[resourceType][action], resourceObject })
             if (resourceObject) {
-                console.log({ resourceObject })
+                // console.log({ resourceObject })
             }
             setDrawerExpand(true)
         }
@@ -185,19 +185,19 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
     const toggleDrawerAndUpdate = () => {
         setDrawerExpand(false)
         setActionDrawerState(defaultContext)
-        selectItem(undefined, undefined)
+        selectResource(undefined, undefined)
         update()
     }
-    const selectItem = (resourceType: Prisma.ModelName | undefined, selectedResource: ResourceType | undefined) => {
+    const selectResource = (resourceType: Prisma.ModelName | undefined, selectedResource: ResourceType | undefined) => {
         if (resourceType && availableResourceTypes.includes(resourceType)) {
-            console.log({ resourceType, selectedResource })
+            // console.log({ resourceType, selectedResource })
             setSelectedItem({ resourceType, selectedResource })
         }
     }
 
     return (
         <ActionDrawerContext.Provider value={{
-            actionDrawerState, setActionForm, toggleDrawerAndUpdate, selectedResource: selectedItem, selectResource: selectItem
+            actionDrawerState, setActionForm, toggleDrawerAndUpdate: ()=> toggleDrawerAndUpdate(), selectedResource: selectedItem, selectResource
         }}>
             <DrawerRoot
                 open={drawerExpand}

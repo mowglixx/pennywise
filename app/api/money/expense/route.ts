@@ -7,7 +7,7 @@ import { NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest) => {
 
-  const authSession: Session|null = await auth();
+  const authSession: Session | null = await auth();
   const data: Expense = await req.json()
 
   if (!authSession?.user?.email) {
@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
 
     const createdExpense = await p.expense.create({
       data: {
-source: data.source,
+        source: data.source,
         description: data.description,
         amount: new Prisma.Decimal(data.amount),
         frequency: data.frequency,

@@ -1,7 +1,7 @@
 "use client"
 
 import { Stack, Button, Heading, HStack, Text, Separator, DataList, Portal, VisuallyHidden, Grid, GridItem, EmptyState } from "@chakra-ui/react"
-import { useContext } from "react"
+import { useContext, useMemo } from "react"
 import 'chart.js/auto';
 import { Pie, Chart } from 'react-chartjs-2';
 
@@ -27,8 +27,12 @@ function IncomesPage() {
     const { userData } = useContext(UserDataContext)
     const { selectedResource, setActionForm } = useActionDrawer()
 
+    const incomes = useMemo(() => {
+        return userData.incomes
+    }, [[...userData.incomes], userData.incomes])
 
-    if (userData.incomes.length < 1) return (
+
+    if (incomes.length < 1) return (
         <EmptyState.Root>
             <EmptyState.Content>
                 <EmptyState.Indicator>
@@ -54,6 +58,7 @@ function IncomesPage() {
 
     return (
         <>
+            <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={5} pb={'20'}>
 
                 <GridItem order={{ mdDown: 0 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
                     <Heading>
@@ -61,34 +66,36 @@ function IncomesPage() {
                     </Heading>
                     <Stack>
 
-                        {userData.incomes?.length && userData.incomes?.map && (
+                        {incomes?.length && incomes?.map && (
                             <>
                                 <Stack direction={{ base: 'column' }}>
                                     <Stack py={'5'} maxW={{ base: "600px" }}>
                                         <Chart
-                                            redraw
                                             type="doughnut"
                                             data={{
-                                                labels: [...userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => income.source)],
+                                                labels: [...incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => income.description)],
                                                 datasets: [{
                                                     label: 'Income',
-                                                    data: userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => Number(income.amount).toFixed(2)),
+                                                    data: [...incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => Number(income.amount).toFixed(2))],
                                                 }]
+                                            }}
+                                            options={{
+                                                responsive: true,
                                             }}
                                         />
                                     </Stack>
                                     <DataList.Root variant={'bold'} orientation="horizontal" justifyContent={'center'}>
                                         <DataList.Item>
                                             <DataList.ItemLabel>Incomes Sources</DataList.ItemLabel>
-                                            <DataList.ItemValue>{userData.incomes.length}</DataList.ItemValue>
+                                            <DataList.ItemValue>{incomes.length}</DataList.ItemValue>
                                         </DataList.Item>
                                         <DataList.Item>
                                         <DataList.ItemLabel>Top Income</DataList.ItemLabel>
-                                        <DataList.ItemValue>{`${userData.incomes.sort((a, b) => Number(a.amount) - Number(b.amount))?.[0].source} - ${userData.incomes.sort((a, b) => Number(a.amount) - Number(b.amount))?.[0].description}`}</DataList.ItemValue>
+                                            <DataList.ItemValue>{`${incomes.sort((a, b) => Number(a.amount) - Number(b.amount))?.[0].source} - ${incomes.sort((a, b) => Number(a.amount) - Number(b.amount))?.[0].description}`}</DataList.ItemValue>
                                     </DataList.Item>
                                     <DataList.Item>
                                             <DataList.ItemLabel>Total Income</DataList.ItemLabel>
-                                            <DataList.ItemValue>£ {userData.incomes.reduce((prev, current) => { return prev + Number(current.amount) }, 0).toFixed(2)}</DataList.ItemValue>
+                                            <DataList.ItemValue>£ {incomes.reduce((prev, current) => { return prev + Number(current.amount) }, 0).toFixed(2)}</DataList.ItemValue>
                                         </DataList.Item>
                                     </DataList.Root>
                                 </Stack>
@@ -101,6 +108,7 @@ function IncomesPage() {
                 <GridItem order={{ mdDown: 1 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
                     <IncomeCardList incomes={userData.incomes} />
             </GridItem>
+            </Grid>
             <ActionBarRoot open={true}>
                 <ActionBarContent>
                     <Button justifySelf={'end'} onClick={() => {

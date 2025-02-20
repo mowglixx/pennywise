@@ -10,7 +10,7 @@ export default async function ManagePagesLayout({ children }: Readonly<{ childre
 
     return (
         <Stack p={'5'} maxW={'900px'} align={'center'}>
-            <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={5} pb={'20'}>
+            <Grid templateColumns={{ base: "1fr" }} gap={5} pb={'20'}>
                 {children}
             </Grid>
         </Stack>

@@ -29,7 +29,7 @@ const DashboardPage = () => {
             label: "Shopping",
             data: userData.shopping.map((shopping: Prisma.ShoppingCreateWithoutUserInput) => Number(shopping.amount)).reduce((a, b) => a + b, 0)
         },
-    ].filter(o => o.data !== 0), [userData?.incomes, userData?.bills, userData?.expenses, userData?.shopping,]
+    ].filter(o => o.data !== 0), [userData.incomes, userData.bills, userData.expenses, userData.shopping]
     )
     // remove irrelevant data
 

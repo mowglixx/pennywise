@@ -49,7 +49,7 @@ export default function UserDataProvider({ children }: { children: React.ReactNo
 
 
     // update on session change to clear data
-    useEffect(triggerUpdate, [userSession])
+    useEffect(triggerUpdate, [userSession.status])
 
     return (<UserDataContext.Provider value={{ userData, update: triggerUpdate }}>
         {children}

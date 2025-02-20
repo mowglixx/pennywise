@@ -33,25 +33,23 @@ const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
                 <Stack>
 
                     <Stack justifyContent={'space-between'} direction={{ base: 'row', smDown: 'column' }}>
-                        <Stack>
+                        <Stack justifyContent={'end'}>
                             <Text title={nextPayday.toDateString()}>
                                 Due {relativeDateFormatter(nextPayday)}
                             </Text>
+                            <Text fontSize={'sm'} fontVariant={'all-small-caps'}>
+                                {income.frequency}
+                            </Text>
                         </Stack>
-                        <Text fontSize={'sm'} fontVariant={'all-small-caps'}>
-                            {income.frequency}
-                        </Text>
-                        <Stack>
-                            <HStack>
-                                {Array.isArray(income?.tags) && income.tags.map((tag, i) => (
-                                    <Tag.Root size={'lg'} key={i} maxW={'100px'}>
-                                        <Tag.Label>
-                                            {tag}
-                                        </Tag.Label>
-                                    </Tag.Root>
-                                ))}
-                            </HStack>
-                        </Stack>
+                        <HStack maxW={'50%'} flexWrap={'wrap'} justifyContent={'end'}>
+                            {Array.isArray(income?.tags) && income.tags.map((tag, i) => (
+                                <Tag.Root size={'lg'} key={i} maxW={'200px'}>
+                                    <Tag.Label>
+                                        {tag}
+                                    </Tag.Label>
+                                </Tag.Root>
+                            ))}
+                        </HStack>
                     </Stack>
                 </Stack>
             </Card.Body>

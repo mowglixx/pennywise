@@ -21,6 +21,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id
       where: { id },
       data: {
         source: data.source,
+        description: data.description,
         amount: new Prisma.Decimal(data.amount),
         frequency: data.frequency,
         tags: data.tags,
