@@ -28,7 +28,7 @@ function IncomesPage() {
     const { selectedResource, setActionForm } = useActionDrawer()
 
 
-    if (userData.incomes.length > 1) return (
+    if (userData.incomes.length < 1) return (
         <EmptyState.Root>
             <EmptyState.Content>
                 <EmptyState.Indicator>
