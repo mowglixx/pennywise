@@ -52,10 +52,10 @@ const Header = () => {
           description: 'Track One-off expenses.'
         },
         {
-          id: 'food_shopping',
+          id: 'shopping',
           href: '/manage/shopping',
-          label: 'Food Budget',
-          description: 'Manage your food Budget'
+          label: 'Shopping Budget',
+          description: 'Manage your Shopping Budget'
         },
         {
           id: 'bill',
