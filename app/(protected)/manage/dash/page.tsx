@@ -1,13 +1,14 @@
 "use client"
 
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
-import { DataListItem, DataListItemLabel, DataListItemValue, DataListRoot, GridItem, Heading, Stack } from "@chakra-ui/react"
+import { GridItem, Heading, Stack } from "@chakra-ui/react"
 import { useContext, useMemo } from "react"
 import 'chart.js/auto';
 import { Chart } from "react-chartjs-2"
 import { Prisma } from "@prisma/client";
 
-
+// Coming Soon
+// import { DataListItem, DataListItemLabel, DataListItemValue, DataListRoot} from "@chakra-ui/react"
 
 const DashboardPage = () => {
     const { userData } = useContext(UserDataContext)
@@ -65,12 +66,13 @@ const DashboardPage = () => {
                     <Heading>
                         Summary
                     </Heading>
-                    <DataListRoot>
+                    {/* Coming Soon */}
+                    {/* <DataListRoot>
                         <DataListItem >
                             <DataListItemLabel>a</DataListItemLabel>
                             <DataListItemValue>b</DataListItemValue>
                         </DataListItem>
-                    </DataListRoot>
+                    </DataListRoot> */}
                 </Stack>
             </GridItem>
         </>
