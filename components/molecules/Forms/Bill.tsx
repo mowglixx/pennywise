@@ -13,21 +13,21 @@ import { NativeSelectField, NativeSelectRoot } from "@/components/ui/native-sele
 import { NumberInputField, NumberInputRoot } from "@/components/ui/number-input"
 import { useActionDrawer } from '@/components/contexts/ActionDrawerContext';
 import { Prisma } from '@prisma/client';
-import ExpenseCard from '@/components/atoms/ExpenseCard';
+import BillCard from '@/components/atoms/BillCard';
 
-export const CreateExpenseForm = () => {
+export const CreateBillForm = () => {
 
     const { toggleDrawerAndUpdate } = useActionDrawer()
 
-    const { register, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
+    const { register, handleSubmit, formState } = useForm<Prisma.BillCreateWithoutUserInput>({
         defaultValues: {
             frequency: "MONTHLY"
         }
     });
     const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
-        // POST a new expense to the user's expenses
-        fetch('/api/money/expense', {
+        // POST a new bill to the user's bills
+        fetch('/api/money/bill', {
             method: "POST",
             body: JSON.stringify({
                 source,
@@ -153,7 +153,7 @@ export const CreateExpenseForm = () => {
                 <Button type={'submit'}>
                     <LuPlus />
                     <Text>
-                        Add Expense
+                        Add Bill
                     </Text>
                 </Button>
             </Stack>
@@ -162,19 +162,19 @@ export const CreateExpenseForm = () => {
 
 }
 
-export const UpdateExpenseForm = () => {
+export const UpdateBillForm = () => {
 
     const { actionDrawerState, toggleDrawerAndUpdate } = useActionDrawer()
 
-    const { register, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
+    const { register, handleSubmit, formState } = useForm<Prisma.BillCreateWithoutUserInput>({
         defaultValues: {
             ...actionDrawerState.resourceObject, dueDate: new Date(actionDrawerState.resourceObject.dueDate).toISOString().substring(0, 10)
         }
     });
     const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
-        // PATCH an expense to update the details
-        fetch(`/api/money/expense/${actionDrawerState?.resourceObject?.id}`, {
+        // PATCH an bill to update the details
+        fetch(`/api/money/bill/${actionDrawerState?.resourceObject?.id}`, {
             method: "PATCH",
             body: JSON.stringify({
                 source,
@@ -274,7 +274,7 @@ export const UpdateExpenseForm = () => {
                         {...register("tags", { required: true })}
                         disabled={!actionDrawerState?.resourceObject?.id}
                     />
-                    <FieldHelperText>Tags can be anything you like and can help categorise your expenses, tags are seperated by a comma (,)</FieldHelperText>
+                    <FieldHelperText>Tags can be anything you like and can help categorise your bills, tags are seperated by a comma (,)</FieldHelperText>
                 </Field>
 
 
@@ -306,7 +306,7 @@ export const UpdateExpenseForm = () => {
                 <Button type={'submit'}>
                     <LuPencil />
                     <Text>
-                        Update Expense
+                        Update Bill
                     </Text>
                 </Button>
             </Stack>
@@ -315,15 +315,15 @@ export const UpdateExpenseForm = () => {
 
 }
 
-export const DeleteExpenseForm = () => {
+export const DeleteBillForm = () => {
     const { actionDrawerState, toggleDrawerAndUpdate } = useActionDrawer()
 
 
-    const { handleSubmit } = useForm<Prisma.ExpenseCreateWithoutUserInput>();
-    const onSubmit = ({ source, amount, tags, dueDate, frequency }: FieldValues) => {
+    const { handleSubmit } = useForm<Prisma.BillCreateWithoutUserInput>();
+    const onSubmit = () => {
 
-        // POST a new expense to the user's expenses
-        fetch(`/api/money/expense/${actionDrawerState.resourceObject.id}`, {
+        // POST a new bill to the user's bills
+        fetch(`/api/money/bill/${actionDrawerState.resourceObject.id}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
@@ -344,12 +344,12 @@ export const DeleteExpenseForm = () => {
                 </Text>
                 {
                     actionDrawerState?.resourceObject &&
-                    <ExpenseCard expense={actionDrawerState.resourceObject} hideControls />
+                    <BillCard bill={actionDrawerState.resourceObject} hideControls />
                 }
                 <Button type={'submit'}>
                     <LuTrash />
                     <Text>
-                        Delete Expense
+                        Delete Bill
                     </Text>
                 </Button>
             </Stack>

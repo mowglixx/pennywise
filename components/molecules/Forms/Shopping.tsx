@@ -13,21 +13,21 @@ import { NativeSelectField, NativeSelectRoot } from "@/components/ui/native-sele
 import { NumberInputField, NumberInputRoot } from "@/components/ui/number-input"
 import { useActionDrawer } from '@/components/contexts/ActionDrawerContext';
 import { Prisma } from '@prisma/client';
-import ExpenseCard from '@/components/atoms/ExpenseCard';
+import ShoppingCard from '@/components/atoms/ShoppingCard';
 
-export const CreateExpenseForm = () => {
+export const CreateShoppingForm = () => {
 
     const { toggleDrawerAndUpdate } = useActionDrawer()
 
-    const { register, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
+    const { register, handleSubmit, formState } = useForm<Prisma.ShoppingCreateWithoutUserInput>({
         defaultValues: {
             frequency: "MONTHLY"
         }
     });
     const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
-        // POST a new expense to the user's expenses
-        fetch('/api/money/expense', {
+        // POST a new shopping to the user's shoppings
+        fetch('/api/money/shopping', {
             method: "POST",
             body: JSON.stringify({
                 source,
@@ -151,10 +151,12 @@ export const CreateExpenseForm = () => {
 
                 </Field>
                 <Button type={'submit'}>
-                    <LuPlus />
-                    <Text>
-                        Add Expense
-                    </Text>
+                    <HStack>
+                        <LuPlus />
+                        <Text>
+                            Add Shopping Budget
+                        </Text>
+                    </HStack>
                 </Button>
             </Stack>
         </form>
@@ -162,19 +164,19 @@ export const CreateExpenseForm = () => {
 
 }
 
-export const UpdateExpenseForm = () => {
+export const UpdateShoppingForm = () => {
 
     const { actionDrawerState, toggleDrawerAndUpdate } = useActionDrawer()
 
-    const { register, handleSubmit, formState } = useForm<Prisma.ExpenseCreateWithoutUserInput>({
+    const { register, handleSubmit, formState } = useForm<Prisma.ShoppingCreateWithoutUserInput>({
         defaultValues: {
             ...actionDrawerState.resourceObject, dueDate: new Date(actionDrawerState.resourceObject.dueDate).toISOString().substring(0, 10)
         }
     });
     const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
-        // PATCH an expense to update the details
-        fetch(`/api/money/expense/${actionDrawerState?.resourceObject?.id}`, {
+        // PATCH an shopping to update the details
+        fetch(`/api/money/shopping/${actionDrawerState?.resourceObject?.id}`, {
             method: "PATCH",
             body: JSON.stringify({
                 source,
@@ -274,7 +276,7 @@ export const UpdateExpenseForm = () => {
                         {...register("tags", { required: true })}
                         disabled={!actionDrawerState?.resourceObject?.id}
                     />
-                    <FieldHelperText>Tags can be anything you like and can help categorise your expenses, tags are seperated by a comma (,)</FieldHelperText>
+                    <FieldHelperText>Tags can be anything you like and can help categorise your shopping budgets, tags are seperated by a comma (,)</FieldHelperText>
                 </Field>
 
 
@@ -304,10 +306,12 @@ export const UpdateExpenseForm = () => {
 
                 </Field>
                 <Button type={'submit'}>
-                    <LuPencil />
-                    <Text>
-                        Update Expense
-                    </Text>
+                    <HStack>
+                        <LuPencil />
+                        <Text>
+                            Update Shopping Budget
+                        </Text>
+                    </HStack>
                 </Button>
             </Stack>
         </form>
@@ -315,15 +319,15 @@ export const UpdateExpenseForm = () => {
 
 }
 
-export const DeleteExpenseForm = () => {
+export const DeleteShoppingForm = () => {
     const { actionDrawerState, toggleDrawerAndUpdate } = useActionDrawer()
 
 
-    const { handleSubmit } = useForm<Prisma.ExpenseCreateWithoutUserInput>();
-    const onSubmit = ({ source, amount, tags, dueDate, frequency }: FieldValues) => {
+    const { handleSubmit } = useForm<Prisma.ShoppingCreateWithoutUserInput>();
+    const onSubmit = () => {
 
-        // POST a new expense to the user's expenses
-        fetch(`/api/money/expense/${actionDrawerState.resourceObject.id}`, {
+        // POST a new shopping to the user's shoppings
+        fetch(`/api/money/shopping/${actionDrawerState.resourceObject.id}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
@@ -340,17 +344,19 @@ export const DeleteExpenseForm = () => {
             <Stack gap={5}>
 
                 <Text>
-                    Would you like to delete the following
+                    Would you like to delete the following?
                 </Text>
                 {
                     actionDrawerState?.resourceObject &&
-                    <ExpenseCard expense={actionDrawerState.resourceObject} hideControls />
+                    <ShoppingCard shopping={actionDrawerState.resourceObject} hideControls />
                 }
                 <Button type={'submit'}>
-                    <LuTrash />
-                    <Text>
-                        Delete Expense
-                    </Text>
+                    <HStack>
+                        <LuTrash />
+                        <Text>
+                            Delete Shopping Budget
+                        </Text>
+                    </HStack>
                 </Button>
             </Stack>
         </form>

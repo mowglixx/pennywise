@@ -31,7 +31,7 @@ export const CreateIncomeForm = () => {
         fetch('/api/money/income', {
             method: "POST",
             body: JSON.stringify({
-                source, 
+                source,
                 description,
                 amount: Number(amount),
                 tags: tags.split(',')?.map((t: string) => t.trim()),
@@ -152,12 +152,10 @@ export const CreateIncomeForm = () => {
 
                 </Field>
                 <Button type={'submit'}>
-                    <HStack>
-                        <LuPlus />
-                        <Text>
-                            Add Income
-                        </Text>
-                    </HStack>
+                    <LuPlus />
+                    <Text>
+                        Add Income
+                    </Text>
                 </Button>
             </Stack>
         </form>
@@ -307,12 +305,10 @@ export const UpdateIncomeForm = () => {
 
                 </Field>
                 <Button type={'submit'}>
-                    <HStack>
-                        <LuPencil />
-                        <Text>
-                            Update Income
-                        </Text>
-                    </HStack>
+                    <LuPencil />
+                    <Text>
+                        Update Income
+                    </Text>
                 </Button>
             </Stack>
         </form>
@@ -352,12 +348,10 @@ export const DeleteIncomeForm = () => {
                     <IncomeCard income={actionDrawerState.resourceObject} hideControls />
                 }
                 <Button type={'submit'}>
-                    <HStack>
-                        <LuTrash />
-                        <Text>
-                            Delete Income
-                        </Text>
-                    </HStack>
+                    <LuTrash />
+                    <Text>
+                        Delete Income
+                    </Text>
                 </Button>
             </Stack>
         </form>
