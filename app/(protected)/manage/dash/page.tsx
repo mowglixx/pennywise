@@ -28,6 +28,7 @@ const DashboardPage = () => {
                             data: userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => Number(income.amount).toFixed(2)),
                         }]
                     }}
+                    redraw
                 />)
             }
         </Stack>

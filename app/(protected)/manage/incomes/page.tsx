@@ -28,29 +28,29 @@ function IncomesPage() {
     const { selectedResource, setActionForm } = useActionDrawer()
 
 
-    // if (userData.incomes.length > 1) return (
-    //     <EmptyState.Root>
-    //         <EmptyState.Content>
-    //             <EmptyState.Indicator>
-    //                 <LuClipboardPen />
-    //             </EmptyState.Indicator>
-    //             <EmptyState.Title>
-    //                 You have no Incomes
-    //             </EmptyState.Title>
-    //             <EmptyState.Description>
+    if (userData.incomes.length > 1) return (
+        <EmptyState.Root>
+            <EmptyState.Content>
+                <EmptyState.Indicator>
+                    <LuClipboardPen />
+                </EmptyState.Indicator>
+                <EmptyState.Title>
+                    You have no Incomes
+                </EmptyState.Title>
+                <EmptyState.Description>
 
-    //                 <Button justifySelf={'end'} onClick={() => {
-    //                     setActionForm("Income", "create", undefined)
-    //                 }} aria-labelledby="AddIncomeFormButton">
-    //                     <LuPlus />
-    //                     <Text id="AddIncomeFormButton">
-    //                         Add Income
-    //                     </Text>
-    //                 </Button>
-    //             </EmptyState.Description>
-    //         </EmptyState.Content>
-    //     </EmptyState.Root>
-    // )
+                    <Button justifySelf={'end'} onClick={() => {
+                        setActionForm("Income", "create", undefined)
+                    }} aria-labelledby="AddIncomeFormButton">
+                        <LuPlus />
+                        <Text id="AddIncomeFormButton">
+                            Add Income
+                        </Text>
+                    </Button>
+                </EmptyState.Description>
+            </EmptyState.Content>
+        </EmptyState.Root>
+    )
 
     return (
         <>
@@ -66,6 +66,7 @@ function IncomesPage() {
                                 <Stack direction={{ base: 'column' }}>
                                     <Stack py={'5'} maxW={{ base: "600px" }}>
                                         <Chart
+                                            redraw
                                             type="doughnut"
                                             data={{
                                                 labels: [...userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => income.source)],
