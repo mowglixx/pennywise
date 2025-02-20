@@ -29,7 +29,7 @@ function IncomesPage() {
 
     const incomes = useMemo(() => {
         return userData.incomes
-    }, [[...userData.incomes], userData.incomes])
+    }, [userData.incomes])
 
 
     if (incomes.length < 1) return (
