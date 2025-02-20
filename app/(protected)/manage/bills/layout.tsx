@@ -1,6 +1,6 @@
 export const metadata = {
-    title: 'Pennywise - Bills'
-  }
+  title: 'Pennywise - Bills'
+}
 
 const BillsPageLayout = ({ children }: Readonly<{ children: React.ReactNode; }>) => {
   return (

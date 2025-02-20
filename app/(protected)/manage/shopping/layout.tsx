@@ -1,10 +1,10 @@
-
-
 export const metadata = {
-  title: 'Pennywise - Shopping'
+  title: 'Pennywise - Shopping Budgets'
 }
 
 const ShoppingPageLayout = ({ children }: Readonly<{ children: React.ReactNode; }>) => {
-  return <>{children}</>
+  return (
+    <>{children}</>
+  )
 }
 export default ShoppingPageLayout

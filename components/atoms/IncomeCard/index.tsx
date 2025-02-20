@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, Heading, HStack, Stack, Tag, Text } from '@chakra-ui/react'
+import { Card, Heading, HStack, Stack, Tag, Text, VisuallyHidden } from '@chakra-ui/react'
 import { calculateNextPayday } from '@/lib/helpers/calcDates'
 import relativeDateFormatter from '@/lib/helpers/relativeDateFormatter'
 import { Prisma } from '@prisma/client'
@@ -19,15 +19,16 @@ const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
     const { selectedResource } = useActionDrawer()
 
     return (
-        <Card.Root as={'li'} minW={'100%'} width={'100%'} onClick={onClick && !hideControls ? onClick : () => { }} variant={'subtle'}>
+        <Card.Root as={'li'} onClick={onClick && !hideControls ? onClick : () => { }} variant={'subtle'} aria-labelledby='IncomeCardTitle' cursor="pointer">
             <Card.Header>
                 <HStack justifyContent={'space-between'}>
-                    <Text fontSize={'xl'}>
-                        {income.source}{income.description && ` - ${income.description}`}
+                    <Text fontSize={'xl'} id='IncomeCardTitle'>
+                        {income.source}{income.description && ` - ${income.description}`} <VisuallyHidden>Income</VisuallyHidden>
                     </Text>
                     {
                         !hideControls &&
-                        <Checkbox checked={selectedResource.selectedResource === income} />
+                        <Checkbox checked={selectedResource.selectedResource.id === income.id} />
+
                     }
                 </HStack>
                 <Text fontWeight={'bold'} fontSize={'xl'}><sup>£</sup> {new Prisma.Decimal(Number(income.amount)).toFixed(2)}</Text>
@@ -35,7 +36,7 @@ const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
             <Card.Body>
                 <Stack>
 
-                    <Stack justifyContent={'space-between'} direction={{ base: 'row', smDown: 'column' }}>
+                    <Stack justifyContent={{ base: 'space-between', smDown: 'column' }} direction={{ base: 'row', smDown: 'column' }}>
                         <Stack justifyContent={'end'}>
                             <Text title={nextPayday.toDateString()}>
                                 Due {relativeDateFormatter(nextPayday)}

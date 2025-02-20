@@ -3,7 +3,6 @@
 // imports
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button, FieldHelperText, Group, HStack, Input, InputAddon, Stack, Text } from "@chakra-ui/react"
-
 import { LuPencil, LuPlus, LuPoundSterling, LuTrash } from 'react-icons/lu';
 
 
@@ -21,8 +20,7 @@ export const CreateIncomeForm = () => {
 
     const { register, control, handleSubmit, formState } = useForm<Prisma.IncomeCreateWithoutUserInput>({
         defaultValues: {
-            frequency: "MONTHLY",
-            amount: '499.99'
+            frequency: "MONTHLY"
         }
     });
     const onSubmit = ({ source, description, amount, tags, receivedAt, frequency }: FieldValues) => {

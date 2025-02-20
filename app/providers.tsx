@@ -3,6 +3,7 @@ import UserDataProvider from "@/components/contexts/UserDataProvider";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 import { LocaleProvider, useLocaleContext } from "@chakra-ui/react"
+import { Toaster } from "@/components/ui/toaster";
 const Providers = ({ children }: { children: ReactNode }) => {
     return (
         <SessionProvider>
@@ -11,6 +12,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
 
                 <UserDataProvider>
                 {children}
+                <Toaster />
                 </UserDataProvider>
             </ChakraProvider>
             </LocaleProvider>

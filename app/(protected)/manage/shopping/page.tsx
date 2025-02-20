@@ -1,61 +1,102 @@
 "use client"
 
-import { Stack, Button, Heading, HStack, DataList, VisuallyHidden, Grid } from "@chakra-ui/react"
-import { useContext } from "react"
+import { Stack, Button, Heading, HStack, Text, DataList, VisuallyHidden, Grid, GridItem, EmptyState } from "@chakra-ui/react"
+import { useContext, useMemo } from "react"
 import 'chart.js/auto';
 import { Chart } from 'react-chartjs-2';
 
 // local imports
-import IncomeCardList from "@/components/molecules/IncomeCardList"
+import ShoppingCardList from "@/components/molecules/ShoppingCardList"
 
 // Chakra UI Local Imports
-import { LuPlus } from "react-icons/lu"
+import { LuPencil, LuPlus, LuTrash } from "react-icons/lu"
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
 import { useActionDrawer } from "@/components/contexts/ActionDrawerContext";
 import {
     ActionBarContent,
     ActionBarRoot,
+    ActionBarSeparator,
 } from "@/components/ui/action-bar"
+import { Prisma } from "@prisma/client";
 
-function IncomesPage() {
+function ShoppingPage() {
 
     const { userData } = useContext(UserDataContext)
     const { selectedResource, setActionForm } = useActionDrawer()
 
+    const shopping = useMemo(() => {
+        return userData.shopping
+    }, [userData.shopping])
+
+
+    if (shopping.length < 1) {
+        return (<EmptyState.Root>
+            <EmptyState.Content>
+                <EmptyState.Indicator>
+                    {/* <LuClipboardPen /> */}
+                    😨
+                </EmptyState.Indicator>
+                <EmptyState.Title>
+                    You have no shopping budget, how will you eat? 
+                </EmptyState.Title>
+                <EmptyState.Description>
+
+                    <Button justifySelf={'end'} onClick={() => {
+                        setActionForm("Shopping", "create", undefined)
+                    }} aria-labelledby="AddShoppingFormButton">
+                        <LuPlus />
+                        <Text id="AddShoppingFormButton">
+                            Add a Shopping Budget
+                        </Text>
+                    </Button>
+                </EmptyState.Description>
+            </EmptyState.Content>
+        </EmptyState.Root>)
+    }
 
     return (
         <>
-            <Grid templateColumns={{ base: "2fr 1fr", mdDown: "1fr" }} gap={5} pb={'20'}>
-                <Stack order={{ mdDown: 0 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
+            <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={5} pb={'20'}>
+
+                <GridItem order={{ mdDown: 0 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
                     <Heading>
                         Summary
                     </Heading>
                     <Stack>
 
-                        {userData.incomes?.length && userData.incomes?.map && (
+                        {shopping?.length && shopping?.map && (
                             <>
                                 <Stack direction={{ base: 'column' }}>
-                                    <Stack py={'5'} maxW={{ base: "600px" }}>
+                                    <Stack py={'5'}>
                                         <Chart
                                             type="doughnut"
                                             data={{
-                                                labels: [...userData.incomes.map((income) => income.source)],
+                                                labels: [...shopping.map((shopping: Prisma.ShoppingCreateWithoutUserInput) => shopping.description)],
                                                 datasets: [{
-                                                    label: 'Income',
-                                                    data: userData.incomes.map((income) => Number(income.amount).toFixed(2)),
+                                                    label: 'Shopping Budget',
+                                                    data: [...shopping.map((shopping: Prisma.ShoppingCreateWithoutUserInput) => Number(shopping.amount).toFixed(2))],
                                                 }]
                                             }}
-                                            redraw
+                                            options={{
+                                                responsive: true,
+                                            }}
                                         />
                                     </Stack>
                                     <DataList.Root variant={'bold'} orientation="horizontal" justifyContent={'center'}>
                                         <DataList.Item>
-                                            <DataList.ItemLabel>Incomes Sources</DataList.ItemLabel>
-                                            <DataList.ItemValue>{userData.incomes.length}</DataList.ItemValue>
+                                            <DataList.ItemLabel>Shopping Budgets</DataList.ItemLabel>
+                                            <DataList.ItemValue>{shopping.length}</DataList.ItemValue>
                                         </DataList.Item>
                                         <DataList.Item>
-                                            <DataList.ItemLabel>Total Income</DataList.ItemLabel>
-                                            <DataList.ItemValue>£ {userData.incomes.reduce((prev, current) => { return prev + Number(current.amount) }, 0).toFixed(2)}</DataList.ItemValue>
+                                            <DataList.ItemLabel>Top Shopping Budget</DataList.ItemLabel>
+                                            <DataList.ItemValue>
+                                                {`${shopping.sort(
+                                                    (a, b) => Number(a.amount) - Number(b.amount))?.[0].source} - ${shopping.sort((a, b) => Number(a.amount) - Number(b.amount))?.[0].description}`}
+                                            </DataList.ItemValue>
+                                        </DataList.Item>
+                                        <DataList.Item>
+                                            <DataList.ItemLabel>Total Shopping Budget</DataList.ItemLabel>
+                                            <DataList.ItemValue>£ {shopping.reduce((prev, current) => { return prev + Number(current.amount) }, 0).toFixed(2)}</DataList.ItemValue>
                                         </DataList.Item>
                                     </DataList.Root>
                                 </Stack>
@@ -64,38 +105,41 @@ function IncomesPage() {
                         }
                     </Stack>
 
-                </Stack>
-                <IncomeCardList incomes={userData.incomes} />
+                </GridItem>
+                <GridItem order={{ mdDown: 1 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
+                    <ShoppingCardList shopping={userData.shopping} />
+                </GridItem>
             </Grid>
             <ActionBarRoot open={true}>
                 <ActionBarContent>
                     <Button justifySelf={'end'} onClick={() => {
-                        setActionForm("Shopping", "create", undefined)
-                    }} aria-labelledby="AddIncomeFormButton">
+                        setActionForm("Shopping", "delete", selectedResource.selectedResource)
+                    }} aria-labelledby="DeleteShoppingFormButton" disabled={!selectedResource.selectedResource}>
                         <HStack>
-                            <LuPlus />
-                            <VisuallyHidden id="AddIncomeFormButton">
-                                Add Income
+                            <LuTrash />
+                            <VisuallyHidden id="DeleteShoppingFormButton">
+                                Delete Shopping
                             </VisuallyHidden>
                         </HStack>
                     </Button>
                     <Button justifySelf={'end'} onClick={() => {
                         setActionForm("Shopping", "update", selectedResource.selectedResource)
-                    }} aria-labelledby="AddIncomeFormButton" disabled={!selectedResource.selectedResource}>
+                    }} aria-labelledby="EditShoppingFormButton" disabled={!selectedResource.selectedResource}>
                         <HStack>
-                            <LuPlus />
-                            <VisuallyHidden id="AddIncomeFormButton">
-                                Add Income
+                            <LuPencil />
+                            <VisuallyHidden id="EditShoppingFormButton">
+                                Edit Shopping
                             </VisuallyHidden>
                         </HStack>
                     </Button>
+                    <ActionBarSeparator />
                     <Button justifySelf={'end'} onClick={() => {
-                        setActionForm("Shopping", "delete", selectedResource.selectedResource)
-                    }} aria-labelledby="AddIncomeFormButton" disabled={!selectedResource.selectedResource}>
+                        setActionForm("Shopping", "create", undefined)
+                    }} aria-labelledby="AddShoppingFormButton">
                         <HStack>
                             <LuPlus />
-                            <VisuallyHidden id="AddIncomeFormButton">
-                                Add Income
+                            <VisuallyHidden id="AddShoppingFormButton">
+                                Add Shopping
                             </VisuallyHidden>
                         </HStack>
                     </Button>
@@ -105,7 +149,7 @@ function IncomesPage() {
     )
 }
 
-export default IncomesPage
+export default ShoppingPage
 
 
 

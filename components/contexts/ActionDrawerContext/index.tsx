@@ -2,6 +2,8 @@
 'use client'
 import { CreateIncomeForm, DeleteIncomeForm, UpdateIncomeForm } from '@/components/molecules/Forms/Income'
 import { CreateExpenseForm, UpdateExpenseForm, DeleteExpenseForm } from '@/components/molecules/Forms/Expense'
+import { CreateBillForm, UpdateBillForm, DeleteBillForm } from '@/components/molecules/Forms/Bill'
+import { CreateShoppingForm, UpdateShoppingForm, DeleteShoppingForm } from '@/components/molecules/Forms/Shopping'
 import React, { createContext, useContext, useState } from 'react'
 import { UserDataContext } from '../UserDataProvider'
 
@@ -15,6 +17,7 @@ import {
     DrawerTitle,
 } from "@/components/ui/drawer"
 import { Prisma } from '@prisma/client'
+import { toaster } from '@/components/ui/toaster'
 
 type IActionString = "create" | "update" | "delete";
 
@@ -109,29 +112,29 @@ export const forms: ActionDrawerFormObject = {
     Bill: {
         create: {
             title: "Create a new Bill",
-            Component: CreateIncomeForm
+            Component: CreateBillForm
         },
         update: {
             title: "Update this Bill",
-            Component: UpdateIncomeForm
+            Component: UpdateBillForm
         },
         delete: {
             title: "Delete this Bill?",
-            Component: DeleteIncomeForm
+            Component: DeleteBillForm
         }
     },
     Shopping: {
         create: {
             title: "Create a new Shopping Budget",
-            Component: CreateIncomeForm
+            Component: CreateShoppingForm
         },
         update: {
             title: "Update this Shopping Budget",
-            Component: UpdateIncomeForm
+            Component: UpdateShoppingForm
         },
         delete: {
             title: "Delete this Shopping Budget?",
-            Component: DeleteIncomeForm
+            Component: DeleteShoppingForm
         }
     },
     User: emptyForms, Account: emptyForms, Session: emptyForms, VerificationToken: emptyForms, Authenticator: emptyForms
@@ -173,7 +176,7 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
     const setActionForm = (resourceType: Prisma.ModelName, action: IActionString, resourceObject: ResourceType | undefined = undefined) => {
 
         if (availableResourceTypes.includes(resourceType) && actionStringsArr.includes(action)) {
-            setActionDrawerState({ ...defaultContext, actionDrawerChildren: forms[resourceType][action], resourceObject })
+            setActionDrawerState({ ...defaultContext, actionDrawerChildren: forms[resourceType][action], resourceObject, resourceType, action })
             if (resourceObject) {
             }
             setDrawerExpand(true)
@@ -182,9 +185,38 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
     }
 
     const toggleDrawerAndUpdate = () => {
+
+        // Close the drawer
         setDrawerExpand(false)
+
+        // send a toast notification depending on the action
+        if (actionDrawerState.action === "create") {
+            toaster.create({
+                description: `${actionDrawerState.resourceType} created`,
+                type: "success",
+                duration: 6000,
+            })
+        }
+        if (actionDrawerState.action === "update") {
+            toaster.create({
+                description: `${actionDrawerState.resourceType} updated`,
+                type: "info",
+                duration: 6000,
+            })
+        }
+        if (actionDrawerState.action === "delete") {
+            toaster.create({
+                description: `${actionDrawerState.resourceType} deleted`,
+                type: "error",
+                duration: 6000,
+            })
+        }
+
+        // reset the context
         setActionDrawerState(defaultContext)
+        // reset the selection
         selectResource(undefined, undefined)
+        // update the userData context
         update()
     }
     const selectResource = (resourceType: Prisma.ModelName | undefined, selectedResource: ResourceType | undefined) => {
@@ -195,13 +227,12 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
 
     return (
         <ActionDrawerContext.Provider value={{
-            actionDrawerState, setActionForm, toggleDrawerAndUpdate: ()=> toggleDrawerAndUpdate(), selectedResource: selectedItem, selectResource
+            actionDrawerState, setActionForm, toggleDrawerAndUpdate, selectedResource: selectedItem, selectResource
         }}>
             <DrawerRoot
                 open={drawerExpand}
                 aria-hidden={!drawerExpand}
-                placement={'bottom'}
-                size={'md'}
+                placement={{ base: 'end', smDown: 'bottom' }}
             >
                 <DrawerBackdrop />
                 <DrawerContent>

@@ -1,9 +1,9 @@
 "use client"
 
-import { Stack, Button, Heading, HStack, Text, Separator, DataList, Portal, VisuallyHidden, Grid, GridItem, EmptyState } from "@chakra-ui/react"
+import { Stack, Button, Heading, HStack, Text, DataList, VisuallyHidden, Grid, GridItem, EmptyState } from "@chakra-ui/react"
 import { useContext, useMemo } from "react"
 import 'chart.js/auto';
-import { Pie, Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 
 // local imports
 // import { CreateIncomeForm, UpdateIncomeForm } from "@/components/molecules/Forms/Income"

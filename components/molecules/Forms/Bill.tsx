@@ -14,6 +14,7 @@ import { NumberInputField, NumberInputRoot } from "@/components/ui/number-input"
 import { useActionDrawer } from '@/components/contexts/ActionDrawerContext';
 import { Prisma } from '@prisma/client';
 import BillCard from '@/components/atoms/BillCard';
+import { InputGroup } from '@/components/ui/input-group';
 
 export const CreateBillForm = () => {
 
@@ -82,10 +83,7 @@ export const CreateBillForm = () => {
                     invalid={!!formState.errors.amount}
                     errorText={formState.errors.amount?.message}
                 >
-                    <Group>
-                        <InputAddon>
-                            <LuPoundSterling />
-                        </InputAddon>
+                    <InputGroup startElement={<LuPoundSterling />}>
                         <NumberInputRoot
                             name={'amount'}
                             inputMode={'decimal'}
@@ -95,7 +93,7 @@ export const CreateBillForm = () => {
                         >
                             <NumberInputField {...register("amount", { required: true })} />
                         </NumberInputRoot>
-                    </Group>
+                    </InputGroup>
                 </Field>
 
                 <Field

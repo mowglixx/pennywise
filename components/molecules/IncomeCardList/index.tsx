@@ -23,7 +23,7 @@ const IncomeCardList = ({ incomes }: IncomeCardListProps) => {
         <Stack>
             <Heading>Income List</Heading>
             <Grid as={'ul'} gap={'5'} templateColumns={"1fr"}>
-                {incomes.map((income, i) => <IncomeCard key={income.id} onClick={() => { selectResource("Income", selectedResource?.selectedResource === income ? undefined : income) }} income={income} />)}
+                {incomes.map((income) => <IncomeCard key={income.id} onClick={() => { selectResource("Income", selectedResource?.selectedResource === income ? undefined : income) }} income={income} />)}
         </Grid>
         </Stack>
     )

@@ -7,15 +7,15 @@ import { Prisma } from '@prisma/client'
 import { useActionDrawer } from '@/components/contexts/ActionDrawerContext'
 import { Checkbox } from "@/components/ui/checkbox"
 
-export interface ExpenseCardProps {
-    expense: Prisma.ExpenseCreateWithoutUserInput
+export interface BillCardProps {
+    bill: Prisma.BillCreateWithoutUserInput
     hideControls?: boolean
     onClick?(): void
 }
 
-const ExpenseCard = ({ expense, hideControls, onClick }: ExpenseCardProps) => {
+const BillCard = ({ bill, hideControls, onClick }: BillCardProps) => {
 
-    const nextPayday = calculateNextPayday({ startDate: expense.dueDate, interval: expense.frequency }, new Date())
+    const nextPayday = calculateNextPayday({ startDate: bill.dueDate, interval: bill.frequency }, new Date())
     const { selectedResource } = useActionDrawer()
 
     return (
@@ -23,14 +23,14 @@ const ExpenseCard = ({ expense, hideControls, onClick }: ExpenseCardProps) => {
             <Card.Header>
                 <HStack justifyContent={'space-between'}>
                     <Text fontSize={'xl'}>
-                        {expense.source}{expense.description && ` - ${expense.description}`}
+                        {bill.source}{bill.description && ` - ${bill.description}`}
                     </Text>
                     {
                         !hideControls &&
-                        <Checkbox checked={selectedResource.selectedResource.id === expense.id} />
+                        <Checkbox checked={selectedResource.selectedResource.id === bill.id} />
                     }
                 </HStack>
-                <Text fontWeight={'bold'} fontSize={'xl'}><sup>£</sup> {new Prisma.Decimal(Number(expense.amount)).toFixed(2)}</Text>
+                <Text fontWeight={'bold'} fontSize={'xl'}><sup>£</sup> {new Prisma.Decimal(Number(bill.amount)).toFixed(2)}</Text>
             </Card.Header>
             <Card.Body>
                 <Stack>
@@ -41,11 +41,11 @@ const ExpenseCard = ({ expense, hideControls, onClick }: ExpenseCardProps) => {
                                 Due {relativeDateFormatter(nextPayday)}
                             </Text>
                             <Text fontSize={'sm'} fontVariant={'all-small-caps'}>
-                                {expense.frequency}
+                                {bill.frequency}
                             </Text>
                         </Stack>
                         <HStack maxW={'50%'} flexWrap={'wrap'} justifyContent={'end'}>
-                            {Array.isArray(expense?.tags) && expense.tags.map((tag, i) => (
+                            {Array.isArray(bill?.tags) && bill.tags.map((tag, i) => (
                                 <Tag.Root size={'lg'} key={i} maxW={'200px'}>
                                     <Tag.Label>
                                         {tag}
@@ -59,4 +59,4 @@ const ExpenseCard = ({ expense, hideControls, onClick }: ExpenseCardProps) => {
         </Card.Root>)
 }
 
-export default ExpenseCard
+export default BillCard

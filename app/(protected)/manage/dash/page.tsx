@@ -1,7 +1,7 @@
 "use client"
 
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
-import { DataList, DataListItem, DataListItemLabel, DataListItemValue, DataListRoot, Grid, GridItem, Heading, Stack } from "@chakra-ui/react"
+import { DataListItem, DataListItemLabel, DataListItemValue, DataListRoot, GridItem, Heading, Stack } from "@chakra-ui/react"
 import { useContext, useMemo } from "react"
 import 'chart.js/auto';
 import { Chart } from "react-chartjs-2"

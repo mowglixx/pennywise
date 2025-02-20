@@ -1,15 +1,15 @@
 "use client"
 
-import { Stack, Button, Heading, HStack, Text, Separator, DataList, Portal, VisuallyHidden, Grid, GridItem, EmptyState } from "@chakra-ui/react"
+import { Stack, Button, Heading, HStack, Text, DataList, VisuallyHidden, Grid, GridItem, EmptyState } from "@chakra-ui/react"
 import { useContext, useMemo } from "react"
 import 'chart.js/auto';
-import { Pie, Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 
 // local imports
 import ExpenseCardList from "@/components/molecules/ExpenseCardList"
 
 // Chakra UI Local Imports
-import { LuClipboardPen, LuPencil, LuPlus, LuTrash } from "react-icons/lu"
+import { LuPencil, LuPlus, LuTrash } from "react-icons/lu"
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
 import { useActionDrawer } from "@/components/contexts/ActionDrawerContext";
 import {
@@ -33,10 +33,11 @@ function ExpensesPage() {
         return (<EmptyState.Root>
             <EmptyState.Content>
                 <EmptyState.Indicator>
-                    <LuClipboardPen />
+                    {/* <LuClipboardPen /> */}
+                    🙄
                 </EmptyState.Indicator>
                 <EmptyState.Title>
-                    You have no expenses
+                    You have no expenses, must be nice.
                 </EmptyState.Title>
                 <EmptyState.Description>
 
