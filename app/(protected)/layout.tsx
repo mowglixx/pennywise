@@ -9,10 +9,8 @@ export default async function ManagePagesLayout({ children }: Readonly<{ childre
     if (!session) redirect('/')
 
     return (
-        <Stack p={'5'} maxW={'900px'} align={'center'}>
-            <Grid templateColumns={{ base: "1fr" }} gap={5} pb={'20'}>
-                {children}
-            </Grid>
+        <Stack p={'5'} maxW={'1200px'} align={'center'}>
+            {children}
         </Stack>
     )
 }
