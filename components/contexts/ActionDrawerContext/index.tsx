@@ -200,8 +200,8 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
             <DrawerRoot
                 open={drawerExpand}
                 aria-hidden={!drawerExpand}
-                placement={{ base: 'end', smDown: 'bottom' }}
-                size={{ base: 'md', smDown: 'full' }}
+                placement={'bottom'}
+                size={'md'}
             >
                 <DrawerBackdrop />
                 <DrawerContent>
