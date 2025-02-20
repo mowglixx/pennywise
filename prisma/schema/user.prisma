@@ -9,11 +9,10 @@ model User {
   Authenticator Authenticator[]
 
   // Money
-  incomes   Income[]
-  expenses  Expense[]
-  bills     Bill[]
-  food_shop FoodBudget[]
-  // refunds Refund[]
+  incomes  Income[]
+  expenses Expense[]
+  bills    Bill[]
+  shopping Shopping[]
 }
 
 model Account {

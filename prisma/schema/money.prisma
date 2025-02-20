@@ -10,56 +10,73 @@ enum Frequency {
 }
 
 model Income {
-      id         String    @id @default(cuid())
-      userId     String
-      source     String
-      amount     Decimal   @db.Money
-      tags       String[]  @default([])
-      receivedAt DateTime  @default(now())
-      createdAt  DateTime? @default(now())
-      updatedAt  DateTime? @updatedAt
-      frequency  Frequency
+      id          String    @id @default(cuid())
+      userId      String
+      source      String
+      description String
+      amount      Decimal   @db.Money
+      tags        String[]  @default([])
+      receivedAt  DateTime  @default(now())
+      createdAt   DateTime? @default(now())
+      updatedAt   DateTime? @updatedAt
+      frequency   Frequency
 
       user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// Clearable / monthly / rolling
 model Expense {
-      id        String    @id @default(cuid())
-      userId    String
-      category  String
-      amount    Decimal   @db.Money
-      dueDate   DateTime
-      tags      String[]  @default([])
-      paid      Boolean   @default(false)
-      createdAt DateTime? @default(now())
-      updatedAt DateTime? @updatedAt
-      frequency Frequency
+      id          String    @id @default(cuid())
+      userId      String
+      source      String
+      description String
+      amount      Decimal   @db.Money
+      dueDate     DateTime  @default(now())
+      tags        String[]  @default([])
+      paid        Boolean   @default(false)
+      createdAt   DateTime? @default(now())
+      updatedAt   DateTime? @updatedAt
+      frequency   Frequency
 
       user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model FoodBudget {
-      id           String    @id @default(cuid())
-      userId       String
-      amount       Decimal   @db.Money
-      paid         Boolean   @default(false)
-      shoppingDate DateTime  @default(now())
-      createdAt    DateTime? @default(now())
-      updatedAt    DateTime? @updatedAt
-      tags         String[]  @default(["Shopping"])
-      frequency    Frequency
+// Shopping / Budgets have...
+// - a source (Asda, Aldi, Tesco, Meat-Man...)
+// - a description (Weekly Food Shop, Mum's Diet Food, Hygene...)
+// - an amount to budget for
+// - an frequency of when to spend that budget (weekly, monthly...)
+model Shopping {
+      id          String    @id @default(cuid())
+      userId      String
+      source      String
+      description String
+      amount      Decimal   @db.Money
+      paid        Boolean   @default(false)
+      dueDate     DateTime  @default(now())
+      createdAt   DateTime? @default(now())
+      updatedAt   DateTime? @updatedAt
+      tags        String[]  @default([])
+      frequency   Frequency
 
       user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// Bills have ...
+// - a source (talktalk, british gas...)
+// - a description (internet, gas...)
+// - a due date and a frequency (£20/pm)
+// - groupable with tags (phones, streaming, subscriptions, legal, social/hobby clubs...)
 model Bill {
       id          String    @id @default(cuid())
       userId      String
+      source      String
       description String
       amount      Decimal   @db.Money
-      tags        String[]  @default(["Bill"])
+      tags        String[]  @default([])
       paid        Boolean   @default(false)
-      incurredAt  DateTime? @default(now())
+      dueDate     DateTime @default(now())
+      frequency   Frequency
       createdAt   DateTime? @default(now())
       updatedAt   DateTime? @updatedAt
 

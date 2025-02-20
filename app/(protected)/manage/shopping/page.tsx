@@ -1,26 +1,21 @@
 "use client"
 
-import { Stack, Button, Heading, HStack, Text, Separator, DataList, Portal, VisuallyHidden, Grid, GridItem, EmptyState } from "@chakra-ui/react"
+import { Stack, Button, Heading, HStack, DataList, VisuallyHidden, Grid } from "@chakra-ui/react"
 import { useContext } from "react"
 import 'chart.js/auto';
-import { Pie, Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 
 // local imports
-// import { CreateIncomeForm, UpdateIncomeForm } from "@/components/molecules/Forms/Income"
 import IncomeCardList from "@/components/molecules/IncomeCardList"
 
 // Chakra UI Local Imports
-import { LuClipboardPen, LuPencil, LuPlus, LuTrash } from "react-icons/lu"
+import { LuPlus } from "react-icons/lu"
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
 import { useActionDrawer } from "@/components/contexts/ActionDrawerContext";
 import {
-    ActionBarCloseTrigger,
     ActionBarContent,
     ActionBarRoot,
-    ActionBarSelectionTrigger,
-    ActionBarSeparator,
 } from "@/components/ui/action-bar"
-import { Prisma } from "@prisma/client";
 
 function IncomesPage() {
 
@@ -28,34 +23,10 @@ function IncomesPage() {
     const { selectedResource, setActionForm } = useActionDrawer()
 
 
-    // if (userData.incomes.length > 1) return (
-    //     <EmptyState.Root>
-    //         <EmptyState.Content>
-    //             <EmptyState.Indicator>
-    //                 <LuClipboardPen />
-    //             </EmptyState.Indicator>
-    //             <EmptyState.Title>
-    //                 You have no Incomes
-    //             </EmptyState.Title>
-    //             <EmptyState.Description>
-
-    //                 <Button justifySelf={'end'} onClick={() => {
-    //                     setActionForm("Income", "create", undefined)
-    //                 }} aria-labelledby="AddIncomeFormButton">
-    //                     <LuPlus />
-    //                     <Text id="AddIncomeFormButton">
-    //                         Add Income
-    //                     </Text>
-    //                 </Button>
-    //             </EmptyState.Description>
-    //         </EmptyState.Content>
-    //     </EmptyState.Root>
-    // )
-
     return (
         <>
-            <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={5} pb={'20'}>
-                <GridItem order={{ mdDown: 0 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
+            <Grid templateColumns={{ base: "2fr 1fr", mdDown: "1fr" }} gap={5} pb={'20'}>
+                <Stack order={{ mdDown: 0 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
                     <Heading>
                         Summary
                     </Heading>
@@ -68,12 +39,13 @@ function IncomesPage() {
                                         <Chart
                                             type="doughnut"
                                             data={{
-                                                labels: [...userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => income.source)],
+                                                labels: [...userData.incomes.map((income) => income.source)],
                                                 datasets: [{
                                                     label: 'Income',
-                                                    data: userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => Number(income.amount).toFixed(2)),
+                                                    data: userData.incomes.map((income) => Number(income.amount).toFixed(2)),
                                                 }]
                                             }}
+                                            redraw
                                         />
                                     </Stack>
                                     <DataList.Root variant={'bold'} orientation="horizontal" justifyContent={'center'}>
@@ -92,37 +64,34 @@ function IncomesPage() {
                         }
                     </Stack>
 
-                </GridItem>
-                <GridItem order={{ mdDown: 1 }} position={'sticky'} as={'section'} direction={{ base: 'column' }}>
-                    <IncomeCardList incomes={userData.incomes} />
-                </GridItem>
+                </Stack>
+                <IncomeCardList incomes={userData.incomes} />
             </Grid>
             <ActionBarRoot open={true}>
                 <ActionBarContent>
                     <Button justifySelf={'end'} onClick={() => {
-                        setActionForm("Income", "delete", selectedResource.selectedResource)
-                    }} aria-labelledby="DeleteIncomeFormButton" disabled={!selectedResource.selectedResource}>
-                        <HStack>
-                            <LuTrash />
-                            <VisuallyHidden id="DeleteIncomeFormButton">
-                                Delete Income
-                            </VisuallyHidden>
-                        </HStack>
-                    </Button>
-                    <Button justifySelf={'end'} onClick={() => {
-                        setActionForm("Income", "update", selectedResource.selectedResource)
-                    }} aria-labelledby="EditIncomeFormButton" disabled={!selectedResource.selectedResource}>
-                        <HStack>
-                            <LuPencil />
-                            <VisuallyHidden id="EditIncomeFormButton">
-                                Edit Income
-                            </VisuallyHidden>
-                        </HStack>
-                    </Button>
-                    <ActionBarSeparator />
-                    <Button justifySelf={'end'} onClick={() => {
-                        setActionForm("Income", "create", undefined)
+                        setActionForm("Shopping", "create", undefined)
                     }} aria-labelledby="AddIncomeFormButton">
+                        <HStack>
+                            <LuPlus />
+                            <VisuallyHidden id="AddIncomeFormButton">
+                                Add Income
+                            </VisuallyHidden>
+                        </HStack>
+                    </Button>
+                    <Button justifySelf={'end'} onClick={() => {
+                        setActionForm("Shopping", "update", selectedResource.selectedResource)
+                    }} aria-labelledby="AddIncomeFormButton" disabled={!selectedResource.selectedResource}>
+                        <HStack>
+                            <LuPlus />
+                            <VisuallyHidden id="AddIncomeFormButton">
+                                Add Income
+                            </VisuallyHidden>
+                        </HStack>
+                    </Button>
+                    <Button justifySelf={'end'} onClick={() => {
+                        setActionForm("Shopping", "delete", selectedResource.selectedResource)
+                    }} aria-labelledby="AddIncomeFormButton" disabled={!selectedResource.selectedResource}>
                         <HStack>
                             <LuPlus />
                             <VisuallyHidden id="AddIncomeFormButton">

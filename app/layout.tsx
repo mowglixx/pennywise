@@ -20,12 +20,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <Providers>
-            <Header />
-          <Stack pt={'20'} as='main'>
+          <Header />
             <ActionDrawerProvider>
+            <Stack pt={'20'} as={'main'} alignItems={'center'}>
             {children}
-            </ActionDrawerProvider>
-          </Stack>
+            </Stack>
+          </ActionDrawerProvider>
         </Providers>
       </body>
     </html>

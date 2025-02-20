@@ -1,8 +1,15 @@
+import { auth } from "@/auth";
 import { Stack } from "@chakra-ui/react";
+import { redirect } from "next/navigation";
 
-export default function ManageLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+export default async function ManagePagesLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+
+    const session = await auth()
+
+    if (!session) redirect('/')
+
     return (
-        <Stack p={{ base: '5', md: '10', lgTo2xl: '20' }}>
+        <Stack p={'5'} maxW={'900px'} align={'center'}>
                 {children}
         </Stack>
     )

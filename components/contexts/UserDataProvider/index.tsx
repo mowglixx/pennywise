@@ -1,17 +1,27 @@
 'use client'
-import { UserDataModel } from '@/lib/infrastructure/prismaRepository'
+import { Prisma } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { createContext, useEffect, useState } from 'react'
 
+export interface IEmptyUser {
+    name: string,
+    email: string,
+    image: string,
+    incomes: Prisma.IncomeCreateWithoutUserInput[],
+    expenses: Prisma.ExpenseCreateWithoutUserInput[],
+    bills: Prisma.BillCreateWithoutUserInput[],
+    shopping: Prisma.ShoppingCreateWithoutUserInput[],
+}
 
-const emptyUser: UserDataModel = {
+
+const emptyUser: IEmptyUser = {
     name: "",
     email: "",
     image: "",
     incomes: [],
     expenses: [],
     bills: [],
-    food_shop: [],
+    shopping: [],
 }
 
 

@@ -53,13 +53,13 @@ const Header = () => {
         },
         {
           id: 'food_shopping',
-          href: '/manage/expenses/food',
+          href: '/manage/shopping',
           label: 'Food Budget',
           description: 'Manage your food Budget'
         },
         {
           id: 'bill',
-          href: '/manage/expenses/bills',
+          href: '/manage/bills',
           label: 'Bills',
           description: 'Keep track of bills'
         });

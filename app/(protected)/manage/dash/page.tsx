@@ -4,8 +4,8 @@ import { UserDataContext } from "@/components/contexts/UserDataProvider"
 import { Heading, Stack } from "@chakra-ui/react"
 import { useContext } from "react"
 import 'chart.js/auto';
-import { Pie } from "react-chartjs-2"
-import { IncomeModel } from "@/lib/infrastructure/prismaRepository";
+import { Chart } from "react-chartjs-2"
+import { Prisma } from "@prisma/client";
 
 
 
@@ -18,13 +18,14 @@ const DashboardPage = () => {
                 Dashboard
             </Heading>
             {userData?.incomes?.map && (
-                <Pie
+                <Chart
+                    type="doughnut"
                     title="Incomes"
                     data={{
-                        labels: [...userData.incomes.map((income: IncomeModel) => income.source)],
+                        labels: [...userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => income.source)],
                         datasets: [{
                             label: 'Amount',
-                            data: userData.incomes.map((income: IncomeModel) => Number(income.amount).toFixed(2)),
+                            data: userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => Number(income.amount).toFixed(2)),
                         }]
                     }}
                 />)

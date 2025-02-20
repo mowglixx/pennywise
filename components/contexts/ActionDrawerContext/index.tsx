@@ -1,135 +1,179 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { CreateIncomeForm, DeleteIncomeForm, UpdateIncomeForm } from '@/components/molecules/Forms/Income'
-import { useDrawer } from '@chakra-ui/react'
+import { CreateExpenseForm, UpdateExpenseForm, DeleteExpenseForm } from '@/components/molecules/Forms/Expense'
 import React, { createContext, useContext, useState } from 'react'
 import { UserDataContext } from '../UserDataProvider'
-import { IncomeModel } from '@/lib/infrastructure/prismaRepository'
+
 import {
     DrawerBackdrop,
     DrawerBody,
     DrawerCloseTrigger,
     DrawerContent,
-    DrawerFooter,
     DrawerHeader,
     DrawerRoot,
     DrawerTitle,
 } from "@/components/ui/drawer"
+import { Prisma } from '@prisma/client'
 
-interface IActionDrawerContext {
-    actionDrawerState: ActionDrawerState | any,
-    setActionForm(resourceType: ActionDrawerResourceTypeKey, action: ActionDrawerResourceActionKey, resourceObject: any): void,
-    toggleDrawerAndUpdate(): void
+type IActionString = "create" | "update" | "delete";
+
+export type ResourceType =
+    Prisma.IncomeCreateWithoutUserInput |
+    Prisma.ExpenseCreateWithoutUserInput |
+    Prisma.ShoppingCreateWithoutUserInput |
+    Prisma.BillCreateWithoutUserInput
+
+export interface ISelectActionObject {
+    resourceType?: string,
+    selectedResource?: any,
 }
 
-
-type ActionDrawerResourceTypeKey = "income" | "expense" | "bill" | "food_shop";
-type ActionDrawerResourceActionKey = "create" | "update" | "delete";
 type ActionDrawerActionObject = {
     title: string
     Component(): React.JSX.Element
 }
 
-
-type ActionDrawerResourceActionObject = {
-    [key in ActionDrawerResourceActionKey]: ActionDrawerActionObject
-}
-type ActionDrawerFormObject = {
-    [key in ActionDrawerResourceTypeKey]: ActionDrawerResourceActionObject
-}
-
-const forms: ActionDrawerFormObject = {
-    income: {
-        create: {
-            title: "Create a new Income",
-            Component: CreateIncomeForm
-        },
-        update: {
-            title: "Update this Income",
-            Component: UpdateIncomeForm
-        },
-        delete: {
-            title: "Delete Income?",
-            Component: DeleteIncomeForm
-        }
-    },
-    expense: {
-        create: {
-            title: "Create a new Income",
-            Component: CreateIncomeForm
-        },
-        update: {
-            title: "Update this Income",
-            Component: UpdateIncomeForm
-        },
-        delete: {
-            title: "Delete Income?",
-            Component: DeleteIncomeForm
-        }
-    },
-    bill: {
-        create: {
-            title: "Create a new Income",
-            Component: CreateIncomeForm
-        },
-        update: {
-            title: "Update this Income",
-            Component: UpdateIncomeForm
-        },
-        delete: {
-            title: "Delete Income?",
-            Component: DeleteIncomeForm
-        }
-    },
-    food_shop: {
-        create: {
-            title: "Create a new Income",
-            Component: CreateIncomeForm
-        },
-        update: {
-            title: "Update this Income",
-            Component: UpdateIncomeForm
-        },
-        delete: {
-            title: "Delete Income?",
-            Component: DeleteIncomeForm
-        }
-    },
+export type ActionDrawerState = {
+    actionDrawerChildren?: ActionDrawerActionObject,
+    resourceType?: Prisma.ModelName,
+    action?: IActionString,
+    resourceObject?: ResourceType | undefined
 }
 
-const defaultState = {
+export interface IActionDrawerContext {
+    actionDrawerState: ActionDrawerState | any,
+    setActionForm(resourceType: Prisma.ModelName | undefined, action: IActionString, resourceObject: ResourceType | undefined): void,
+    toggleDrawerAndUpdate(): void,
+    selectedResource: ISelectActionObject
+    selectResource(resourceType: Prisma.ModelName | undefined, selectedResource: ResourceType | undefined): void,
+}
+
+export type ActionDrawerResourceActionObject = {
+    [key in IActionString]: ActionDrawerActionObject
+}
+
+export type ActionDrawerFormObject = {
+    [key in Prisma.ModelName]: ActionDrawerResourceActionObject
+}
+
+
+export const availableResourceTypes: Prisma.ModelName[] = ["Income", "Expense", "Bill", "Shopping"]
+export const actionStringsArr: IActionString[] = ["create", "update", "delete"]
+
+// Only hackers would be able to see these
+const emptyForms = {
+    create: {
+        title: "",
+        Component: () => <>Nice Try.</>
+    },
+    update: {
+        title: "",
+        Component: () => <>Nice Try.</>
+    },
+    delete: {
+        title: "",
+        Component: () => <>Nice Try.</>
+    }
+}
+
+export const forms: ActionDrawerFormObject = {
+    Income: {
+        create: {
+            title: "Create a new Income",
+            Component: CreateIncomeForm
+        },
+        update: {
+            title: "Update this Income",
+            Component: UpdateIncomeForm
+        },
+        delete: {
+            title: "Delete this Income?",
+            Component: DeleteIncomeForm
+        }
+    },
+    Expense: {
+        create: {
+            title: "Create a new Expense",
+            Component: CreateExpenseForm
+        },
+        update: {
+            title: "Update this Expense",
+            Component: UpdateExpenseForm
+        },
+        delete: {
+            title: "Delete this Expense?",
+            Component: DeleteExpenseForm
+        }
+    },
+    Bill: {
+        create: {
+            title: "Create a new Bill",
+            Component: CreateIncomeForm
+        },
+        update: {
+            title: "Update this Bill",
+            Component: UpdateIncomeForm
+        },
+        delete: {
+            title: "Delete this Bill?",
+            Component: DeleteIncomeForm
+        }
+    },
+    Shopping: {
+        create: {
+            title: "Create a new Shopping Budget",
+            Component: CreateIncomeForm
+        },
+        update: {
+            title: "Update this Shopping Budget",
+            Component: UpdateIncomeForm
+        },
+        delete: {
+            title: "Delete this Shopping Budget?",
+            Component: DeleteIncomeForm
+        }
+    },
+    User: emptyForms, Account: emptyForms, Session: emptyForms, VerificationToken: emptyForms, Authenticator: emptyForms
+}
+
+const defaultContext = {
     resourceType: undefined,
     action: undefined,
     actionDrawerChildren: undefined,
     resourceObject: undefined
 }
 
+
+
 const ActionDrawerContext = createContext<IActionDrawerContext>({
-    actionDrawerState: defaultState,
-    setActionForm: (resourceType: ActionDrawerResourceTypeKey, action: ActionDrawerResourceActionKey, resourceObject: any = undefined) => { },
-    toggleDrawerAndUpdate: () => { }
+    actionDrawerState: defaultContext,
+    setActionForm: (resourceType: Prisma.ModelName, action: IActionString, resourceObject: ResourceType | undefined = undefined) => { },
+    toggleDrawerAndUpdate: () => { },
+    selectedResource: {
+        resourceType: undefined,
+        selectedResource: undefined,
+    },
+    selectResource: (resourceType, selectedResource) => { }
 })
-
-
-export type ActionDrawerState = {
-    actionDrawerChildren?: ActionDrawerActionObject,
-    resourceType?: ActionDrawerResourceTypeKey,
-    action?: ActionDrawerResourceActionKey,
-    resourceObject?: IncomeModel
-}
-
 
 export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { update } = useContext(UserDataContext)
     const [drawerExpand, setDrawerExpand] = useState(false);
 
-    const [actionDrawerState, setActionDrawerState] = useState<ActionDrawerState>(defaultState);
+    const [actionDrawerState, setActionDrawerState] = useState<ActionDrawerState>(defaultContext);
 
-    const setActionForm = (resourceType: ActionDrawerResourceTypeKey, action: ActionDrawerResourceActionKey, resourceObject: any = undefined) => {
+    const [selectedItem, setSelectedItem] = useState<ISelectActionObject>({
+        resourceType: undefined,
+        selectedResource: undefined
+    })
 
-        if (["income", "expense", "bill", "food_shop"].includes(resourceType) && ["create", "update", "delete"].includes(action)) {
-            setActionDrawerState({ ...defaultState, actionDrawerChildren: forms[resourceType][action], resourceObject })
+
+    const setActionForm = (resourceType: Prisma.ModelName, action: IActionString, resourceObject: ResourceType | undefined = undefined) => {
+
+        if (availableResourceTypes.includes(resourceType) && actionStringsArr.includes(action)) {
+            setActionDrawerState({ ...defaultContext, actionDrawerChildren: forms[resourceType][action], resourceObject })
             if (resourceObject) {
                 console.log({ resourceObject })
             }
@@ -140,12 +184,21 @@ export const ActionDrawerProvider = ({ children }: { children: React.ReactNode }
 
     const toggleDrawerAndUpdate = () => {
         setDrawerExpand(false)
-        setActionDrawerState(defaultState)
+        setActionDrawerState(defaultContext)
+        selectItem(undefined, undefined)
         update()
+    }
+    const selectItem = (resourceType: Prisma.ModelName | undefined, selectedResource: ResourceType | undefined) => {
+        if (resourceType && availableResourceTypes.includes(resourceType)) {
+            console.log({ resourceType, selectedResource })
+            setSelectedItem({ resourceType, selectedResource })
+        }
     }
 
     return (
-        <ActionDrawerContext.Provider value={{ actionDrawerState, setActionForm, toggleDrawerAndUpdate, }}>
+        <ActionDrawerContext.Provider value={{
+            actionDrawerState, setActionForm, toggleDrawerAndUpdate, selectedResource: selectedItem, selectResource: selectItem
+        }}>
             <DrawerRoot
                 open={drawerExpand}
                 aria-hidden={!drawerExpand}

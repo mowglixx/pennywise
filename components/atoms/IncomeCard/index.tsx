@@ -1,34 +1,34 @@
 "use client"
 
-import { IncomeModel } from '@/lib/infrastructure/prismaRepository'
-import { Button, Card, HStack, Stack, Tag, Text } from '@chakra-ui/react'
+import { Card, Heading, HStack, Stack, Tag, Text } from '@chakra-ui/react'
 import { calculateNextPayday } from '@/lib/helpers/calcDates'
 import relativeDateFormatter from '@/lib/helpers/relativeDateFormatter'
-import { useState } from 'react'
 import { Prisma } from '@prisma/client'
 import { useActionDrawer } from '@/components/contexts/ActionDrawerContext'
-import { LuPencil, LuTrash } from 'react-icons/lu'
+import { Checkbox } from "@/components/ui/checkbox"
 
 export interface IncomeCardProps {
-    income: IncomeModel
+    income: Prisma.IncomeCreateWithoutUserInput
     hideControls?: boolean
+    onClick?(): void
 }
 
-const IncomeCard = ({ income, hideControls }: IncomeCardProps) => {
+const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
 
     const nextPayday = calculateNextPayday({ startDate: income.receivedAt, interval: income.frequency }, new Date())
-    const { setActionForm } = useActionDrawer()
+    const { selectedResource } = useActionDrawer()
 
     return (
-        <Card.Root as={'li'}>
+        <Card.Root as={'li'} minW={'100%'} width={'100%'} onClick={onClick && !hideControls ? onClick : () => { }}>
             <Card.Header>
                 <Stack justifyContent={'space-between'} direction={{ base: 'row', mdDown: 'column' }}>
                     <Stack truncate>
-                        {income.source}
+                        <Heading>
+                            {income.source}
+                        </Heading>
                     </Stack>
                     {!hideControls && <HStack>
-                        <Button variant={'ghost'} onClick={() => setActionForm("income", "update", income)}><LuPencil /></Button>
-                        <Button variant={'ghost'} onClick={() => setActionForm("income", "delete", income)}><LuTrash /></Button>
+                        <Checkbox checked={selectedResource.selectedResource === income} />
                     </HStack>}
                 </Stack>
             </Card.Header>
@@ -43,11 +43,11 @@ const IncomeCard = ({ income, hideControls }: IncomeCardProps) => {
                         <Text title={nextPayday.toDateString()}>
                             {relativeDateFormatter(nextPayday)}
                         </Text>
-                        <Text fontStyle={'italic'}>£{new Prisma.Decimal(income.amount).toFixed(2)}</Text>
+                        <Text fontStyle={'italic'}>£{new Prisma.Decimal(Number(income.amount)).toFixed(2)}</Text>
                     </Stack>
 
                     <Stack direction='row'>
-                        {income?.tags?.map && income.tags.map((tag, i) => (
+                        {Array.isArray(income?.tags) && income.tags.map((tag, i) => (
                             <Tag.Root key={i}>
                                 <Tag.Label>
                                     {tag}

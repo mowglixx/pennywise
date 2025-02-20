@@ -40,11 +40,11 @@ const getNextDate = (startDate: Date | string, interval: Frequency) => {
 };
 
 
-export const calculateNextPayday = (intervalObj: { startDate: Date, interval: Frequency }, inputDate: Date = new Date()) => {
+export const calculateNextPayday = (intervalObj: { startDate: string | Date | undefined, interval: Frequency }, inputDate: Date = new Date()) => {
 
     const { startDate: sd, interval } = intervalObj;
 
-    const startDate = new Date(sd)
+    const startDate = sd ? new Date(sd) : new Date()
 
     let nextPayday = new Date(startDate);
 

@@ -1,14 +1,14 @@
 import { auth } from "@/auth";
-import { calculateNextPayday } from "@/lib/helpers/calcDates";
 import { prisma as p } from "@/prisma";
-import { Prisma } from "@prisma/client";
+import { Expense, Prisma } from "@prisma/client";
+import { Session } from "next-auth";
 import { NextRequest } from "next/server";
 
 
 export const POST = async (req: NextRequest) => {
 
-  const authSession = await auth();
-  const data = await req.json()
+  const authSession: Session|null = await auth();
+  const data: Expense = await req.json()
 
   if (!authSession?.user?.email) {
 
@@ -17,14 +17,15 @@ export const POST = async (req: NextRequest) => {
   }
   try {
 
-    const createdIncome = await p.income.create({
+    const createdExpense = await p.expense.create({
       data: {
-        source: data.source,
+source: data.source,
         description: data.description,
         amount: new Prisma.Decimal(data.amount),
         frequency: data.frequency,
         tags: data.tags,
-        receivedAt: new Date(data.receivedAt),
+        dueDate: new Date(data.dueDate),
+        paid: data.paid,
         user: {
           connect: {
             email: `${authSession.user.email}`
@@ -33,7 +34,7 @@ export const POST = async (req: NextRequest) => {
       }
     })
 
-    return Response.json(createdIncome)
+    return Response.json(createdExpense)
 
   } catch (error) {
 
@@ -59,21 +60,22 @@ export const GET = async () => {
   try {
     if (authSession?.user) {
 
-      return Response.json(await p.income.findMany({
+      return Response.json(await p.expense.findMany({
         where: {
           user: {
             email: `${authSession?.user?.email}`
           }
+        },
+        orderBy: {
+          dueDate: "asc"
         },
         select: {
           id: true,
           source: true,
           amount: true,
           tags: true,
-          receivedAt: true,
-          updatedAt: true,
-          frequency: true,
-          description: true,
+          dueDate: true,
+          updatedAt: true
         }
       })
       )

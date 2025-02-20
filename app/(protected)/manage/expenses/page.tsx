@@ -1,8 +1,8 @@
 
-function Page() {
+function ExpensesPage() {
     return (
         <>Expenses Content</>
     )
 }
 
-export default Page
+export default ExpensesPage
