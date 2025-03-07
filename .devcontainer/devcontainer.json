@@ -1,11 +1,8 @@
 {
 	"name": "Pennywise Dev Container",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	// Configure tool-specific properties.
 	"customizations": {
-		// Configure properties specific to VS Code.
 		"vscode": {
 			"extensions": [
 				"Prisma.prisma",
@@ -15,18 +12,25 @@
 				"ms-azuretools.vscode-docker",
 				"formulahendry.docker-extension-pack",
 				"ms-vscode-remote.remote-containers",
-				"dotenv.dotenv-vscode"
+				"dotenv.dotenv-vscode",
+				// for my own use more than anything
+				"unthrottled.doki-theme"
 			]
 		}
 	},
 	"features": {
-		"ghcr.io/devcontainers-community/npm-features/typescript:1": {}
+		"ghcr.io/devcontainers-community/npm-features/typescript:1": {},
+		"ghcr.io/devcontainers-extra/features/prisma:2": {
+			"version": "6.4.0"
+		},
+		"ghcr.io/devcontainers-extra/features/vercel-cli:1": {},
+		"ghcr.io/devcontainers-extra/features/tsx:1": {}
 	},
 	"forwardPorts": [
-		3000, // NextJS
-		5432, // Postgres
-		5555 // Prisma Studio
+		// NextJS, 
+		// Prisma Studio
+		3000,
+		5555
 	],
-	"postCreateCommand": "yarn",
-	"postAttachCommand": "yarn next telemetry disable && echo '\n\n\nRun `yarn run dev` to begin work.'"
+	"postCreateCommand": "yarn"
 }
