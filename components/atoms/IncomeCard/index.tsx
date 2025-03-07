@@ -15,7 +15,7 @@ export interface IncomeCardProps {
 
 const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
 
-    const nextPayday = calculateNextPayday({ startDate: income.receivedAt, interval: income.frequency }, new Date())
+    const nextPayday = calculateNextPayday({ startDate: income.dueDate, interval: income.frequency }, new Date())
     const { selectedResource } = useActionDrawer()
 
     return (

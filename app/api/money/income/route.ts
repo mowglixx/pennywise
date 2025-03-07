@@ -24,7 +24,7 @@ export const POST = async (req: NextRequest) => {
         amount: new Prisma.Decimal(data.amount),
         frequency: data.frequency,
         tags: data.tags,
-        receivedAt: new Date(data.receivedAt),
+        dueDate: new Date(data.dueDate),
         user: {
           connect: {
             email: `${authSession.user.email}`
@@ -70,7 +70,7 @@ export const GET = async () => {
           source: true,
           amount: true,
           tags: true,
-          receivedAt: true,
+          dueDate: true,
           updatedAt: true,
           frequency: true,
           description: true,

@@ -1,7 +1,7 @@
-export { auth as middleware } from "@/auth"
+import NextAuth from "next-auth"
+import { nextAuthConfig } from "@/auth.config"
 
-// Doesn't work =/ not sure why
-// export { default } from "next-auth/middleware"
+export const { auth: middleware } = NextAuth(nextAuthConfig)
 
 
 export const config = {

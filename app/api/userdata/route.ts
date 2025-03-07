@@ -29,7 +29,7 @@ export const GET = async () => {
         const userDataSorted = {
             ...userData,
             incomes: userData?.incomes.sort((a, b) => {
-                return calculateNextPayday({ startDate: a.receivedAt, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b.receivedAt, interval: b.frequency }).getTime();
+                return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b.dueDate, interval: b.frequency }).getTime();
             }),
             expenses: userData?.expenses.sort((a, b) => {
                 return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b.dueDate, interval: b.frequency }).getTime();
