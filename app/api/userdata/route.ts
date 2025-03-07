@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
-import { calculateNextPayday } from "@/lib/helpers/calcDates";
+import { calculateAllPaydaysThisMonth, calculateNextPayday, compareDates, getNextDate } from "@/lib/helpers/calcDates";
 import { prisma as p } from "@/prisma";
+import { Frequency } from "@/lib/infrastructure/prismaRepository";
+
 
 export const GET = async () => {
 
@@ -13,7 +15,7 @@ export const GET = async () => {
     }
 
     try {
-        const userData = await p.user.findUnique({
+        const userData = (await p.user.findUnique({
             where: {
                 email: authSession.user.email
             },
@@ -23,33 +25,28 @@ export const GET = async () => {
                 bills: true,
                 shopping: true,
             }
-        })
-
-        // sorts all paydays by nearest first
-        const userDataSorted = {
-            ...userData,
-            incomes: userData?.incomes.sort((a, b) => {
-                return calculateNextPayday({ startDate: a.receivedAt, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b.receivedAt, interval: b.frequency }).getTime();
-            }),
-            expenses: userData?.expenses.sort((a, b) => {
-                return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b.dueDate, interval: b.frequency }).getTime();
-
-            }),
-            bills: userData?.bills.sort((a, b) => {
-                return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b.dueDate, interval: b.frequency }).getTime();
-
-            }),
-            shopping: userData?.shopping.sort((a, b) => {
-                return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b.dueDate, interval: b.frequency }).getTime();
-
-            }),
-
+        })) || {
+            incomes: [],
+            expenses: [],
+            bills: [],
+            shopping: [],
         }
 
+        const userDataWithPaydays = {
+            ...userData,
+            incomes: calculateAllPaydaysThisMonth(userData?.incomes),
+            expenses: calculateAllPaydaysThisMonth(userData?.expenses),
+            bills: calculateAllPaydaysThisMonth(userData?.bills),
+            shopping: calculateAllPaydaysThisMonth(userData?.shopping),
 
-        return Response.json(userDataSorted)
+        }
+        console.log(JSON.stringify(userDataWithPaydays, null, 2))
+
+        return Response.json(userDataWithPaydays)
+
 
     } catch (error) {
         return Response.json({ error })
     }
+
 };

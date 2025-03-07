@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
-import { calculateNextPayday } from "@/lib/helpers/calcDates";
 import { prisma as p } from "@/prisma";
-import { Prisma } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 import { NextRequest } from "next/server";
 
 
@@ -21,7 +20,7 @@ export const POST = async (req: NextRequest) => {
       data: {
         source: data.source,
         description: data.description,
-        amount: new Prisma.Decimal(data.amount),
+        amount: new Decimal(data.amount),
         frequency: data.frequency,
         tags: data.tags,
         receivedAt: new Date(data.receivedAt),

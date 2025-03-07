@@ -7,7 +7,7 @@ export const compareDates = (d1: Date, d2: Date, comparison: "before" | "after" 
 };
 
 
-const getNextDate = (startDate: Date | string, interval: Frequency) => {
+export const getNextDate = (startDate: Date | string, interval: Frequency) => {
     const nextDate = new Date(startDate);
     switch (interval) {
         case "ONEOFF":
@@ -44,11 +44,9 @@ export const calculateNextPayday = (intervalObj: { startDate: string | Date | un
 
     const { startDate: sd, interval } = intervalObj;
 
+
     const startDate = sd ? new Date(sd) : new Date()
-
     let nextPayday = new Date(startDate);
-
-
 
     while (interval !== "ONEOFF" && compareDates(nextPayday, new Date(inputDate))) {
         nextPayday = getNextDate(nextPayday, interval);
@@ -57,3 +55,119 @@ export const calculateNextPayday = (intervalObj: { startDate: string | Date | un
 
     return nextPayday;
 };
+
+export const calculateAllPaydays = (intervalObj: { startDate: string | Date | undefined, interval: Frequency }, inputDate: Date = new Date()) => {
+
+    const { startDate: sd, interval } = intervalObj;
+
+    const startDate = sd ? new Date(sd) : new Date()
+
+    let nextPayday = new Date(startDate);
+
+    while (interval !== "ONEOFF" && compareDates(nextPayday, new Date(inputDate))) {
+        nextPayday = getNextDate(nextPayday, interval);
+    }
+
+
+    return nextPayday;
+};
+
+
+interface IdatedResourceItem {
+    frequency: Frequency;
+    receivedAt?: Date;
+    dueDate?: Date;
+    description: string;
+    id: string;
+}
+
+
+export const calculateAllPaydaysThisMonth = (resourceArray: Array<IdatedResourceItem>) => {
+
+    /////////////////////////////////////////////////////////////////////
+    // 1. DONE: Get payday instances - 
+    //          required resourceArray is defined as an input
+    /////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////
+    // 2. DONE: Set window to first and last day of the month
+    /////////////////////////////////////////////////////////////////////
+
+    // 2.1. Define a function to get the last day of the month as a number
+    const getLastday = function (date: Date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    }
+
+    // 2.2. set the first day of the window
+    const firstDay = new Date()
+    firstDay.setDate(1)
+
+    // 2.2. set the last day of the window
+    const lastDay = new Date()
+    lastDay.setDate(getLastday(lastDay))
+
+    const PAYMENT_WINDOW = {
+        from: new Date(firstDay.toDateString()),
+        to: new Date(lastDay.toDateString())
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    // 3. Calculate all pay dates within two dates
+    /////////////////////////////////////////////////////////////////////
+    const calculateAllPaydays = (intervalObj: { startDate: string | Date | undefined, interval: Frequency }, paymentWindow?: { from: Date, to: Date }, objName?: string) => {
+
+        if (!paymentWindow) {
+            paymentWindow = PAYMENT_WINDOW
+        }
+
+
+        const { startDate: sd, interval } = intervalObj;
+
+        const startDate = sd ? new Date(sd) : new Date()
+
+        // 3.1. create an empty array
+        const payDays = [];
+
+        // 3.1.1 Calculate the first payday in the window to work from
+        let nextPayday = getNextDate(startDate, interval);
+
+        // 3.2. Calculate Paydays and add them to the Array
+        while (interval !== "ONEOFF" && compareDates(nextPayday, paymentWindow.from, "after") && compareDates(nextPayday, paymentWindow.to, "before")) {
+            payDays.push(nextPayday)
+            nextPayday = getNextDate(nextPayday, interval);
+        }
+        // 3.3. Return the new array of paydays the the accumlative list
+        console.log({
+            name:
+                payDays
+        })
+        return payDays;
+    };
+
+    // TODO: 3.4. Reduce the payday array of arrays to one array
+
+    // TODO: 3.5. Sort the array items by date 
+    const sortByDate = (a: IdatedResourceItem, b: IdatedResourceItem) => {
+
+        if (a.hasOwnProperty("receivedAt") && b.hasOwnProperty("receivedAt")) {
+            return calculateNextPayday({ startDate: a.receivedAt, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b?.receivedAt, interval: b.frequency }).getTime();
+        }
+        else {
+            return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b?.dueDate, interval: b.frequency }).getTime();
+        }
+
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    // 4. DONE: Return all the pay dates 
+    /////////////////////////////////////////////////////////////////////
+    return resourceArray.map((resource) => {
+
+        if (resource.hasOwnProperty("receivedAt")) {
+            return { ...resource, paydays: calculateAllPaydays({ startDate: resource.receivedAt, interval: resource.frequency }, PAYMENT_WINDOW, resource.description) }
+        }
+        else {
+            return { ...resource, paydays: calculateAllPaydays({ startDate: resource.dueDate, interval: resource.frequency }, PAYMENT_WINDOW, resource.description) }
+        }
+    })
+}
