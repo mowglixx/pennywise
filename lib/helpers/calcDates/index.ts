@@ -75,8 +75,7 @@ export const calculateAllPaydays = (intervalObj: { startDate: string | Date | un
 
 interface IdatedResourceItem {
     frequency: Frequency;
-    receivedAt?: Date;
-    dueDate?: Date;
+    dueDate: Date;
     description: string;
     id: string;
 }
@@ -149,13 +148,7 @@ export const calculateAllPaydaysThisMonth = (resourceArray: Array<IdatedResource
     // TODO: 3.5. Sort the array items by date 
     const sortByDate = (a: IdatedResourceItem, b: IdatedResourceItem) => {
 
-        if (a.hasOwnProperty("receivedAt") && b.hasOwnProperty("receivedAt")) {
-            return calculateNextPayday({ startDate: a.receivedAt, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b?.receivedAt, interval: b.frequency }).getTime();
-        }
-        else {
-            return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b?.dueDate, interval: b.frequency }).getTime();
-        }
-
+        return calculateNextPayday({ startDate: a.dueDate, interval: a.frequency }).getTime() - calculateNextPayday({ startDate: b?.dueDate, interval: b.frequency }).getTime();
     }
 
     /////////////////////////////////////////////////////////////////////
@@ -163,11 +156,7 @@ export const calculateAllPaydaysThisMonth = (resourceArray: Array<IdatedResource
     /////////////////////////////////////////////////////////////////////
     return resourceArray.map((resource) => {
 
-        if (resource.hasOwnProperty("receivedAt")) {
-            return { ...resource, paydays: calculateAllPaydays({ startDate: resource.receivedAt, interval: resource.frequency }, PAYMENT_WINDOW, resource.description) }
-        }
-        else {
-            return { ...resource, paydays: calculateAllPaydays({ startDate: resource.dueDate, interval: resource.frequency }, PAYMENT_WINDOW, resource.description) }
-        }
+        return { ...resource, paydays: calculateAllPaydays({ startDate: resource.dueDate, interval: resource.frequency }, PAYMENT_WINDOW, resource.description) }
+
     })
 }

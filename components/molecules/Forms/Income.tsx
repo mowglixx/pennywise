@@ -23,7 +23,7 @@ export const CreateIncomeForm = () => {
             frequency: "MONTHLY"
         }
     });
-    const onSubmit = ({ source, description, amount, tags, receivedAt, frequency }: FieldValues) => {
+    const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
         // POST a new income to the user's incomes
         fetch('/api/money/income', {
@@ -33,7 +33,7 @@ export const CreateIncomeForm = () => {
                 description,
                 amount: Number(amount),
                 tags: tags.split(',')?.map((t: string) => t.trim()),
-                receivedAt: new Date(receivedAt),
+                dueDate: new Date(dueDate),
                 frequency
             }),
             headers: {
@@ -99,11 +99,11 @@ export const CreateIncomeForm = () => {
 
                 <Field
                     label={"Due"}
-                    invalid={!!formState.errors.receivedAt}
-                    errorText={formState.errors.receivedAt?.message}
+                    invalid={!!formState.errors.dueDate}
+                    errorText={formState.errors.dueDate?.message}
                     helperText={"When did/do you recieve this payment?"}
                 >
-                    <Input type="date" placeholder="Date" {...register("receivedAt", {
+                    <Input type="date" placeholder="Date" {...register("dueDate", {
                         required: true
                     })} />
                 </Field>
@@ -167,11 +167,11 @@ export const UpdateIncomeForm = () => {
 
     const { register, control, handleSubmit, formState } = useForm<Prisma.IncomeCreateWithoutUserInput>({
         defaultValues: {
-            ...actionDrawerState.resourceObject, receivedAt: new Date(actionDrawerState.resourceObject.receivedAt).toISOString().substring(0, 10)
+            ...actionDrawerState.resourceObject, dueDate: new Date(actionDrawerState.resourceObject.dueDate).toISOString().substring(0, 10)
 
         }
     });
-    const onSubmit = ({ source, description, amount, tags, receivedAt, frequency }: FieldValues) => {
+    const onSubmit = ({ source, description, amount, tags, dueDate, frequency }: FieldValues) => {
 
         // PATCH an income to update the details
         fetch(`/api/money/income/${actionDrawerState?.resourceObject?.id}`, {
@@ -181,7 +181,7 @@ export const UpdateIncomeForm = () => {
                 description,
                 amount: Number(amount),
                 tags: `${tags}`.split(',')?.map((t: string) => t.trim()),
-                receivedAt: new Date(receivedAt),
+                dueDate: new Date(dueDate),
                 frequency
             }),
             headers: {
@@ -251,11 +251,11 @@ export const UpdateIncomeForm = () => {
 
                 <Field
                     label={"Due"}
-                    invalid={!!formState.errors.receivedAt}
-                    errorText={formState.errors.receivedAt?.message}
+                    invalid={!!formState.errors.dueDate}
+                    errorText={formState.errors.dueDate?.message}
                     helperText={"When did/do you recieve this payment?"}
                 >
-                    <Input type="date" placeholder="Date" {...register("receivedAt", {
+                    <Input type="date" placeholder="Date" {...register("dueDate", {
                         required: true
                     })} />
                 </Field>

@@ -25,7 +25,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id
         amount: new Prisma.Decimal(data.amount),
         frequency: data.frequency,
         tags: data.tags,
-        receivedAt: new Date(data.receivedAt),
+        dueDate: new Date(data.dueDate),
         user: {
           connect: {
             email: `${authSession.user.email}`

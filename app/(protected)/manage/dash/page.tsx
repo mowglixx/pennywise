@@ -1,7 +1,7 @@
 "use client"
 
 import { UserDataContext } from "@/components/contexts/UserDataProvider"
-import { GridItem, Heading, Stack } from "@chakra-ui/react"
+import { DataListItem, DataListItemLabel, DataListItemValue, DataListRoot, GridItem, Heading, Stack } from "@chakra-ui/react"
 import { useContext, useMemo } from "react"
 import 'chart.js/auto';
 import { Chart } from "react-chartjs-2"
@@ -15,19 +15,19 @@ const DashboardPage = () => {
 
     const chartDataSet = useMemo(() => [
         {
-            label: "Income",
-            data: userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => Number(income.amount)).reduce((a, b) => a + b, 0)
+            label: "Incomes",
+            data: userData.incomes.map((income: Prisma.IncomeCreateWithoutUserInput) => Number(income.amount) * income.paydays.length ).reduce((a, b) => a + b, 0)
         },
         {
-            label: "Expenses",
+            label: "General Expenses",
             data: userData.expenses.map((expense: Prisma.ExpenseCreateWithoutUserInput) => Number(expense.amount)).reduce((a, b) => a + b, 0)
         },
         {
-            label: "Bills",
+            label: "Bill Expenses",
             data: userData.bills.map((bill: Prisma.BillCreateWithoutUserInput) => Number(bill.amount)).reduce((a, b) => a + b, 0)
         },
         {
-            label: "Shopping",
+            label: "Shopping Expenses",
             data: userData.shopping.map((shopping: Prisma.ShoppingCreateWithoutUserInput) => Number(shopping.amount)).reduce((a, b) => a + b, 0)
         },
     ].filter(o => o.data !== 0), [userData.incomes, userData.bills, userData.expenses, userData.shopping]
@@ -42,7 +42,15 @@ const DashboardPage = () => {
                         Dashboard
                     </Heading>
 
-                    {chartDataSet && (
+                </Stack>
+            </GridItem>
+
+            <GridItem>
+                {chartDataSet && userData?.incomes?.length ? (
+                    <Stack>
+                        <Heading>
+                            Summary
+                        </Heading>
                         <Chart
                             type="doughnut"
                             data={{
@@ -56,24 +64,19 @@ const DashboardPage = () => {
                                 responsive: true
                             }}
                             redraw
-                        />)
-                    }
-                </Stack>
-            </GridItem>
-
-            <GridItem>
-                <Stack>
-                    <Heading>
-                        Summary
-                    </Heading>
+                        />
                     {/* Coming Soon */}
-                    {/* <DataListRoot>
-                        <DataListItem >
-                            <DataListItemLabel>a</DataListItemLabel>
-                            <DataListItemValue>b</DataListItemValue>
-                        </DataListItem>
-                    </DataListRoot> */}
+                        <DataListRoot orientation={'horizontal'}>
+                            {
+                                chartDataSet.map((data) => (
+                                    <DataListItem key={data.label}>
+                                        <DataListItemLabel>{data.label}</DataListItemLabel>
+                                        <DataListItemValue>£ {data.data}</DataListItemValue>
+                                    </DataListItem>
+                                ))}
+                        </DataListRoot>
                 </Stack>
+                ) : null}
             </GridItem>
         </>
     )

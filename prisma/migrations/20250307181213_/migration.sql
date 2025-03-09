@@ -9,9 +9,10 @@ CREATE TABLE "Income" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "source" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "amount" MONEY NOT NULL,
     "tags" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "receivedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dueDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "frequency" "Frequency" NOT NULL,
@@ -23,9 +24,10 @@ CREATE TABLE "Income" (
 CREATE TABLE "Expense" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
+    "source" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "amount" MONEY NOT NULL,
-    "dueDate" TIMESTAMP(3) NOT NULL,
+    "dueDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "tags" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "paid" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
@@ -36,29 +38,33 @@ CREATE TABLE "Expense" (
 );
 
 -- CreateTable
-CREATE TABLE "FoodBudget" (
+CREATE TABLE "Shopping" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "source" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "amount" MONEY NOT NULL,
     "paid" BOOLEAN NOT NULL DEFAULT false,
-    "shoppingDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dueDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
-    "tags" TEXT[] DEFAULT ARRAY['Shopping']::TEXT[],
+    "tags" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "frequency" "Frequency" NOT NULL,
 
-    CONSTRAINT "FoodBudget_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Shopping_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Bill" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "source" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "amount" MONEY NOT NULL,
-    "tags" TEXT[] DEFAULT ARRAY['Bill']::TEXT[],
+    "tags" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "paid" BOOLEAN NOT NULL DEFAULT false,
-    "incurredAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "dueDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "frequency" "Frequency" NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
@@ -142,7 +148,7 @@ ALTER TABLE "Income" ADD CONSTRAINT "Income_userId_fkey" FOREIGN KEY ("userId") 
 ALTER TABLE "Expense" ADD CONSTRAINT "Expense_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FoodBudget" ADD CONSTRAINT "FoodBudget_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Shopping" ADD CONSTRAINT "Shopping_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Bill" ADD CONSTRAINT "Bill_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

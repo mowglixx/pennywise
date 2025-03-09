@@ -18,6 +18,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate deploy",
+    "gendev": "prisma generate dev",
     "studio": "prisma studio"
   },
   "dependencies": {

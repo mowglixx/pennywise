@@ -3,18 +3,31 @@ import { Prisma } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { createContext, useEffect, useState } from 'react'
 
-export interface IEmptyUser {
+interface IncomeExtended extends Prisma.IncomeCreateWithoutUserInput {
+    paydays: Date[]
+}
+interface ExpenseExtended extends Prisma.ExpenseCreateWithoutUserInput {
+    paydays: Date[]
+}
+interface BillExtended extends Prisma.BillCreateWithoutUserInput {
+    paydays: Date[]
+}
+interface ShoppingExtended extends Prisma.ShoppingCreateWithoutUserInput {
+    paydays: Date[]
+}
+
+export interface IUserData {
     name: string,
     email: string,
     image: string,
-    incomes: Prisma.IncomeCreateWithoutUserInput[],
-    expenses: Prisma.ExpenseCreateWithoutUserInput[],
-    bills: Prisma.BillCreateWithoutUserInput[],
-    shopping: Prisma.ShoppingCreateWithoutUserInput[],
+    incomes: IncomeExtended[],
+    expenses: ExpenseExtended[],
+    bills: BillExtended[],
+    shopping: ShoppingExtended[],
 }
 
 
-const emptyUser: IEmptyUser = {
+const emptyUser: IUserData = {
     name: "",
     email: "",
     image: "",

@@ -16,7 +16,7 @@ model Income {
       description String
       amount      Decimal   @db.Money
       tags        String[]  @default([])
-      receivedAt  DateTime  @default(now())
+      dueDate     DateTime  @default(now())
       createdAt   DateTime? @default(now())
       updatedAt   DateTime? @updatedAt
       frequency   Frequency
@@ -75,7 +75,7 @@ model Bill {
       amount      Decimal   @db.Money
       tags        String[]  @default([])
       paid        Boolean   @default(false)
-      dueDate     DateTime @default(now())
+      dueDate     DateTime  @default(now())
       frequency   Frequency
       createdAt   DateTime? @default(now())
       updatedAt   DateTime? @updatedAt

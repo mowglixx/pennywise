@@ -15,7 +15,7 @@ export interface IncomeCardProps {
 
 const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
 
-    const nextPayday = calculateNextPayday({ startDate: income.receivedAt, interval: income.frequency }, new Date())
+    const nextPayday = calculateNextPayday({ startDate: income.dueDate, interval: income.frequency }, new Date())
     const { selectedResource } = useActionDrawer()
 
     return (
@@ -32,7 +32,7 @@ const IncomeCard = ({ income, hideControls, onClick }: IncomeCardProps) => {
                         </Text>
                     </Stack>
                     <Text fontWeight={'bold'} fontSize={'3xl'}>
-                        <sup>£</sup> {new Prisma.Decimal(income.amount).toFixed(2)}
+                            <sup>£</sup> {new Prisma.Decimal(`${income.amount}`).toFixed(2)}
                     </Text>
                 </HStack>
                 </HStack>
